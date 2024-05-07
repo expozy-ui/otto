@@ -503,6 +503,7 @@ async function alpineTemplatesGen() {
 }
 
 async function classGen() {
+
   var elementsWithAttribute = document.querySelectorAll('[\\:class]');
 
   elementsWithAttribute.forEach(function (element) {
@@ -510,15 +511,12 @@ async function classGen() {
     var attributeValue = element.getAttribute(':class');
     var replacedValue = attributeValue.replace(/['"]/g, ' ');
 
-    if (elementsWithAttribute[0].classList.length == 0) {
-      elementsWithAttribute[0].setAttribute('class', replacedValue);
-    } else {
-      replacedValue = elementsWithAttribute[0].classList.value + ' ' + replacedValue
-      elementsWithAttribute[0].setAttribute('class', replacedValue);
-    }
+    replacedValue = document.getElementById('templatesDiv').classList.value + ' ' + replacedValue
+    document.getElementById('templatesDiv').setAttribute('class', replacedValue);
 
   });
 
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
 }
 
