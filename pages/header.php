@@ -119,7 +119,7 @@
 <?php if($user->logged_in && $user->is_superAdmin()) { ?>
 	
 	<div style="display: none;" id="tailwindCss"></div>
-	<div style="width:100px;height: 50px;position: fixed;right: 100px;bottom: 60px;background-color: red;z-index: 1000;display: flex;justify-content: center;align-items: center;border-radius: 25px;color: white;font-weight: bold;letter-spacing: 1.2px;font-size: 18px;cursor: pointer;" id="dev_save">Save</div>
+	<div style="width:100px;height: 50px;position: fixed;right: 100px;bottom: 60px;background-color: red;z-index: 1000;display: flex;justify-content: center;align-items: center;border-radius: 25px;color: white;font-weight: bold;letter-spacing: 1.2px;font-size: 18px;cursor: pointer;" id="dev_save">Gen CSS</div>
 	<script src="/assets/plugins/tailwindcss.3.3.1.js"></script>
 	<script>
 		  tailwind.config = {
