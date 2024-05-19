@@ -158,7 +158,7 @@ class Users
 
 		$row = Api::get()->users();
 
-		if(!$row) return;
+		if(!$row || is_array($row) == false) return;
 
 		$this->logged_in = true;
 		$this->uid = $_SESSION['uid'] = $row['id'];

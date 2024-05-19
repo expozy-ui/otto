@@ -1,14 +1,12 @@
 #notification {
   z-index: 999999;
-  width: 100%;
-  /* padding: 1.75rem; */
   display: flex;
   position: fixed;
   align-items: flex-end;
   flex-direction: column-reverse;
-  top: 20px;
-  right: 20px;
-  width: fit-content;
+  right: 0;
+  width: 350px;
+  margin: 20px;
 }
 
 .notice {
