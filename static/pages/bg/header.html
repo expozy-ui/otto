@@ -28,7 +28,7 @@
 
                                 <li class="flex py-6">
                                     <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                        <img :src="product.images[0] ? product.images[0].image : data.settings.logo" @click="forceChange(product.url)" class="h-full w-full object-cover object-center cursor-pointer">
+                                        <img :src="product.images[0] ? product.images[0].url : data.settings.logo" @click="forceChange(product.url)" class="h-full w-full object-cover object-center cursor-pointer">
                                         <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
                                     </div>
 
@@ -160,7 +160,7 @@
                                         <li class="flex py-6 px-3">
                                             <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
 
-                                                <img :src="product.images[0]? product.images[0].image : data.settings.logo" @click="openSearchBar = false ; forceChange(product.url)" class="h-full w-full object-cover object-center cursor-pointer">
+                                                <img :src="product.images[0]? product.images[0].url : data.settings.logo" @click="openSearchBar = false ; forceChange(product.url)" class="h-full w-full object-cover object-center cursor-pointer">
                                                 <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
 
                                             </div>

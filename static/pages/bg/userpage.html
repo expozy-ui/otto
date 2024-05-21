@@ -251,7 +251,7 @@
                                                     <div class="" :data-id="'cartProduct-'+product.id">
                                                         <div class="p-2 flex  bg-white dark:bg-gray-950 rounded-[15px] mt-[15px] shadow md:h-[120px]">
 
-                                                            <img :src="product.images[0] ? product.images[0].image : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain max-h-[150px] md:max-h-unset">
+                                                            <img :src="product.images[0] ? product.images[0].url : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain max-h-[150px] md:max-h-unset">
 
                                                             <div class="md:pl-10 pt-1 grow">
                                                                 <h1 @click="forceChange(product.url)" class="text-[15px] text-neutral-800 font-bold hover:text-orange-400 dark:text-gray-200" x-text="product.title">ЛУК СУХ КГ</h1>
@@ -462,7 +462,7 @@
                             <template x-for="product in order.products">
                                 <div class="grid grid-cols-5 h-fit shadow-2xl py-3 mb-2 px-3 bg-white dark:bg-gray-950 rounded-[15px]">
                                     <div class="w-full h-[200px] col-span-2">
-                                        <img :src="product.images[0] ? product.images[0].image : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain w-full h-full">
+                                        <img :src="product.images[0] ? product.images[0].url : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain w-full h-full">
                                     </div>
                                     <div class="col-span-3">
                                         <div class="flex justify-between w-full py-2  ">
@@ -530,7 +530,7 @@
                             <template x-for="product in order.products">
                                 <div class="grid grid-cols-5 h-fit shadow-2xl py-3 mb-2 px-3 bg-white dark:bg-gray-950 rounded-[15px]">
                                     <div class="w-full h-[200px] col-span-2">
-                                        <img :src="product.images[0] ? product.images[0].image : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain w-full h-full">
+                                        <img :src="product.images[0] ? product.images[0].url : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain w-full h-full">
                                     </div>
                                     <div class="col-span-3">
                                         <div class="flex justify-between w-full py-2  ">

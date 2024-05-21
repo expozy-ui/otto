@@ -478,7 +478,7 @@
 
                                 <div class="flex items-center shrink-0">
                                     <button type="button" @click="alpineListeners('Shop.delete_carts', $event)" keyname="cart" :data-id="product.id" class="font-medium text-slate-600 hover:text-indigo-500 px-3"><i class="fa-solid fa-xmark"></i></button>
-                                    <img :src="product.images[0] ? product.images[0].image_10x10 : data.settings.logo" alt="" class="object-cover w-[100px] h-[100px] object-cover">
+                                    <img :src="product.images[0] ? product.images[0].url_10x10 : data.settings.logo" alt="" class="object-cover w-[100px] h-[100px] object-cover">
                                 </div>
 
                                 <div class=" flex flex-col justify-around lg:max-w-[50%] grow w-full">

@@ -123,7 +123,7 @@ class Page
 			$this->seo_title = $row['seo_title'] ?? '';
 			$this->seo_description =  $row['seo_description'] ?? '';
 			$this->seo_tags = $row['seo_tags'] ?? '';
-			$this->seo_image =  $core->web['logo'];
+			$this->seo_image =  $core->web['logo']??'';
 			$this->private = $row['private'] ?? false;
 			//for editor
 			if(isset($row['slug']))	$this->slug = $row['slug'];

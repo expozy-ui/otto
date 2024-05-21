@@ -21,9 +21,9 @@
                         <div class="lg:w-[200px]">
                             <div class="flex flex-wrap gap-1 md:grid md:grid-cols-2">
                                 <template x-for="(image, index) in data.product.images" key="index">
-                                    <button @click="mainImage = image.image" type="button" class="flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg border-2 border-neutral-300 text-center">
+                                    <button @click="mainImage = image.url" type="button" class="flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg border-2 border-neutral-300 text-center">
 
-                                        <img class="h-full w-full object-cover" :src="image.image">
+                                        <img class="h-full w-full object-cover" :src="image.url">
                                         <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
                                     </button>
                                 </template>
@@ -283,7 +283,7 @@
                                     </div>
 
                                     <div class="lg:p-10 hover:p-0 h-[300px]  bg-white">
-                                        <img :src="product.images[0] ? product.images[0].image : data.settings.logo" @click="forceChange(product.url)" alt="" class="!m-0 w-full h-full object-scale-down cursor-pointer">
+                                        <img :src="product.images[0] ? product.images[0].url : data.settings.logo" @click="forceChange(product.url)" alt="" class="!m-0 w-full h-full object-scale-down cursor-pointer">
                                         <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
                                     </div>
 
@@ -378,7 +378,7 @@
                                     </div>
 
                                     <div class="lg:p-10 hover:p-0 h-[300px]  bg-white">
-                                        <img :src="product.images[0] ? product.images[0].image : data.settings.logo" @click="forceChange(product.url)" alt="" class="!m-0 w-full h-full object-scale-down cursor-pointer">
+                                        <img :src="product.images[0] ? product.images[0].url : data.settings.logo" @click="forceChange(product.url)" alt="" class="!m-0 w-full h-full object-scale-down cursor-pointer">
                                         <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
                                     </div>
 
