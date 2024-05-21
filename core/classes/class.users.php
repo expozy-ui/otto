@@ -8,7 +8,7 @@ class Users
 {
 
 	public $logged_in = null;
-	public $uid = 0;
+	public $id = 0;
 	public $sesid;
 	public $email;
 	public $names;
@@ -45,7 +45,7 @@ class Users
 		if(isset($_SESSION['email']) && $_SESSION['email'] != "") {
 			$row = $this->get_user_info($_SESSION['email']);
 
-			$this->uid = $row['id'];
+			$this->id = $row['id'];
 			$this->email = $row['email'];
 			$this->names = $row['first_name'] . ' ' . $row['last_name'];
 			$this->first_name = $row['first_name'];
@@ -63,7 +63,7 @@ class Users
 		} else {
 			if(isset($_COOKIE['email'])){
 				$row = $this->get_user_info($_COOKIE['email']);
-				$this->uid = $_SESSION['uid'] = $row['id'];
+				$this->id = $_SESSION['uid'] = $row['id'];
 				$this->email = $_SESSION['email'] = $row['email'];
 				$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 				$this->balance = $_SESSION['balance'] = $row['balance'];
@@ -99,7 +99,7 @@ class Users
 
 			if(post('remember')){
 
-				$this->uid = $_SESSION['uid'] = $row['id'];
+				$this->id = $_SESSION['uid'] = $row['id'];
 				$this->email = $_SESSION['email'] = $row['email'];
 				$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 				$this->balance = $_SESSION['balance'] = $row['balance'];
@@ -111,7 +111,7 @@ class Users
 				setcookie('email', ($_SESSION['email']), time() + (86400 * 30));
 			}else{
 
-				$this->uid = $_SESSION['uid'] = $row['id'];
+				$this->id = $_SESSION['uid'] = $row['id'];
 				$this->email = $_SESSION['email'] = $row['email'];
 				$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 				$this->balance = $_SESSION['balance'] = $row['balance'];
@@ -161,7 +161,7 @@ class Users
 		if(!$row || is_array($row) == false) return;
 
 		$this->logged_in = true;
-		$this->uid = $_SESSION['uid'] = $row['id'];
+		$this->id = $_SESSION['uid'] = $row['id'];
 		$this->email = $_SESSION['email'] = $row['email'];
 		$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 		$this->balance = $_SESSION['balance'] = $row['balance'];
