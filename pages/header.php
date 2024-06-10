@@ -50,7 +50,8 @@
 			const URL_PARAMETERS = <?php unset($_GET['query_id']); echo json_encode($_GET) ?>;
 			const SITENAME = <?php echo json_encode($core->site_name) ?>;
 			const JS_VERSION = <?php echo JS_VERSION; ?>;
-			const PAGEINIT = {id: <?= $page->id?>, target_id: <?= $page->target_id; ?>  };
+			const PAGEINIT = {id: <?php echo $page->id?>, target_id: <?php echo $page->target_id; ?>  };
+			const REFERRAL = "<?php echo $_SESSION['referral'] ?? '' ?>";
 		</script>
 
 

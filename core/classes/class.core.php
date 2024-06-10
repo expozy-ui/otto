@@ -30,6 +30,7 @@ class FrontCore
 		$rows = Api::cache(false)->get()->settings();
 
 		if(is_array($rows) === false ){
+			//die($rows);
 			//die('END maintenance');
 			redirect_to('/maintenance');
 		}

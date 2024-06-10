@@ -7,14 +7,14 @@ if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed
 class Users
 {
 
+	public int $id = 0;
+	public string $sesid = '';
+	public string $email = '';
+	public string $names = '';
+	public int $userlevel = 0;
+	public string $token = '';
 	public $logged_in = null;
-	public $id = 0;
-	public $sesid;
-	public $email;
-	public $names;
-	public $userlevel = 0;
-	public $token;
-
+	
 	const LEVEL_ADMIN = 99;
 
 	function __construct()
@@ -35,6 +35,11 @@ class Users
 			$this->sesid = sha1(session_id());
 			$this->userlevel = 0;
 			$this->addresses ='';
+		}
+		
+		
+		if(get('referral')){
+			$_SESSION['referral'] = substr(get('referral'),0,20);
 		}
 	}
 

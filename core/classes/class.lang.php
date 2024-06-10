@@ -7,8 +7,8 @@ if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed
 class Lang
 {
 
-	public $language;
-	public $langlist;
+	public string $language = 'en';
+	public array $langlist = [];
 
 	const DEF_LANG = 'bg';
 

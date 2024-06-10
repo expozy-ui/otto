@@ -1,7 +1,7 @@
 <?php
 define( "_VALID_PHP", true);
 
-require_once( "../../core/autoload.php");
+require_once( "../core/autoload.php");
 
 
 $order_id = $_GET["order_id"];
@@ -16,10 +16,7 @@ $row = array(
 
 $result = Api::data($row)->post()->payment_confirm();
 
-
-if($result['status'] === 1){
+if($result['redirect'] === 1){
     header('Location: '.$result['redirect']);
-}else{
-    header('Location: /'.$lang.'/ordererror'); 
 }
 
