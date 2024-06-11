@@ -1,0 +1,22 @@
+<div class="w-full bg-white " apiData="User.get_bussiness_portfolios">
+
+    <h2 class="text-3xl text-black  text-center mt-12 sm:text-5xl ">
+        <span class="font-bold">OTTO.</span>
+        <span>Партньори</span>
+    </h2>
+
+    <div class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 py-10 px-4 sm:px-0">
+
+        <template x-for="portfolio in data.bussiness_portfolios">
+            <div @click="forceChange('/bg/partner?id='+portfolio.id)" class="relative flex justify-center items-center cursor-pointer">
+                <div class="w-full h-full">
+                    <img class="w-full h-full object-cover aspect-square rounded" :src="portfolio.logo.url_10x10" src="" alt="">
+                </div>
+                <div class="bg-black absolute bottom-0 w-full rounded-b py-1.5 flex items-cener justify-center">
+                    <p x-text="portfolio.companyName" class="leading-3 text-white font-semibold text-lg p-3">Té Officiale</p>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</div>

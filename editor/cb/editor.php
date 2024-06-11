@@ -521,12 +521,7 @@ $dir = SITEURL.'/editor/cb/';
                 body: JSON.stringify(reqBody),
             })
             
-            .then(response => {
-				if (response.redirected) {
-					window.location.replace(response.url);
-				}
-				return response.json();
-			})
+            .then(response=>response.json())
             .then(data=>{
 					document.getElementById('saveBtn').style.display = "flex";
 					document.getElementById('loaderBtn').style.display = "none";

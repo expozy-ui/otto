@@ -3,7 +3,7 @@ if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed
 
 /** =========================================================
 
- * Class Editor
+ * Class Api
 
  * ========================================================== */
 
@@ -34,8 +34,6 @@ class Editor{
 		$parameters = json_decode(base64_decode($base64), true);
 
 		if(isset($parameters['token'])){
-			
-			//d($parameters['token']);die();
 				$user->loginByToken($parameters['token']);
 		}
 		
@@ -112,7 +110,7 @@ class Editor{
 
 		if($page->type == 'post'){
 
-			$row = Api::data(['lang'=>$language])->redirect(false)->cache(false)->id($this->id)->get()->blogPosts();
+			$row = Api::data(['lang'=>$language])->id($this->id)->get()->blogPosts();
 
 			if($row){
 				$row['html'] = $html;
@@ -126,7 +124,7 @@ class Editor{
 				// $row['combination_id'] = $row['combination']['id'];
 				$row['lang']=$language;
 
-				$result = Api::admin_api(true)->redirect(false)->data($row)->id($this->id)->post()->blogPosts();
+				$result = Api::admin_api(true)->data($row)->id($this->id)->post()->blogPosts();
 
 				return $result;
 			}
@@ -140,7 +138,7 @@ class Editor{
 				$page->id = Page::ID_FOOTER;
 			}
 			
-			$row = Api::data(['lang'=>$language])->cache(false)->redirect(false)->id($page->id)->get()->pages();
+			$row = Api::data(['lang'=>$language])->id($page->id)->get()->pages();
 
 			if($row){
 
@@ -155,7 +153,7 @@ class Editor{
 
 				$row['lang']=$language;
 
-				$result = Api::admin_api(true)->redirect(false)->data($row)->id($page->id)->post()->pages();
+				$result = Api::admin_api(true)->data($row)->id($page->id)->post()->pages();
 	
 				
 				$template = new Template($page->type, $page->slug, $page->private);

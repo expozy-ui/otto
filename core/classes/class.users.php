@@ -7,14 +7,16 @@ if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed
 class Users
 {
 
-	public int $id = 0;
-	public string $sesid = '';
-	public string $email = '';
-	public string $names = '';
-	public int $userlevel = 0;
-	public string $token = '';
 	public $logged_in = null;
-	
+	public $uid = 0;
+	public $sesid;
+	public $email;
+	public $names;
+	public $userlevel = 0;
+	public $token;
+	public $type;
+	public $artistData;
+
 	const LEVEL_ADMIN = 99;
 
 	function __construct()
@@ -36,11 +38,6 @@ class Users
 			$this->userlevel = 0;
 			$this->addresses ='';
 		}
-		
-		
-		if(get('referral')){
-			$_SESSION['referral'] = substr(get('referral'),0,20);
-		}
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -49,7 +46,8 @@ class Users
 
 		if(isset($_SESSION['email']) && $_SESSION['email'] != "") {
 			$row = $this->get_user_info($_SESSION['email']);
-
+		
+			$this->uid = $row['id'];
 			$this->id = $row['id'];
 			$this->email = $row['email'];
 			$this->names = $row['first_name'] . ' ' . $row['last_name'];
@@ -64,11 +62,17 @@ class Users
 
 			$this->addresses = $row['addresses'];
 			$this->company = $row['company'];
+			$this->type = $row['type'];
+			$this->artistData = $row['artistData'];
+			$this->active_membership = $row['active_membership'];
+
+
+			
 			return true;
 		} else {
 			if(isset($_COOKIE['email'])){
 				$row = $this->get_user_info($_COOKIE['email']);
-				$this->id = $_SESSION['uid'] = $row['id'];
+				$this->uid = $_SESSION['uid'] = $row['id'];
 				$this->email = $_SESSION['email'] = $row['email'];
 				$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 				$this->balance = $_SESSION['balance'] = $row['balance'];
@@ -104,7 +108,7 @@ class Users
 
 			if(post('remember')){
 
-				$this->id = $_SESSION['uid'] = $row['id'];
+				$this->uid = $_SESSION['uid'] = $row['id'];
 				$this->email = $_SESSION['email'] = $row['email'];
 				$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 				$this->balance = $_SESSION['balance'] = $row['balance'];
@@ -116,7 +120,7 @@ class Users
 				setcookie('email', ($_SESSION['email']), time() + (86400 * 30));
 			}else{
 
-				$this->id = $_SESSION['uid'] = $row['id'];
+				$this->uid = $_SESSION['uid'] = $row['id'];
 				$this->email = $_SESSION['email'] = $row['email'];
 				$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 				$this->balance = $_SESSION['balance'] = $row['balance'];
@@ -163,10 +167,10 @@ class Users
 
 		$row = Api::get()->users();
 
-		if(!$row || is_array($row) == false) return;
+		if(!$row) return;
 
 		$this->logged_in = true;
-		$this->id = $_SESSION['uid'] = $row['id'];
+		$this->uid = $_SESSION['uid'] = $row['id'];
 		$this->email = $_SESSION['email'] = $row['email'];
 		$this->names = $_SESSION['names'] = $row['first_name'] . ' ' . $row['last_name'];
 		$this->balance = $_SESSION['balance'] = $row['balance'];

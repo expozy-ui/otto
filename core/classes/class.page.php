@@ -2,7 +2,7 @@
 if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed.'); }
 
 /** =========================================================
- * Class Page
+ * Class Core
  * ========================================================== */
 class Page
 {
@@ -123,7 +123,7 @@ class Page
 			$this->seo_title = $row['seo_title'] ?? '';
 			$this->seo_description =  $row['seo_description'] ?? '';
 			$this->seo_tags = $row['seo_tags'] ?? '';
-			$this->seo_image =  $core->web['logo']??'';
+			$this->seo_image =  $core->web['logo'];
 			$this->private = $row['private'] ?? false;
 			//for editor
 			if(isset($row['slug']))	$this->slug = $row['slug'];
@@ -159,36 +159,25 @@ class Page
 					$this->id = 16;
 					$target = Api::cache($cache)->id($this->target_id)->data(['resolution' => '10x10'])->get()->blogPosts();
 					
-					if($this->target_id > 0){
-						$this->seo_title = !empty(trim($target['seo_title'])) ? $target['seo_title'] : $target['title'];
-						$this->seo_description = !empty(trim($target['seo_description'])) ? $target['seo_description'] : $target['title']." ".$core->site_name;
-						$this->seo_image = $target['images'][0]['url'] ?? $core->web['logo'];
-						$this->seo_tags = $target['tags'] ?? $this->seo_title;
-						$this->error404 = $target ? false : true;
-					} else {
-						$this->error404 = true;
-					}
-					
+					$this->seo_title = !empty(trim($target['seo_title'])) ? $target['seo_title'] : $target['title'];
+					$this->seo_description = !empty(trim($target['seo_description'])) ? $target['seo_description'] : $target['title']." ".$core->site_name;
+					$this->seo_image = $target['images'][0]['url'] ?? $core->web['logo'];
+					$this->seo_tags = $target['tags'] ?? $this->seo_title;
+					$this->error404 = $target ? false : true;
 					
 					//var_dump( $target['seo_title']);die();
 
 			} else if($this->type == 'product'){
 					$this->id = 13;
 					$target = Api::cache($cache)->id($this->target_id)->data(['resolution' => '10x10'])->get()->products();
-					if(!empty($target) && $this->target_id > 0){
-						$this->seo_title = !empty(trim($target['seo_title'])) ? $target['seo_title'] : $target['title'];
-						$this->seo_description = !empty(trim($target['seo_description'])) ? $target['seo_description'] : $target['title']." ".$core->site_name;
-						$this->seo_image = $target['images'][0]['image'] ?? $core->web['logo'];
-						$this->seo_tags = $target['seo_tags'] ?? $this->seo_title;
-					}
-					
-					$this->error404 = $target ? false : true;
-					if($this->target_id <= 0){
-						$this->error404 = true;
-					}
 				
+					$this->seo_title = !empty(trim($target['seo_title'])) ? $target['seo_title'] : $target['title'];
+					$this->seo_description = !empty(trim($target['seo_description'])) ? $target['seo_description'] : $target['title']." ".$core->site_name;
+					$this->seo_image = $target['images'][0]['image'] ?? $core->web['logo'];
+					$this->seo_tags = $target['seo_tags'] ?? $this->seo_title;
+					$this->error404 = $target ? false : true;
 					
-			}  else if($this->type == 'index' ){
+			}  else if($this->type == 'index'){
 				
 				if($this->slug=='products'){
 						$target = Api::cache($cache)->id($this->target_id)->data(['resolution' => '10x10'])->get()->categories();
@@ -199,7 +188,7 @@ class Page
 						$this->seo_tags = $this->seo_title;
 						$this->error404 = $target ? false : true;
 				}
-				if($this->slug=='blog' ){
+				if($this->slug=='blog'){
 						$target = Api::cache($cache)->id($this->target_id)->data(['resolution' => '10x10'])->get()->blogCategories();
 												
 						$this->seo_title = $target['title']??'';

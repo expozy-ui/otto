@@ -5,7 +5,7 @@
 
 export const lang = LANG;
 let warehouse_id = 1;
-export const currency = localStorage.getItem('currency');
+export const currency = localStorage.getItem('currency') != null ? localStorage.getItem('currency') : 'BGN';
 
 
 
@@ -19,14 +19,7 @@ export class ApiClass {
 
 		let conn;
 		let tmp = endpoint.split('?');
-		let url;
-		if (currency != undefined) {
-			url = COREURL + tmp[0] + '?lang=' + lang + '&currency=' + currency;
-		} else {
-			url = COREURL + tmp[0] + '?lang=' + lang;
-		}
-
-
+		let url = COREURL + tmp[0] + '?lang=' + lang + '&currency=' + currency;
 		if (tmp[1] !== undefined) {
 			url += '&' + tmp[1];
 		}
@@ -38,7 +31,7 @@ export class ApiClass {
 
 		const data = await cacheGet(url);
 
-		//debugger;
+		//
 		if (cachable === true && typeof data === 'object' && data !== null && Object.keys(data).length > 0) {
 
 
@@ -118,6 +111,7 @@ export class ApiClass {
 	}
 
 	post(endpoint, data) {
+
 		this.response = null;
 		this.statusCode = null;
 
@@ -127,32 +121,36 @@ export class ApiClass {
 		if (tmp[1] !== undefined) {
 			url += '&' + tmp[1];
 		}
+
 		// data['warehouse_id'] = warehouse_id;
 		var sesid = /SESS\w*ID=([^;]+)/i.test(document.cookie) ? RegExp.$1 : false;
 
 		var formData = new FormData;
+
 		if (data instanceof FormData) {
 			formData = data;
 		} else if (typeof data === 'object') {
 			for (var key in data) {
-
-
 				if (Array.isArray(data[key])) {
 					if (data[key][0].constructor.name === 'File') {
 						for (const file of data[key]) {
-							formData.append(key + '[]', file);
+							formData.append(key, file);
+						}
+					} else {
+						for (const el of data[key]) {
+							formData.append(key, el);
 						}
 					}
 				} else {
-
 					formData.append(key, data[key]);
 				}
-
 			}
 		} else {
 			formData = JSON.stringify(data);
 			headers['Content-Type'] = 'application/json';
 		}
+
+
 
 		const conn = fetch(url, {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -204,7 +202,7 @@ export class ApiClass {
 				if (Array.isArray(data[key])) {
 					if (data[key][0].constructor.name === 'File') {
 						for (const file of data[key]) {
-							formData.append(key + '[]', file);
+							formData.append(key, file);
 						}
 					}
 				} else {

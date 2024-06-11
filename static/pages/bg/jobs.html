@@ -1,0 +1,83 @@
+<div class="container px-2 max-w-[900px] mt-5" apiData="Ads.get_ads" keyname="ads" :data-type="data.pageUrl.type">
+    <!-- <div x-init="data.pageUrl.type == undefined ? data.pageUrl.type = 'all' : '' "></div> -->
+    <div>
+        <template x-if="!data.pageUrl.type ">
+            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+                <span class="font-bold">OTTO.</span>
+                <span>Обяви</span>
+            </h2>
+        </template>
+        <template x-if="data.pageUrl.type == 1">
+            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+                <span class="font-bold">OTTO.</span>
+                <span>Кастинги</span>
+            </h2>
+        </template>
+        <template x-if="data.pageUrl.type == 2">
+            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+                <span class="font-bold">OTTO.</span>
+                <span>Бързи обяви</span>
+            </h2>
+        </template>
+        <template x-if="data.pageUrl.type == 3">
+            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+                <span class="font-bold">OTTO.</span>
+                <span>Събития</span>
+            </h2>
+        </template>
+
+        <p class="max-w-3xl mx-auto mt-4 text-sm lg:text-xl text-center ">Искате бързо и лесно да регистрирайте обява? </p>
+        <div class="w-full flex justify-center py-5 lg:mb-20">
+
+            <template x-if="data.user.userlevel != 2 && data.user.logged_in">
+                <p @click="data.needPlan = true" class=" max-w-[240px] bg-gray-50 border-gray-50 border hover:bg-black hover:text-gray-50 cursor-pointer transition rounded-lg w-full text-black py-2.5 text-center mt-5 text-xs lg:text-base">Регистрирайте обява</p>
+            </template>
+            <template x-if="!data.user.logged_in">
+                <p @click="data.openLogin = true" class=" max-w-[240px] bg-gray-50 border-gray-50 border hover:bg-black hover:text-gray-50 cursor-pointer transition rounded-lg w-full text-black py-2.5 text-center mt-5 text-xs lg:text-base">Регистрирайте обява</p>
+            </template>
+            <template x-if="data.user.userlevel == 2 && !data.user.active_membership">
+                <p @click="forceChange('/bg/userpage?tab=postAd')" class=" max-w-[240px] bg-gray-50 border-gray-50 border hover:bg-black hover:text-gray-50 cursor-pointer transition rounded-lg w-full text-black py-2.5 text-center mt-5 text-xs lg:text-base">Регистрирайте обява</p>
+            </template>
+            <template x-if="data.user.userlevel == 2 && data.user.active_membership">
+                <p @click="forceChange('/bg/userpage?tab=postAd')" class=" max-w-[240px] bg-gray-50 border-gray-50 border hover:bg-black hover:text-gray-50 cursor-pointer transition rounded-lg w-full text-black py-2.5 text-center mt-5 text-xs lg:text-base">Регистрирайте обява</p>
+            </template>
+
+        </div>
+
+    </div>
+
+    <template x-for="ad in data.ads.result">
+        <div class="h-[150px] flex  mt-2">
+
+            <div @click="forceChange('/bg/job?id='+ad.id)" class="cursor-pointer h-full  w-full mx-auto bg-white  grow ">
+                <div class="w-full p-5">
+                    <p x-text="ad.title" class="font-bold text-black text-sm lg:text-base leading-none ">Application type:</p>
+
+                    <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-3 mt-1">
+                        <template x-for="field in ad.fields">
+                            <template x-if="field.value != '' && field.type != 'file' ">
+
+                                <div>
+                                    <p x-text="field.title" class="text-gray-800 text-xs">Ad type:</p>
+                                    <p x-text="field.value" class="font-bold text-black text-xs">Job application</p>
+                                </div>
+                            </template>
+                        </template>
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="flex items-center justify-center h-full col-span-2 lg:col-span-1">
+                    <div class="h-full w-full aspect-square">
+
+                    </div>
+                    </div> -->
+
+            </div>
+            <img class="h-full aspect-square  object-scale-down bg-white p-4" :src="ad.images[0] ? ad.images[0].url : ad.user_info.avatar.url " src="">
+
+        </div>
+    </template>
+
+</div>

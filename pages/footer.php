@@ -19,6 +19,7 @@
 
 <script type="module" src="\components\core\autoload.js?v=<?php echo JS_VERSION ?>" ></script>
 
+
 <script type="module" src="\assets\plugins\alpinejs\alpine.js?v=<?php echo JS_VERSION ?>"></script>
 
 
@@ -39,5 +40,10 @@
 <script type="module" src="\components\core\classes\link.js?v=<?php echo JS_VERSION ?>"></script>
 
 <?= $core->web['scripts']['footer'] ?? '' ?>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 
 </html>

@@ -37,7 +37,7 @@ export let Blog = {
 			response['obj'].chnageurl = true;
 
 			endpoint = endpoint.replace(response.keyName, "");
-			history.replaceState(null, null, endpoint);
+			history.pushState(null, null, endpoint);
 		}
 
 		if ('scroll' in options) {

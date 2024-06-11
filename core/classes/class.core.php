@@ -2,7 +2,7 @@
 if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed.'); }
 
 /** =========================================================
- * Class FrontCore
+ * Class Core
  * ========================================================== */
 class FrontCore
 {
@@ -11,10 +11,17 @@ class FrontCore
 
 	function __construct()
 	{
+
 		$this->get_settings();
 		$this->get_id();
 
 	}
+
+
+
+
+
+	////////////////////////////////////////////////////////////////
 
 
 	/** =========================================================
@@ -28,11 +35,10 @@ class FrontCore
 		//$current_url = 'https://' . $current_url['host'];
 
 		$rows = Api::cache(false)->get()->settings();
-
+	
 		if(is_array($rows) === false ){
-			//die($rows);
 			//die('END maintenance');
-			redirect_to('/maintenance');
+			// redirect_to('/maintenance');
 		}
 
 		$this->site_id = $rows['id']?? 1;
@@ -54,6 +60,7 @@ class FrontCore
 
 	public function get_web(){
 		$this->web = Api::get()->settings_web();
+		
 	}
 
 

@@ -1,0 +1,125 @@
+<div class="mt-5">
+    <h2 class="text-base   text-center mt-12 md:text-5xl ">
+        <span class="font-bold">OTTO.</span>
+        <span>Бизнес портфолио</span>
+    </h2>
+</div>
+
+<div class="is-section text-white lg:!mt-20 is-section-auto" apiData="User.get_bussiness_portfolios" keyName="bPortfolio" :data-id="data.pageUrl.id">
+    <div class="is-overlay"></div>
+    <div class="is-container v2 container w-full lg:!w-2/3 mx-auto">
+
+        <div class="grid grid-cols-1 md:grid-cols-6 ">
+            <div class="col-span-2 max-w-[200px] lg:max-w-full mx-auto">
+                <template x-if="data.bPortfolio.logo.url">
+                    <img :src="data.bPortfolio.logo.url" class="w-full aspect-square object-cover   " alt="">
+                </template>
+
+            </div>
+            <div class="col-span-4">
+                <div class=" md:pl-10 mt-4 lg:mt-0">
+                    <div>
+                        <p x-text="data.bPortfolio.companyName" class="text-sm lg:text-3xl ">Té Officiale</p>
+                        <p x-text="data.bPortfolio.companyDescription" class="lg:pt-8 text-xs text-justify lg:text-base border-b-2 border-gray-950 lg:pb-5 pt-2 pb-2 italic"></p>
+
+                    </div>
+                    <div class=" ">
+                        <div class="flex items-center gap-4 mt-3">
+                            <div>
+                                <p apidata="Countries.get_countries" keyname="countries" class="text-gray-300 text-xs lg:text-base">Страна на операция:</p>
+                                <p x-text=" data.bPortfolio.country.title" class="text-xs lg:text-base">Bulgaria</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-300 text-xs lg:text-base">Дейност на фирмата:</p>
+                                <p x-text="data.bPortfolio.business_activity" class="text-xs lg:text-base"></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <template x-if="data.bPortfolio.user_info.active_memberships">
+
+                        <div class="  lg:w-full mx-auto flex flex-wrap items-start justify-start gap-4 mt-5 ">
+
+                            <template x-if="data.bPortfolio.user_info.instagram != '' ">
+                                <a :href="data.bPortfolio.instagram" target="_blank" class="cursor-pointer">
+                                    <i class="fa-brands fa-instagram text-[22px] text-gray-50" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.bPortfolio.user_info.linkedin != '' ">
+                                <a :href="data.bPortfolio.user_info.linkedin" target="_blank" class="cursor-pointer">
+                                    <i class="fa-brands fa-linkedin text-[22px] text-gray-50" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.bPortfolio.user_info.tiktok != '' ">
+                                <a :href="data.bPortfolio.user_info.tiktok" target="_blank" class="cursor-pointer">
+                                    <i class="fa-brands fa-tiktok text-[22px] text-gray-50" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.bPortfolio.website != '' ">
+                                <a :href="data.bPortfolio.website" target="_blank" class="cursor-pointer">
+                                    <i class="fa-solid fa-globe text-[22px] text-gray-50" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.bPortfolio.other_link != '' ">
+                                <a :href="data.bPortfolio.other_link" target="_blank" class="cursor-pointer">
+                                    <i class="fa-solid fa-globe text-[22px] text-gray-50" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                        </div>
+
+                    </template>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="is-container v2 container w-full lg:!w-2/3 mx-auto py-10">
+    <template x-if="data.bPortfolio">
+        <div x-init="alpineListeners('Gallery.get_GalleryPosts', $el)" data-obj="bPortfolio" data-container="myMosaic"></div>
+    </template>
+
+    <div class="gridC" id="myMosaic">
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<style>
+    .grid-item {
+        width: 50%;
+    }
+
+    @media (min-width: 1024px) {
+        .grid-item {
+            width: 33%;
+        }
+    }
+</style>
+<script>
+    function loadWall() {
+
+        var elem = document.querySelector('.gridC');
+        var msnry = new Masonry(elem, {
+            // set itemSelector so .grid-sizer is not used in layout
+            itemSelector: '.grid-item',
+            fitWidth: true,
+            // use element for option
+
+            percentPosition: true
+        });
+
+    }
+    window.loadWall = loadWall;
+    // loadWall();
+
+</script>

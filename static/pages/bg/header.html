@@ -1,399 +1,495 @@
-<div x-show="data.openCart" x-transition="" class="is-section fixed inset-y-0 right-0   w-full  lg:!w-[400px]   z-50 lock" x-cloak="" apidata="Shop.get_cart" @click.outside="data.openCart = false">
-    <div class="flex h-full flex-col  bg-white shadow-xl  dark:!bg-gray-950">
-        <div class="flex-1  px-4 py-6 sm:px-6 w-full lg:!w-[400px] overflow-y-auto">
-            <div class="flex items-start justify-between">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200" id="slide-over-title">Количка</h2>
-                <div class="ml-3 flex h-7 items-center">
-                    <button type="button" class="-m-2 p-2 text-gray-400 hover:text-gray-500" @click="data.openCart = false">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
+<div class="is-section is-section-auto   ">
+    <div class=" z-20 px-0">
+        <div class="grid grid-cols-5 py-3 container ">
+            <div class=" gap-2 justify-end items-center hidden md:flex">
+
+                <div class="flex gap-3 items-center justify-center   hover:bg-black hover:text-white  transition rounded w-fit text-white h-[45px] min-w-[60px] py-2.5 text-center cursor-pointer">
+                    <i class="fa-solid fa-globe text-[22px]"></i>
+                    <p class="text-lg tracking-widestst">BG</p>
                 </div>
+
             </div>
 
-            <div class="mt-8">
-                <div class="flow-root">
+            <div class="col-span-5 md:col-span-3 flex items-center justify-center flex-col cursor-pointer">
+                <!-- <p class="text-8xl font-bold">OTTO.</p> -->
+                <video @click="forceChange('/bg/')" class="w-[180px] lg:w-[230px]" autoplay muted loop playsInline preload='auto' controlslist="nodownload">
+                    <source src="/editor/cb/assets/templates-simple/videos/file.mp4" type="video/mp4">
+                </video>
+                <!-- <img @click="forceChange('/bg/')" src="/editor/cb/assets/templates-simple/videos/file2.gif" alt="" class="w-[180px] lg:w-[230px]"> -->
 
-                    <ul role="list" class="-my-6 divide-y divide-gray-200">
-                        <template x-if="data.cart.total == 0">
-                            <li class="h-[300px] flex justify-center items-center">
-                                <p class="mt-1 text-lg  text-center text-gray-500">Количката ви е празна</p>
-                            </li>
+                <p @click="forceChange('/bg/')" class="text-xs px-4 lg:px-0 lg:!text-[22px] text-center tracking-[0.3em] lg:tracking-[0.4em] mb-3">ПЛАТФОРМА ЗА АРТИСТИ И БИЗНЕСИ</p>
+            </div>
+
+            <i :class="data.openMobileMenu ? 'fa-xmark fixed ' : 'fa-bars absolute' " class="fa-solid   block  top-12 right-10  md:!hidden text-[24px] z-50 cursor-pointer" @click="data.openMobileMenu =! data.openMobileMenu; data.modalOpen = ! data.modalOpen" aria-hidden="true"></i>
+
+            <div class=" gap-2 justify-end items-center hidden md:flex">
+
+                <template x-if="data.user.logged_in">
+                    <div @click="forceChange('/bg/userpage')" class="flex gap-3 items-center justify-center cursor-pointer bg-white border-white border hover:bg-black hover:text-white px-2 lg:!px-5  transition rounded-2xl  text-black py-1 lg:py-2.5 ">
+                        <i class="fa-solid fa-circle-user text-[22px]" aria-hidden="true"></i>
+                        <p class="text-sm lg:text-lg tracking-widestst" x-text="data.user.first_name">Вход</p>
+                    </div>
+                </template>
+
+                <template x-if="!data.user.logged_in">
+                    <div @click="data.openLogin = true" class="flex gap-3 items-center justify-center cursor-pointer bg-white border-white border hover:bg-black hover:text-white px-2 lg:!px-5  transition rounded-2xl  text-black py-1 lg:py-2.5 ">
+                        <i class="fa-solid fa-circle-user text-[22px]" aria-hidden="true"></i>
+                        <p class="text-sm lg:text-lg tracking-widestst">Вход</p>
+                    </div>
+                </template>
+
+                <div @click="data.openRegistration = true" class="flex gap-3 items-center justify-center cursor-pointer  border-white border hover:bg-white hover:text-black px-2 lg:!px-5  transition rounded-2xl  text-white py-1 lg:py-2.5 ">
+                    <!-- <i class="fa-solid fa-circle-user text-[22px]" aria-hidden="true"></i> -->
+                    <p class="text-sm lg:text-lg tracking-widestst">Регистрация</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- START NAVIGATION MENU  -->
+        <div x-data="{openCategory : 0}" apiData="Menu.get_menu" data-droplist="true" class="px-4   hidden md:block">
+            <ul class="flex md:flex-row flex-col justify-around gap-2 py-2">
+
+                <template x-for="menu in data.menu">
+                    <template x-if="menu.parent_id == 0">
+                        <div class="border-t grow">
+                            <template x-if="!menu.childrens">
+                                <li @click="forceChange(menu.link)" x-text="menu.title" class="font-normal text-center py-1 text-sm  tracking-[0.2em] cursor-pointer">За нас</li>
+                            </template>
+
+                            <template x-if="menu.childrens">
+                                <div @mouseenter="openCategory = menu.id" @mouseleave="openCategory = 0" class="relative">
+                                    <li x-text="menu.title" class="font-normal text-center py-1 text-sm  tracking-[0.2em] cursor-pointer"> За нас</li>
+                                    <div x-show="openCategory == menu.id" class="absolute top-full left-1/2 -translate-x-1/2 w-full bg-black text-white shadow  z-10" x-transition:enter="transition ease-out duration-200 transform" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-out duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                        <ul class="">
+                                            <template x-for="(children,index) in menu.childrens" key="index">
+                                                <li x-text="children.title" @click="forceChange(children.link)" :class="index != 0 ? 'lg:border-t' : '' " class="font-normal text-sm  tracking-[0.2em] px-2 py-2.5 cursor-pointer  border-white  text-white hover:bg-white hover:text-black">За нас</li>
+                                            </template>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </div>
+                    </template>
+                </template>
+
+            </ul>
+        </div>
+        <!--  END NAVIGATION MENU  -->
+
+        <!-- MOBILE MENU -->
+        <div class="block fixed top-0 left-0 z-40 bg-black w-full h-full  overflow-y-auto " x-transition:enter.duration.500ms x-transition:leave.duration.200ms x-cloak x-show="data.openMobileMenu">
+
+            <div @click="forceChange('/bg/')" class="col-span-5 md:col-span-3 flex items-center justify-center py-3 flex-col cursor-pointer block border-b-2">
+
+                <!-- <img @click="forceChange('/bg/')" src="/editor/cb/assets/templates-simple/videos/file2.gif" alt="" class="w-[180px] lg:w-[230px]"> -->
+                <video @click="forceChange('/bg/')" class="w-[180px] lg:w-[230px]" autoplay muted loop playsInline preload='auto' controlslist="nodownload">
+                    <source src="/editor/cb/assets/templates-simple/videos/file.mp4" type="video/mp4">
+                </video>
+                <p class="text-xs px-4  text-center tracking-[0.3em]  mb-3">ПЛАТФОРМА ЗА АРТИСТИ И БИЗНЕСИ</p>
+            </div>
+
+            <div class="px-12 flex justify-between py-8 w-full ">
+                <template x-if="data.user.logged_in">
+                    <div @click="forceChange('/bg/userpage')" class="flex gap-3 mx-auto bg-white !text-black  !w-fit px-6  items-center justify-center cursor-pointer bg-black text-white  transition rounded w-fit text-black py-2 text-center w-full">
+                        <i class="fa-solid fa-circle-user text-[16px] lg:text-[22px]" aria-hidden="true"></i>
+                        <p class="text-sm lg:text-lg tracking-widestst" x-text="data.user.first_name">Вход</p>
+                    </div>
+                </template>
+
+                <template x-if="!data.user.logged_in">
+                    <div @click="data.openMobileMenu = false; data.openLogin = true" class="flex gap-3 mx-auto bg-white !text-black  !w-fit px-6   items-center justify-center cursor-pointer bg-black text-white  transition rounded w-fit text-black py-2 text-center w-full">
+                        <i class="fa-solid fa-circle-user text-[16px] lg:text-[22px]" aria-hidden="true"></i>
+                        <p class="text-sm lg:text-lg tracking-widestst">Вход</p>
+                    </div>
+                </template>
+
+            </div>
+
+            <div x-data="{openCategory : 0}" apiData="Menu.get_menu" data-droplist="true" class="px-12  ">
+                <ul class="flex md:flex-row flex-col justify-around pb-2 divide-y !divide-[#555555]">
+
+                    <template x-for="menu in data.menu">
+                        <template x-if="menu.parent_id == 0">
+                            <div class="lg:border-t grow py-2.5 ">
+                                <template x-if="!menu.childrens">
+                                    <li @click="forceChange(menu.link)" x-text="menu.title" class="font-normal px-2 py-1 text-sm lg:text-lg tracking-[0.2em] cursor-pointer">За нас</li>
+                                </template>
+
+                                <template x-if="menu.childrens">
+                                    <div class="relative ">
+                                        <li @click="openCategory == menu.id ? openCategory = 0 : openCategory = menu.id " class=" px-2 py-1 cursor-pointer flex justify-between items-center">
+                                            <!-- <div></div> -->
+                                            <span x-text="menu.title" class="font-normal  text-sm lg:text-lg tracking-[0.2em] "></span>
+                                            <i :class="openCategory == menu.id ? 'fa-chevron-up' : 'fa-chevron-down' " class="fa-solid  "></i>
+                                        </li>
+
+                                        <div x-show="openCategory == menu.id" class="bg-[#333333]  w-full  text-white" x-transition:enter="transition ease-out duration-200 transform" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-out duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                            <ul class="">
+                                                <template x-for="(children,index) in menu.childrens" key="index">
+                                                    <li x-text="children.title" @click="forceChange(children.link)" class="font-normal px-2 py-2  text-sm lg:text-lg tracking-[0.2em] text-left cursor-pointer border-t  border-[#555555]  text-white  ">За нас</li>
+                                                </template>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </template>
+
+                            </div>
+                        </template>
+                    </template>
+
+                    <li class="font-normal px-2 py-1 text-sm lg:text-lg tracking-[0.2em] cursor-pointer">
+                        <i class="fa-solid fa-globe text-[16px] py-2 lg:text-[22px]"></i>
+                        BG
+                    </li>
+
+                </ul>
+
+                <!-- <div class="flex gap-3 items-center  cursor-pointer bg-black text-white  transition rounded w-fit text-black py-2 text-center w-full">
+                    <i class="fa-solid fa-globe text-[16px] lg:text-[22px]"></i>
+                    <p class="text-sm lg:text-lg tracking-widestst">Bg</p>
+                </div> -->
+
+            </div>
+        </div>
+
+        <!-- END MOBILE MENU  -->
+
+    </div>
+</div>
+
+<!-- START REGISTRATION 1 / 3 MODAL -->
+<div x-show="data.openRegistration" x-cloak class=" backdrop-blur fixed block md:flex items-center top-0 left-0 w-full h-full z-50  bg-[#0000008a] overflow-scroll lg:overflow-hidden">
+
+    <template x-if="data.openRegistration">
+        <div x-init="data.modalOpen = true"></div>
+    </template>
+
+    <div class="flex flex-row justify-center w-full max-h-full h-full lg:!h-fit">
+        <div @mousedown.outside=" data.openRegistration=false; data.modalOpen = false" class=" w-[600px]   relative   ">
+            <p @click="data.openRegistration = false; data.modalOpen = false " class=" cursor-pointer text-white text-[24px] absolute  top-5 right-5"><i class="fa-solid fa-xmark"></i></p>
+
+            <div class="w-full bg-black lg:rounded-lg shadow lg:border h-full lg:!h-fit mt-10 lg:mt-0">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-base lg:text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-white">
+                        Регистрация
+                    </h1>
+                    <form class="grid grid-cols-2  gap-4" x-data="{type_profile: 1}">
+                        <input type="hidden" name="type" :value="type_profile">
+
+                        <div class="col-span-2 grid grid-cols-2 gap-4">
+                            <p @click="type_profile = 1" class="border px-4 py-2 rounded cursor-pointer text-sm lg:text-base " :class="type_profile == 1 ? 'text-black bg-white' : 'text-white bg-black' ">Личен профил</p>
+                            <p @click="type_profile = 2" class="border px-4 py-2 rounded cursor-pointer text-sm lg:text-base " :class="type_profile == 2 ? 'text-black bg-white' : 'text-white bg-black' ">Бизнес профил</p>
+                        </div>
+
+                        <template x-if="type_profile == 2">
+                            <div class="col-span-2">
+                                <label for="companyName" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Имe на компанията</label>
+                                <input type="text" name="companyName" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400" required="">
+                            </div>
                         </template>
 
                         <div>
-
-                            <template x-for="(product,index) in data.cart.products" key="index">
-
-                                <li class="flex py-6">
-                                    <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                        <img :src="product.images[0] ? product.images[0].url : data.settings.logo" @click="forceChange(product.url)" class="h-full w-full object-cover object-center cursor-pointer">
-                                        <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
-                                    </div>
-
-                                    <div class="ml-4 flex flex-1 flex-col">
-                                        <div>
-
-                                            <p class="mt-1 text-sm text-gray-500 line-clamp-3 cursor-pointer hover:text-orange-400" @click="forceChange(product.url)" :title="product.title" x-text="product.title">Salmon</p>
-                                        </div>
-
-                                        <form>
-                                            <input type="hidden" name="variation_id" :value="product.id" value="2503">
-                                            <div x-data="{quantity: product.quantity}" x-init="$watch('quantity', value => alpineListeners('Shop.put_carts', $el))">
-
-                                                <div class="flex w-fit items-center border border-neutral-300 dark:border-gray-900 rounded bg-neutral-200 dark:bg-gray-900">
-                                                    <button @click="if(product.quantity > 1){product.quantity--; quantity--; }" type="button" class="bg-white dark:bg-gray-900 dark:text-gray-200 rounded w-5 h-5 leading-10 text-gray-600 transition hover:opacity-75"> −</button>
-                                                    <input type="number" name="quantity" :value="product.quantity" class="h-5 w-10 dark:bg-gray-900 dark:text-gray-200 border-transparent text-center  sm:text-sm [-moz-appearance:_textfield] [&amp;::-webkit-outer-spin-button]:m-0 [&amp;::-webkit-outer-spin-button]:appearance-none [&amp;::-webkit-inner-spin-button]:m-0 [&amp;::-webkit-inner-spin-button]:appearance-none">
-                                                    <button @click="product.quantity++; quantity++; " type="button" class="bg-white dark:bg-gray-900 dark:text-gray-200 rounded w-5 h-5 leading-10 text-gray-600 transition hover:opacity-75"> +</button>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        <div class="flex flex-1 items-end justify-between text-sm">
-
-                                            <div class="flex">
-                                                <p x-text="product.quantity" class="text-slate-500"></p>
-                                                <p class="text-slate-500">x</p>
-                                                <p x-text="product.variation.selling_price" class="text-slate-500">$90.00</p>
-                                                <p x-text="product.variation.currency" class="text-slate-500"></p>
-                                            </div>
-                                            <div class="flex justify-between text-base font-medium text-gray-900">
-
-                                            </div>
-                                            <div class="flex">
-                                                <button type="button" @click="alpineListeners('Shop.delete_carts', $event)" keyname="cart" :data-id="product.id" class="font-medium text-slate-600 hover:text-indigo-500">Премахни</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                            </template>
-
+                            <label for="first_name" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Име</label>
+                            <input type="text" name="first_name" id="first_name" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400" required="">
                         </div>
 
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <template x-if="data.cart.products[0]">
-
-            <div class="border-t border-gray-200 px-4 lg:py-6 sm:px-6 py-2  lg:mb-0">
-                <div class="flex justify-between text-base font-medium text-gray-900">
-
-                    <template x-if="data.cart.promocode == 0">
-                        <form class="flex flex-col gap-3 lg:pb-5 lg:mb-5 w-full">
-                            <p class="hidden lg:block dark:text-gray-200">Въведи промокод</p>
-                            <div class="flex justify-between">
-                                <div class="">
-                                    <input type="text" name="promocode" value="" placeholder="Въведи промокод" class="block p-3 pl-10 w-full text-sm text-gray-900 bg-white  border border-gray-300 dark:bg-gray-900 dark:text-gray-200  focus:ring-primary-500 focus:border-primary-500 ">
-                                </div>
-                                <a @click="alpineListeners('Shop.post_promocode', $event)" keyname="cart" class="flex items-center justify-center  px-3 py-1 text-base bg-stone-900 dark:bg-gray-900 font-medium text-white shadow-sm hover:bg-stone-800 dark:hover:bg-gray-800 cursor-pointer">Приложи</a>
-                            </div>
-                        </form>
-                    </template>
-
-                    <template x-if="data.cart.promocode != 0">
-                        <form class="flex flex-col lg:gap-1 lg:pb-5 lg:mb-5 w-full dark:text-gray-200">
-                            <p>Промокод</p>
-                            <div class="flex justify-between">
-                                <p x-text="data.cart.promocode_info.promocode"></p>
-                                <a @click="alpineListeners('Shop.delete_promocode', $event)" keyname="cart" class="flex items-center justify-center  dark:text-gray-200 px-3 py-1 text-base bg-stone-900 dark:bg-gray-900 font-medium text-white shadow-sm hover:bg-stone-800 dark:hover:bg-gray-800 cursor-pointer">премахни</a>
-                            </div>
-
-                        </form>
-                    </template>
-                </div>
-
-                <div class="flex justify-between text-base font-medium text-gray-900 dark:text-gray-200">
-                    <p>Всички продукти </p>
-                    <p x-text="data.cart.subtotal_without_disc + ' ' + data.cart.products[0].variation.currency">262 лв.</p>
-                </div>
-                <div class="flex justify-between text-base font-medium text-gray-900 dark:text-gray-200">
-                    <p>Отстъпка</p>
-                    <p x-text="data.cart.discount + ' ' + data.cart.products[0].variation.currency">262 лв.</p>
-                </div>
-                <div class="flex justify-between text-base font-medium text-gray-900 dark:text-gray-200">
-                    <p>Общо</p>
-                    <p x-text="data.cart.total.toFixed(2) + ' ' + data.cart.products[0].variation.currency">262 лв.</p>
-                </div>
-                <div class="mt-1 lg:mt-6">
-                    <a href="/bg/checkout" @click="data.openCart = false" class="flex items-center justify-center rounded-md px-6 py-3 text-base  bg-stone-900 font-medium text-white shadow-sm hover:bg-stone-800 dark:hover:bg-gray-800 dark:bg-gray-900">Продължи</a>
-                </div>
-                <div class="mt-6 flex justify-center text-center text-sm text-gray-500 hidden lg:block">
-                    <p>
-
-                        <button type="button" class="font-medium text-slate-700 hover:text-slate-900 dark:hover:text-slate-400 dark:text-gray-200" @click="data.openCart = false">
-                            Продължи с пазаруване
-                            <span aria-hidden="true"> →</span>
-                        </button>
-                    </p>
-                </div>
-            </div>
-
-        </template>
-    </div>
-</div>
-<div class="is-section w-full  lock dark:!bg-gray-900" apidata="Menu.get_menu" keyname="menu">
-    <div class="container">
-
-        <div class="flex justify-between pr-4 lg:pr-0 lg:grid lg:grid-cols-4 lg:mx-auto lg:container py-3">
-            <div>
-                <a @click="forceChange('/')">
-                    <img src="" :src="data.settings.logo" alt="" class="!m-0  max-h-[60px]  w-auto rounded-xl">
-                </a>
-            </div>
-
-            <div class="flex justify-center items-center col-span-2 px-10 hidden lg:flex" x-data="{openSearchBar: false}">
-                <form class="w-full">
-                    <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
-                        <div class="relative w-full">
-                            <input name="search" @input.debounce.1000="alpineListeners('Search.get_search', $event); openSearchBar = true" @click="if(data.search){openSearchBar = true}" keyname="search" data-show_filters="1" data-filter="1" class="block dark:bg-gray-900 dark:text-gray-200 p-3 pl-10 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 sm:rounded-none sm:rounded-l-lg focus:ring-primary-500 focus:border-primary-500 ">
-                            <div x-show="openSearchBar" @click.outside="openSearchBar = false" x-cloak="" x-transition="" class="dark:bg-gray-950 dark:text-gray-200 hidden md:block w-[200%] bg-white h-auto z-50 p-10 rounded-[15px] shadow-2xl drop-shadow absolute ">
-                                <template x-if="data.search.products.result.length == 0">
-                                    <p>Няма намерени резултати</p>
-                                </template>
-
-                                <ul class="grid grid-cols-2">
-
-                                    <template x-for="product in data.search.products.result">
-                                        <li class="flex py-6 px-3">
-                                            <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-
-                                                <img :src="product.images[0]? product.images[0].url : data.settings.logo" @click="openSearchBar = false ; forceChange(product.url)" class="h-full w-full object-cover object-center cursor-pointer">
-                                                <!-- <div class="bg-neutral-100 animate-pulse shadow animate-infinite animate-duration-[3000ms]  w-full h-full"></div> -->
-
-                                            </div>
-
-                                            <div class="ml-4 flex flex-1 flex-col">
-                                                <div>
-
-                                                    <p @click="openSearchBar = false ; forceChange(product.url)" class="mt-1 text-sm text-gray-500 line-clamp-3 hover:text-orange-400 cursor-pointer" :title="product.title" x-text="product.title">Salmon</p>
-                                                    <p @click="openSearchBar = false ; forceChange(product.categories[0].url)" class="mt-1 text-sm text-gray-400 line-clamp-2 hover:text-orange-400 cursor-pointer" :title="product.categories[0].title" x-text="product.categories[0].title">Salmon</p>
-                                                </div>
-                                                <div class="flex flex-1 items-end justify-between text-sm">
-                                                    <div class="flex">
-                                                        <p x-text="product.variations[0].selling_price.toFixed(2)" class="text-red-600 font-bold">$90.00</p>
-                                                        <p x-text="product.variations[0].currency" class=" text-red-600 font-bold"></p>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </template>
-
-                                </ul>
-
-                            </div>
-                        </div>
                         <div>
-                            <a @click="if(data.search){forceChange('/bg/search?search=' + data.search.search)} " class="dark:bg-gray-900 dark:text-gray-200 py-3.5 px-5 w-full text-sm font-medium text-center text-black rounded-lg border cursor-pointer bg-white border-primary-600 sm:rounded-none sm:rounded-r-lg hover:bg-stone-900 hover:text-white focus:ring-4 focus:ring-stone-900"><i class="fa-solid fa-magnifying-glass"></i></a>
+                            <label for="last_name" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Фамилия</label>
+                            <input type="text" name="last_name" id="last_name" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400" required="">
                         </div>
-                    </div>
-                </form>
-            </div>
 
-            <!-- <div class="flex gap-5 justify-end items-center hidden lg:flex">
-        <i class="fa-solid fa-phone-volume text-neutral-700 text-[30px]"></i>
-        <div>
-          <p class="text-base text-slate-700"> <a href="tel:0888 039 850">Обадете ни се 2</a></p>
-          <p class="text-xl font-bold"><a href="tel:+359888039850">0888 039 850</a></p>
-        </div>
-      </div> -->
-
-            <div class="flex justify-end items-center">
-                <ul class="flex  gap-3">
-
-                    <li class="cursor-pointer hidden lg:block">
-                        <div class="flex gap-3" @click="data.user.logged_in ? forceChange('/bg/userpage') : forceChange('/bg/login') ">
-                            <template x-if="data.user.logged_in">
-                                <p class="dark:text-gray-200" x-text="data.user.first_name"></p>
-                            </template>
-                            <i class="fa-solid fa-circle-user text-[24px] text-neutral-700 dark:text-gray-200"></i>
+                        <div class="col-span-2">
+                            <label for="email" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Имейл</label>
+                            <input type="email" name="email" id="email" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400   " placeholder="name@company.com" required="">
                         </div>
-                    </li>
 
-                    <li class="hidden lg:block"><i class="fa-solid fa-heart text-[22px] cursor-pointer drop-shadow-xl text-neutral-700 dark:text-gray-200 " @click="forceChange('/bg/wishlist')"></i></li>
+                        <div class="col-span-2" x-data="{showPassword: true}">
+                            <label for="password" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Парола</label>
 
-                    <li class="lg:hidden block" @click="data.openMobileMenu = ! data.openMobileMenu"><i class="fa-solid fa-bars text-[22px] mr-1 text-neutral-700 dark:text-gray-200"></i></li>
-
-                    <li class="">
-                        <div class="">
-                            <i @click="data.darkMode =! data.darkMode" :class="data.darkMode ? 'fa-sun' : 'fa-moon' " class="fa-solid dark:text-gray-200 text-neutral-700  text-[22px] group"></i>
-                        </div>
-                    </li>
-                    <li class="">
-                        <div x-data="{openLang:false}" class="relative">
-                            <i @click="openLang =! openLang" class="fa-solid fa-globe dark:text-gray-200 text-neutral-700 text-[22px] "></i>
-                            <div x-show="openLang" class="flex justify-between w-[200px] items-center border border-slate-300 py-2 px-5 mt-3 right-0 absolute z-50 bg-white dark:!bg-gray-800 shadow-xl" style="display: none;">
-                                <ul class="w-full divide-y divide-[#179BB0] dark:divide-white">
-                                    <li class="py-2"> <a @click="changeLang('en')" class="hover:!text-sky-500  duration-500 ease-in-out cursor-pointer  dark:text-white text-gray-950 dark:hover:text-sky-500">English</a> </li>
-                                    <li class=" py-2"> <a @click="changeLang('bg') " class="hover:!text-sky-500  duration-500 ease-in-out cursor-pointer  dark:text-white text-gray-950 dark:hover:text-sky-500">Български</a> </li>
-                                </ul>
+                            <div class="relative">
+                                <input :type="showPassword ? 'password' : 'text'" name="password" id="password" placeholder="••••••••" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400" required="">
+                                <i @click="showPassword = ! showPassword" :class="showPassword ? 'fa-eye' : 'fa-eye-slash' " class="fa-solid absolute text-[22px] top-2.5 right-2.5 text-white cursor-pointer fa-eye" aria-hidden="true"></i>
                             </div>
+
                         </div>
-                    </li>
 
-                    <li class="cursor-pointer pr-4">
-                        <div class="relative z-30" @click="data.openCart =! data.openCart">
-                            <i class="fa-solid fa-cart-shopping text-[22px] text-neutral-700 dark:text-gray-200"></i>
+                        <div class="col-span-2">
+                            <button @click="alpineListeners('User.post_users', $event)" class="py-2 px-6 border border-white hover:bg-white hover:text-black transition rounded cursor-pointer w-full text-sm lg:text-base">Регистрация</button>
+                            <p class="text-xs lg:text-sm  text-white ">Имате акаунт ? <a @click="data.openRegistration = false; data.openLogin = true;" class="font-medium hover:border-b border-gray-400">Вход </a></p>
 
-                            <span class="bg-red-600 absolute right-[-10px] top-[-10px] rounded-full text-white flex justify-center items-center w-[20px] h-[20px]" x-text="data.cart.total_quantity"></span>
                         </div>
-                    </li>
-
-                </ul>
+                    </form>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
+<!-- END REGISTRATION 1/ 3 MODAL -->
 
-<div class="is-section w-full">
-    <template x-if=" data.screenWidth >= 1024">
-        <div class=" is-section !bg-stone-900 dark:!bg-gray-950   drop-shadol hidden lg:block lock " x-data="{activeCategory: 0, tempCategory: 0}" @mouseleave="activeCategory = 0" apidata="Shop.get_categories" keyname="categories" data-droplist="true">
-            <ul class="flex py-3 gap-2 justify-start flex-wrap container mx-auto">
+<!-- START LOGIN MODAL -->
+<div x-show="data.openLogin" x-cloak class=" backdrop-blur fixed block md:flex items-center top-0 left-0 w-full h-full z-50  bg-[#0000008a] overflow-scroll lg:overflow-hidden">
+    <template x-if="data.openLogin">
+        <div x-init="data.modalOpen = true"></div>
+    </template>
+    <div class="flex flex-row justify-center w-full max-h-full h-full lg:!h-fit">
+        <div @mousedown.outside="data.openLogin = false; data.modalOpen = false" class=" w-[500px]   relative   ">
+            <p @click="data.openLogin = false; data.modalOpen = false " class=" cursor-pointer text-white text-[24px] absolute  top-5 right-5"><i class="fa-solid fa-xmark"></i></p>
 
-                <template x-for="category in data.categories">
-                    <div class="">
-                        <li @mouseenter="tempCategory = category.id; setTimeout(() => { if(tempCategory == category.id) {activeCategory = category.id}  }, 200)" @mouseleave="tempCategory = 0" class="px-3 py-1 flex items-center gap-3">
-
-                            <p x-text="category.title" @click="forceChange(category.url)" class="text-white uppercase font-bold text-[12px] hover:text-orange-400 cursor-pointer"></p>
-
-                            <template x-if="category.children">
-                                <i class="fa-solid fa-arrow-down text-white"></i>
-                            </template>
-                        </li>
-                    </div>
-                </template>
-
-                <template x-for="menu in data.menu">
-                    <div class="">
-                        <li @mouseleave="tempCategory = 0" class="px-3 py-1 flex items-center gap-3">
-                            <p x-text="menu.title" @click="forceChange(menu.link)" class="text-white uppercase font-bold text-[12px] hover:text-orange-400 cursor-pointer"></p>
-                        </li>
-                    </div>
-                </template>
-            </ul>
-
-            <div class="!bg-stone-900  dark:!bg-gray-950 border-t-2 border-slate-300 relative  mx-auto z-40">
-
-                <template x-for="category in data.categories">
-                    <template x-if="category.children">
-                        <div x-show="activeCategory == category.id" class="absolute mx-auto !bg-stone-900  dark:!bg-gray-950 w-full is-light-text py-5 " x-transition:enter="transition transform ease-in duration-400">
-                            <div class="container">
-                                <p x-text="category.title" class="font-bold border-b-2 border-slate-300 py-2 w-fit text-[14px]">Японски ножове TOJIRO - made in JAPAN</p>
-                                <ul class=" grid grid-cols-3 py-5">
-                                    <template x-for="subCategory in category.children">
-                                        <li class="pr-10"><a @click="forceChange(subCategory.url)" x-text="subCategory.title" class="text-[13px] hover:text-orange-400 cursor-pointer">Японски кухненски дъски</a></li>
-
-                                    </template>
-                                </ul>
-                            </div>
+            <div class="w-full bg-black lg:rounded-lg  lg:border h-full lg:!h-fit  ">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-base lg:text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-white">
+                        Вход
+                    </h1>
+                    <form class="space-y-4 md:space-y-6">
+                        <div>
+                            <label for="email" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Имейл</label>
+                            <input type="email" name="email" id="email" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400" placeholder="name@company.com" required="">
                         </div>
-                    </template>
-                </template>
+                        <div x-data="{showPassword: true}" class="">
+                            <label for="password" class="block mb-2 text-xs lg:text-sm font-medium text-gray-900 text-white">Парола</label>
+                            <div class="relative">
+                                <input :type="showPassword ? 'password' : 'text'" name="password" id="password" placeholder="••••••••" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400" required="">
+                                <i @click="showPassword = ! showPassword" :class="showPassword ? 'fa-eye' : 'fa-eye-slash' " class="fa-solid absolute text-[22px] top-2.5 right-2.5 text-white cursor-pointer fa-eye" aria-hidden="true"></i>
+                            </div>
 
+                        </div>
+
+                        <button @click="res = await alpineListeners('User.login', $event); " class="py-2 px-6 border border-white hover:bg-white hover:text-black transition rounded cursor-pointer w-full text-sm lg:base">Вход</button>
+                        <p class="text-xs lg:text-base  text-white0 text-gray-400">Нямате акаунт ? <a @click="data.openLogin = false; data.openRegistration = true" class="font-medium hover:border-b border-gray-400">Регистрирай се </a></p>
+                        <p class="text-xs lg:text-base  text-white0 text-gray-400 !mt-0"> <a @click="data.openLogin = false; data.openForgotten = true" class="font-medium hover:border-b border-gray-400">Забравена парола </a></p>
+                    </form>
+                </div>
             </div>
+
         </div>
+    </div>
+</div>
+<!-- END LOGIN MODAL -->
+
+<!-- START REGISTRATION 1 / 3 MODAL -->
+<div x-show="data.rateArtist" x-cloak class=" backdrop-blur fixed block md:flex items-center top-0 left-0 w-full h-full z-50  bg-[#0000008a] overflow-scroll lg:overflow-hidden">
+
+    <template x-if="data.rateArtist">
+        <div x-init="data.modalOpen = true"></div>
     </template>
 
-</div>
+    <div class="flex flex-row justify-center w-full max-h-full h-full lg:!h-fit ">
+        <div @mousedown.outside="data.rateArtist = false; data.modalOpen = false" class=" max-h-full lg:!w-1/2 w-full  overflow-auto bg-black  relative     ">
+            <p @click="data.rateArtist = false; data.modalOpen = false " class=" cursor-pointer text-white text-[24px] absolute  top-5 right-5"><i class="fa-solid fa-xmark"></i></p>
+            <div class="w-full h-full bg-black lg:rounded-lg ">
 
-<template x-if="data.openMobileMenu">
-    <div class="is-section bg-neutral-100 dark:bg-gray-950 lg:hidden  fixed top-0 left-0 w-full h-full z-40 lock" x-show="data.openMobileMenu" style="display:none" x-cloack="">
-        <div class="text-center   h-full">
+                <div class="w-full  lg:border h-full lg:!h-fit">
+                    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                        <h1 class="text-base lg:text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-white text-center">
+                            Rate the artist
+                        </h1>
+                        <form class=" gap-4" x-data="{type_profile: 1}">
+                            <input type="hidden" name="user_id" :value="data.artist.user_id">
 
-            <div class="relative bg-white border-b border-neutral-200 drop-shadow dark:bg-gray-900">
-                <p class="py-2 dark:text-gray-200">Меню</p>
+                            <p class="font-bold text-sm lg:text-lg">Rate the artist based on:</p>
 
-                <div class="h-full absolute right-0 top-0 w-fit">
-                    <span class="flex justify-center items-center h-full gap-3 px-2" @click="data.openMobileMenu = false"><i class="fa-solid fa-x text-[14px]"></i></span>
-                </div>
-            </div>
-
-            <div class="container h-full">
-
-                <ul class="flex pt-3 px-3 gap-3">
-
-                    <li class="cursor-pointer bg-white py-1  px-2 rounded-xl shadow min-w-[70px] dark:bg-gray-900">
-                        <div class=" gap-3 " @click="data.user.logged_in ? forceChange('/bg/userpage') : forceChange('/bg/login'); data.openMobileMenu = false ">
-                            <i class="fa-solid fa-circle-user text-[24px] text-stone-900 dark:text-gray-200"></i>
-                            <template x-if="data.user.logged_in">
-                                <p class="dark:text-gray-200" x-text="data.user.first_name"></p>
-                            </template>
-                            <template x-if="!data.user.logged_in">
-                                <p class="dark:text-gray-200">Профил</p>
-                            </template>
-                        </div>
-                    </li>
-
-                    <li class="bg-white py-1  px-2  rounded-xl shadow min-w-[70px] dark:bg-gray-900 dark:text-gray-200"><i class="fa-solid fa-heart text-[22px] dark:text-gray-200 cursor-pointer drop-shadow-xl text-stone-900 " @click="forceChange('/bg/wishlist');  data.openMobileMenu = false"></i>
-                        <p class="dark:text-gray-200">Любими</p>
-                    </li>
-
-                </ul>
-
-                <div>
-                    <div class="flex justify-center items-center col-span-2 " x-data="{openSearchBar: false}">
-                        <form class="w-full">
-                            <div class="flex items-center py-3">
-                                <div class="relative w-full">
-                                    <input name="search" @input.debounce.1000="alpineListeners('Search.get_search', $event); " data-sort="relevant" keyname="search" class="block dark:bg-gray-900 dark:text-gray-200 p-3 pl-10 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 sm:rounded-none sm:rounded-l-lg focus:ring-primary-500 focus:border-primary-500 ">
-
-                                </div>
-                                <div>
-                                    <a @click="if(data.search){forceChange('/bg/search'); data.openMobileMenu = false} " class="dark:text-gray-200 dark:bg-gray-900 py-3.5 px-5 w-full text-sm font-medium text-center text-black rounded-lg border cursor-pointer bg-white border-primary-600 sm:rounded-none sm:rounded-r-lg hover:bg-stone-900 hover:text-white focus:ring-4 focus:ring-stone-900"><i class="fa-solid fa-magnifying-glass"></i></a>
-                                </div>
+                            <div>
+                                <p class="text-sm lg:text-base font-semibold mt-4">Professionalism</p>
+                                <p class="text-xs lg:text-base italic">(Rate the artist on their punctuality, reliability, and overall conduct before, during and after the assignments.)</p>
                             </div>
+
+                            <div>
+                                <p class="text-sm lg:text-base font-semibold mt-4">Versatility</p>
+                                <p class=" text-xs lg:text-base italic">(Consider how well the artist can adapt to different styles, themes, visions and genres.)</p>
+                            </div>
+                            <div>
+                                <p class="text-sm lg:text-base font-semibold mt-4">Skills</p>
+                                <p class=" text-xs lg:text-base italic">(​Knowledge, Technique, Precision)</p>
+                            </div>
+                            <div>
+                                <p class="text-sm lg:text-base font-semibold mt-4">Comunication</p>
+                                <p class=" text-xs lg:text-base italic">(Base on how easy, respondable, quick and understandable have been the comunication with the artist for the assignments.)</p>
+                            </div>
+
+                            <div class="py-4 lg:py-10" x-data="{rate:5}">
+                                <p class="text-sm lg:text-base">
+                                    <span x-text="rate"></span>
+                                    <span>от</span>
+                                    <span> 10 </span>
+                                </p>
+                                <input @input="rate = $el.value" type="range" name="rating" max="10" min="1" value="5" class="w-1/2  accent-white mx-auto">
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 text-white">Sum up your experience with the artist</label>
+                                <textarea maxlength="300" name="text" id="" rows="4" class="bg-black border  text-white text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5   placeholder-gray-400 "></textarea>
+                            </div>
+
+                            <button @click="alpineListeners('User.post_user_ratings', $event)" class="py-2 w-1/2 mt-4 lg:mt-10 px-6 border border-white bg-white text-black transition rounded cursor-pointer hover:bg-black hover:text-white hover:border ">Оцени</button>
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END REGISTRATION 1/ 3 MODAL -->
 
-                <div class="h-full overflow-scroll pb-[220px]" x-data="{activeCategory: 0}">
-                    <template x-for="category in data.categories">
+<!-- START messageArtist MDOAL -->
+<div x-show="data.messageArtist" x-cloak class=" backdrop-blur fixed block md:flex items-center top-0 left-0 w-full h-full z-50  bg-[#0000008a] overflow-scroll lg:overflow-hidden">
 
-                        <ul class="">
-                            <li class="py-1  ">
-                                <div class="flex items-center justify-between gap-3 bg-white dark:bg-gray-900 py-2 px-5 ">
+    <template x-if="data.messageArtist">
+        <div x-init="data.modalOpen = true"></div>
+    </template>
 
-                                    <p x-text="category.title" @click="forceChange(category.url); data.openMobileMenu = false" class="dark:text-gray-200 text-black text-left uppercase font-bold text-[12px] hover:text-orange-400 cursor-pointer"></p>
-                                    <template x-if="category.children">
-                                        <div class="bg-stone-900 dark:bg-gray-950 rounded-full h-[25px] w-[25px] flex justify-center items-center" @click="activeCategory != category.id ? activeCategory = category.id : activeCategory = 0">
-                                            <i class="fa-solid fa-arrow-down text-white text-[12px] dark:text-gray-200"></i>
-                                        </div>
-                                    </template>
+    <div class="flex flex-row justify-center w-full max-h-full h-full lg:!h-fit">
+        <div @mousedown.outside="data.messageArtist = false; data.modalOpen = false" class=" max-h-full w-full  lg:!w-1/3 max-w-[500px]  overflow-auto   relative     ">
+            <p @click="data.messageArtist = false ; data.modalOpen = false" class=" cursor-pointer text-white text-[24px] absolute  top-5 right-5"><i class="fa-solid fa-xmark"></i></p>
 
-                                </div>
+            <template x-if="data.user.userlevel == 2 && data.user.active_membership">
+                <div class="w-full bg-black lg:rounded-lg shadow lg:border h-full lg:!h-fit">
+                    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                        <div class="flex items-center flex-col">
+                            <p class="text-xl font-semibold py-8">Изпрати Съобщение</p>
 
-                                <div class="" x-show="activeCategory ==  category.id">
-                                    <ul class="bg-white dark:bg-gray-900 px-5  flex flex-col items-start justify-start divide-y">
-                                        <template x-for="subCategory in category.children">
-                                            <li class="text-start w-full py-2">
-                                                <p @click="forceChange(subCategory.url); data.openMobileMenu = false" x-text="subCategory.title" class="dark:text-gray-200 text-[13px] float-left hover:text-orange-400 cursor-pointer">Японски кухненски дъски</p>
-                                            </li>
+                            <img :src="data.messageArtist.user_info.avatar.url" alt="" class="w-24 h-24 object-cover rounded-full">
+                            <div class="flex gap-1 mt-2">
+                                <p x-text="data.messageArtist.user_info.first_name"></p>
+                                <p x-text="data.messageArtist.user_info.last_name"></p>
+                            </div>
+                        </div>
 
-                                        </template>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
+                        <form action="">
+                            <textarea name="text" cols="4" id="" class="border botder-white p-3 rounded-md w-full bg-black" placeholder="Вашето съобщение"></textarea>
+                            <P @click="alpineListeners('Messages.post_messages', $event)" :data-to_user_id="data.messageArtist.user_id" class="py-2 w-1/2 mt-4 px-6  w-full text-center border border-white bg-white text-black transition rounded cursor-pointer hover:bg-black hover:text-white hover:border "> Изпрати</P>
+                        </form>
 
-                    </template>
-
-                    <template x-for="menu in data.menu">
-                        <ul class="">
-                            <li class="py-1 ">
-                                <div class="flex items-center justify-between gap-3 bg-white dark:bg-gray-900 py-2 px-5 ">
-                                    <p x-text="menu.title" @click="forceChange(menu.link); data.openMobileMenu = false" class=" dark:text-gray-200 text-black text-left uppercase font-bold text-[12px] hover:text-orange-400 cursor-pointer"></p>
-                                </div>
-                            </li>
-                        </ul>
-                    </template>
+                    </div>
                 </div>
+            </template>
+
+            <template x-if="data.user.userlevel != 2 || data.user.active_membership == false">
+                <div class="w-full bg-black rounded-lg shadow lg:border min-h-[300px] flex items-center justify-center px-10 flex-col gap-6 h-full lg:!h-fit">
+                    <p class="text-xl lg:text-2xl text-center font-semibold">Трябва да имате активен бизнес абонамент ! </p>
+                    <p @click="data.messageArtist = false; forceChange('/bg/plans')" class="py-2 w-full mt-4 px-6  md:w-1/2 text-center border border-white bg-white text-black transition rounded cursor-pointer hover:bg-black hover:text-white hover:border ">Абонирай се </p>
+
+                </div>
+            </template>
+
+        </div>
+    </div>
+</div>
+<!-- END messageArtist MODAL -->
+
+<!-- START messageArtist MDOAL -->
+<div x-show="data.needPlan" x-cloak class="backdrop-blur fixed block flex items-center top-0 left-0 w-full h-full z-50  bg-[#0000008a] overflow-scroll lg:overflow-hidden">
+
+    <template x-if="data.needPlan">
+        <div x-init="data.modalOpen = true"></div>
+    </template>
+
+    <div class="flex flex-row justify-center w-full max-h-full h-fit">
+        <div @mousedown.outside="data.needPlan = false; data.modalOpen = false" class=" max-h-full min-h-[300px] w-full lg:!w-1/3  overflow-auto bg-black  relative">
+            <div class="absolute w-full h-full brightness-[0.4]">
+                <img src="https://static.wixstatic.com/media/c1e569_2b1d3a9558ca48b7985526e57e1ca679~mv2.jpg/v1/fill/w_400,h_411,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/IMG_9663_edited.jpg" class="absolute w-full h-full object-cover" alt="">
+            </div>
+            <div class="absolute w-full h-full">
+                <div class="flex items-center justify-center h-full w-full">
+                    <p @click="data.needPlan = false; data.modalOpen = false " class=" cursor-pointer text-white text-[24px] absolute  top-5 right-5"><i class="fa-solid fa-xmark"></i></p>
+                    <div class="flex flex-col justify-center items-center gap-6 h-full w-full">
+                        <p class="text-base lg:text-2xl text-center font-semibold">Трябва да имате активен абонамент!</p>
+                        <p @click="data.needPlan = false; forceChange('/bg/plans')" class="py-2 w-1/2 mt-4 px-6  w-1/2 text-center border border-white bg-white text-black transition rounded cursor-pointer hover:bg-black hover:text-white hover:border text-sm lg:text-base ">Абонирайте се </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- END messageArtist MODAL -->
+
+<!-- START passportModal MDOAL -->
+<div x-show="data.passportModal" x-cloak class=" backdrop-blur fixed block md:flex items-center top-0 left-0 w-full h-full z-50  bg-[#0000008a] overflow-scroll lg:overflow-hidden">
+
+    <template x-if="data.passportModal">
+        <div x-init="data.modalOpen = true"></div>
+    </template>
+
+    <div class="flex flex-row justify-center w-full max-h-full ">
+        <div @mousedown.outside="data.passportModal = false; data.modalOpen = false" class=" px-10 max-h-full min-h-[300px] w-full  lg:!w-1/2 p-2 lg:p-10 rounded-md overflow-auto bg-white text-black  relative">
+            <p @click="data.passportModal = false; data.modalOpen = false " class=" cursor-pointer text-white text-[24px] absolute  top-5 right-5"><i class="fa-solid fa-xmark"></i></p>
+            <div class=" ">
+                <p class="text-base lg:text-2xl text-center font-semibold py-4 px-6 lg:px-0 lg:py-10">Добавяне на докукент за удостоверение !</p>
+
+                <div x-show="data.user.userlevel == 1">
+                    <P class="py-4 text-xs lg:text-base">С оглед на нашата ангажираност към защитата на вашите лични данни и спазването на законодателството, бихме желали да ви информираме за изискванията за представяне на лични документи при регистрация в нашата система.</P>
+                    <ul class="list-disc border-b border-black pb-10">
+                        <li class="italic text-xs lg:text-base">Ако сте навършили 18 години, моля представете валиден личен документ за самоличност като лична карта, паспорт или шофьорска книжка.</li>
+                        <li class="italic text-xs lg:text-base">За нашите клиенти, които са под 18 години, но са навършили 16 години, е необходимо да предоставят допълнителен документ за съгласие на родител или настойник. Добавете попълнения документ към личните документи в полето за качване на файлове. Ние предоставяме специално подготвени документи за тази цел, които могат да бъдат изтеглени, подписани и качени в нашата система.</li>
+                        <li class="italic text-xs lg:text-base">За нашите клиенти, които са под 16 години, е необходимо да представят документи от родител или настойник, като потвърждение на техните права към представителство. Тези документи включват личен документ на родител/настойник, акт за раждане на клиента и трети документ, който потвърждава настойничеството.</li>
+                    </ul>
+                </div>
+
+                <div x-show="data.user.userlevel == 2" class="border-b border-black pb-10">
+                    <p class="pt-4 text-xs lg:text-base">
+                        Моля, качете документ, който да удостовери, че сте оторизиран представител на фирмата. Този документ може да бъде например официално писмо от компанията, удостоверение за правомощия или друг подходящ документ, който потвърждава вашия статус като представител на фирмата.
+                    </p>
+                    <p class="mt-1 text-xs lg:text-base ">
+                        След качването на документа за удостоверяване, нашият екип ще прегледа Вашето искане и в рамките на 3 работни дни ще Ви уведоми за потвърждението му или ще се свърже с Вас за допълнителна информация, ако е необходимо.
+                    </p>
+                    <p class="mt-1 text-xs lg:text-base ">
+                        След потвърждение на Вашата удостоверена профилна страница, Вие ще имате достъп до всички функции и възможности на фирмения профил, които Ви позволяват да управлявате и представлявате вашата компания в нашата общност.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 mt-6">
+
+                <div class="mr-10 overflow-hidden">
+                    <p class="font-semibold text-xs lg:text-base">Качени документи : </p>
+                    <ul class="list-disc pl-5 my-2">
+                        <template x-for="file in data.my_passport">
+                            <li>
+                                <a :href="file.url" x-text="file.filename"></a>
+                            </li>
+                        </template>
+
+                    </ul>
+
+                </div>
+
+                <form class="" x-data="{loading : false}">
+                    <input type="hidden" name="emptyAvatar" value="asd">
+                    <div class="flex items-center justify-center w-full">
+
+                        <template x-if="loading">
+                            <label for="" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-white hover:bg-bray-800 bg-gray-700 hover:bg-gray-100 border-gray-600 hover:border-white0 hover:bg-gray-600 !bg-white">
+                                <i class="fa-solid fa-spinner animate-spin text-3xl text-gray-950"></i>
+                                <p class="mt-4 text-gray-950 text-xs lg:text-base">Качване ...</p>
+                            </label>
+                        </template>
+
+                        <template x-if="!loading">
+                            <label for="dropzone-passport" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-white hover:bg-bray-800 bg-gray-700 hover:bg-gray-100 border-gray-600 hover:border-white0 hover:bg-gray-600 !bg-white">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-white0 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-white0 text-gray-400 text-xs lg:text-base"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+
+                                </div>
+                                <input id="dropzone-passport" multiple @change="loading = true; await alpineListeners('User.post_user_passport', $event); loading = false" name="passport[]" type="file" class="hidden" />
+                            </label>
+                        </template>
+                    </div>
+                </form>
 
             </div>
 
         </div>
     </div>
-</template>
+</div>
+<!-- END passportModal MODAL -->

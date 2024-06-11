@@ -1,0 +1,361 @@
+<section>
+    <div class="container max-w-full mx-auto lg:py-5 px-6">
+
+        <div class="" x-data="{plan : 1}">
+            <div>
+                <h2 class="text-base   text-center mt-12  lg:text-5xl ">
+                    <span class="font-bold">OTTO. </span>
+                    <span>Планове</span>
+                </h2>
+
+                <p x-show="plan == 1" x-cloak x-transition:enter.duration.800ms class="max-w-3xl mx-auto mt-4  text-xs lg:text-xl text-center ">Започнете с нашия безплатен план и преминете на следващото ниво, когато сте готови.</p>
+                <p x-show="plan == 2" x-cloak x-transition:enter.duration.800ms class="max-w-3xl mx-auto mt-4  text-xs lg:text-xl text-center ">Абонирайте се за нашите бизнес планове и издигнете успеха си с нашите месечни и годишни опции! </p>
+            </div>
+
+            <div @click="plan == 1 ? plan = 2 : plan = 1 " class="flex border rounded-full w-fit mx-auto mt-10 cursor-pointer overflow-hidden">
+                <span :class="plan == 1 ? 'bg-white text-black' : 'text-white' " class=" text-sm lg:text-base px-3 py-1.5">Артист</span>
+                <span :class="plan == 2 ? 'bg-white text-black' : 'text-white' " class=" text-sm lg:text-base px-3 py-1.5">Бизнес</span>
+            </div>
+
+            <div x-show="plan == 1" x-cloak x-transition:enter.duration.800ms x-transition:leave.duration.300ms class="mt-6 lg:mt-24 container space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8">
+                <div class="relative p-4 lg:p-8  border border-gray-200 rounded-2xl shadow-sm flex flex-col max-w-[450px]">
+                    <div class="flex-1">
+                        <h3 class="text-lg lg:text-xl font-semibold ">Безплатен</h3>
+                        <p class="mt-1 lg:mt-4 flex items-baseline ">
+                            <span class="text-base lg:text-5xl font-extrabold tracking-tight">$0</span><span class="ml-2 text-sm lg:text-xl font-semibold">/</span> <span class="ml-2 text-sm lg:text-xl font-semibold"> година</span>
+                        </p>
+                        <!-- <p class="mt-6 ">You just want to discover</p> -->
+                        <ul role="list" class="mt-6 space-y-4">
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Самосъздаване на професионално портфолио по стандарт</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Възможност за редакция по всяко време</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">0% комисионна</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">24/7 видимост на портфолиото за всички потребители</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Контрол на качеството на портфолиото</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Членство в общността на "амитаманти" на OTTO.</span>
+                            </li>
+
+                            <!-- <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Оценяване на бизнеси, с които сте работили</span>
+                            </li> -->
+
+                            <!-- <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Брояч на преглежданията на портфолиото</span>
+                            </li> -->
+
+                            <!-- <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Показател кои артисти и бизнеси са прегледали портфолиото Ви</span>
+                            </li> -->
+
+                        </ul>
+                    </div>
+
+                    <template x-if="data.user.logged_in">
+                        <a @click="forceChange('/bg/userpage')" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониран</a>
+                    </template>
+
+                    <template x-if="!data.user.logged_in">
+                        <a @click="data.openLogin = true;" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Aбонирай се</a>
+                    </template>
+
+                </div>
+
+                <div class="relative p-4 lg:p-8  border border-gray-200 rounded-2xl shadow-sm flex flex-col max-w-[450px]">
+                    <div class="flex-1">
+                        <h3 class="text-lg lg:text-xl font-semibold mt-2 lg:mt-0  ">ОТТО. Премиум</h3>
+                        <p class="absolute top-0 py-1.5 px-4 bg-emerald-500 text-white rounded-full text-xs font-semibold uppercase tracking-wide  transform -translate-y-1/2">
+                            Най-търсен</p>
+                        <p class="mt-1 lg:mt-4 flex items-baseline ">
+                            <span class="text-base lg:text-5xl font-extrabold tracking-tight">240лв</span><span class="ml-2 text-sm lg:text-xl font-semibold">/</span> <span class="ml-2 text-sm lg:text-xl font-semibold"> година</span>
+                        </p>
+                        <!-- <p class="mt-6 ">You want to learn and have a personal assistant</p> -->
+                        <ul role="list" class="mt-6 space-y-4">
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Самосъздаване на професионално портфолио по стандарт</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Възможност за редакция по всяко време</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">0% комисионна</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">24/7 видимост на портфолиото за всички потребители</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Контрол на качеството на портфолиото</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Членство в общността на "амитаманти" на OTTO.</span>
+                            </li>
+
+                            <!-- <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Оценяване на бизнеси, с които сте работили</span>
+                            </li> -->
+
+                            <!-- <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Брояч на преглежданията на портфолиото</span>
+                            </li> -->
+
+                            <!-- <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Показател кои артисти и бизнеси са прегледали портфолиото Ви</span>
+                            </li> -->
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-basefont-semibold">Достъп до кастинги и обяви за работа</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-basefont-semibold">Достъп до съобщения с артисти и бизнеси</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-basefont-semibold">Възможност за кандидатстване за кастинги и обяви за работа
+                                </span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-basefont-semibold">Допълнителни привилегии и промоции в OTTO. и партньори</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-basefont-semibold">Пропуски за събития на ОТТО</span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <template x-if="!data.user.logged_in">
+                        <a @click="data.openLogin = true;" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 1 && data.user.logged_in">
+                        <a @click="alpineListeners('Memberships.post_memberships', $event)" data-id="1" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a>
+                    </template>
+
+                </div>
+            </div>
+
+            <div x-show="plan == 2" x-cloak x-transition:enter.duration.800ms x-transition:leave.duration.300ms class="mt-6 lg:mt-24 container space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8">
+                <div class="relative p-4 lg:p-8  border border-gray-200 rounded-2xl shadow-sm flex flex-col max-w-[450px]">
+                    <div class="flex-1">
+                        <h3 class="text-lg lg:text-xl font-semibold ">Бизнес Месечен</h3>
+                        <p class="mt-1 lg:mt-4 flex items-baseline ">
+                            <span class="text-base lg:text-5xl font-extrabold tracking-tight">240лв</span><span class="ml-2 text-sm lg:text-xl font-semibold">/</span> <span class="ml-2 text-sm lg:text-xl font-semibold">месец</span>
+                        </p>
+                        <!-- <p class="mt-6 ">You just want to discover</p> -->
+                        <ul role="list" class="mt-6 space-y-4">
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Пълен достъп до контактната информация на артисти и бизнеси</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Създаване на обяви за работа и кастинги</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Оценяване на артисти</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Система за бързо и удобно събиране на кандидатури</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Създаване на групови чатове с кандидати за работа</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Фирмено портфолио на платформата</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">24/7 видимост на фирменото портфолио за всички потребители
+                                </span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Споделяне на фирменото портфолио и обяви в социалните мрежи на OTTO.</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Достъп до съобщения с всички артисти и фирми</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Добавяне на артисти в любими</span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <template x-if="!data.user.logged_in">
+                        <a @click="data.openLogin = true;" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 2 && data.user.logged_in">
+                        <a @click="alpineListeners('Memberships.post_memberships', $event)" data-id="2" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a>
+                    </template>
+                    <!-- <a class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a> -->
+
+                </div>
+
+                <div class="relative p-4 lg:p-8  border border-gray-200 rounded-2xl shadow-sm flex flex-col max-w-[450px]">
+                    <div class="flex-1">
+                        <h3 class="text-lg lg:text-xl font-semibold mt-2">Бизнес</h3>
+                        <p class="absolute top-0 py-1.5 px-4 bg-emerald-500 text-white rounded-full text-xs font-semibold uppercase tracking-wide  transform -translate-y-1/2">
+                            Най-търсен</p>
+                        <p class="mt-1 lg:mt-4 flex items-baseline ">
+                            <span class="text-base lg:text-5xl font-extrabold tracking-tight">1440лв </span> <span class="ml-2 text-sm lg:text-xl font-semibold">/</span> <span class="ml-2 text-sm lg:text-xl font-semibold"> година</span>
+                        </p>
+                        <!-- <p class="mt-6 ">You want to learn and have a personal assistant</p> -->
+                        <ul role="list" class="mt-6 space-y-4">
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Пълен достъп до контактната информация на артисти и бизнеси</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Създаване на обяви за работа и кастинги</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Оценяване на артисти</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Система за бързо и удобно събиране на кандидатури</span>
+                            </li>
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Създаване на групови чатове с кандидати за работа</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Фирмено портфолио на платформата</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">24/7 видимост на фирменото портфолио за всички потребители
+                                </span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Споделяне на фирменото портфолио и обяви в социалните мрежи на OTTO.</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Достъп до съобщения с всички артисти и фирми</span>
+                            </li>
+
+                            <li class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 w-6 h-6 text-emerald-500" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg><span class="ml-3 text-xs lg:text-base">Добавяне на артисти в любими</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <a class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a> -->
+
+                    <template x-if="data.user.userlevel == 2 && data.user.logged_in">
+                        <a @click="alpineListeners('Memberships.post_memberships', $event)" data-id="3" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a>
+                    </template>
+
+                    <template x-if="!data.user.logged_in">
+                        <a @click="data.openLogin = true;" class="w-2/3 mx-auto bg-white border-white border hover:bg-black hover:text-white cursor-pointer transition rounded  text-black py-2.5 text-center mt-8 rouned-lg text-sm lg:text-base">Абониране</a>
+                    </template>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

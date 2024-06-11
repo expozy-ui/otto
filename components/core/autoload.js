@@ -35,8 +35,9 @@ let dataBody = {
   openProduct: false,
   openForgotten: false,
   openGeolocation: false,
-  darkMode: false,
+  darkMode: true,
   location: [],
+  modalOpen: false,
 };
 
 
@@ -177,6 +178,7 @@ async function alpineListeners(method, element) {
       formData = Helpers.get_form_data(element.closest("form"));
       data = Object.assign(data, formData);
     }
+    // debugger;
 
     // GET ALL ELEMENT ATTRIBUTES WICH START WITH DATA-
     attributesData = getDataAttributes(element, 'data');
@@ -218,6 +220,7 @@ async function alpineListeners(method, element) {
     //
     // })
     .catch(error => console.error(`File in ../static/${importFile}.js was not found !  /n  ${method}`));
+
 
 
   // console.log('request');
@@ -263,6 +266,9 @@ window.alpineListeners = alpineListeners;
 async function forceChange(url) {
   history.pushState(null, null, url);
   dataProxy['pageUrl'] = [];
+  dataProxy['openMobileMenu'] = false;
+  dataProxy['modalOpen'] = false;
+
   Page.load();
   document.getElementById('main').scrollIntoView(true);
 }
@@ -389,7 +395,7 @@ function replaceImages() {
             // newUrl = originSrcUrl.replace('10x10', '800x600');
             newUrl = originSrcUrl.replace('10x10', '1024x768');
           }
-          if (image.clientWidth >= 1024) {
+          if (image.clientWidth > 1024) {
             // newUrl = originSrcUrl.replace('10x10', '1024x768');
             newUrl = originSrcUrl.replace('10x10', '1024x768');
           }
@@ -421,7 +427,7 @@ function replaceImages() {
               newUrl = originSrcUrl.replace('10x10', '1024x768');
             }
 
-            if (el.clientWidth >= 1024) {
+            if (el.clientWidth > 1024) {
               newUrl = originSrcUrl.replace('10x10', '1024x768');
             }
           }
@@ -553,3 +559,20 @@ window.addEventListener('resize', function (event) {
 window.addEventListener('scroll', function (event) {
   dataProxy['scrollPosition'] = window.pageYOffset;
 }, true);
+
+
+function calculateAge(birthdate) {
+  const birthDate = new Date(birthdate);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDifference = today.getMonth() - birthDate.getMonth();
+  const dayDifference = today.getDate() - birthDate.getDate();
+
+  if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+    age--;
+  }
+
+  return age;
+}
+
+window.calculateAge = calculateAge;

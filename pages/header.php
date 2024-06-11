@@ -5,7 +5,8 @@
 
 		<!-- SEO PAGE SETTINGS  -->
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" >
+		
 		<title><?php echo $page->seo_title ?></title>
 		<link rel="icon" type="image/x-icon" href="<?php echo $core->web['favicon'] ?>">
 		<meta property="og:url" content="<?php echo "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>" />
@@ -50,8 +51,7 @@
 			const URL_PARAMETERS = <?php unset($_GET['query_id']); echo json_encode($_GET) ?>;
 			const SITENAME = <?php echo json_encode($core->site_name) ?>;
 			const JS_VERSION = <?php echo JS_VERSION; ?>;
-			const PAGEINIT = {id: <?php echo $page->id?>, target_id: <?php echo $page->target_id; ?>  };
-			const REFERRAL = "<?php echo $_SESSION['referral'] ?? '' ?>";
+			const PAGEINIT = {id: <?= $page->id?>, target_id: <?= $page->target_id; ?>  };
 		</script>
 
 
@@ -69,16 +69,73 @@
 		<link href="/assets/expozyBox/box/box-flex.css" rel="stylesheet" type="text/css" /> -->
 
 		<style media="screen">
-		@font-face {
+		/* @font-face {
 				font-family: 'Repo Regular';
 				font-style: normal;
 				font-weight: normal;
 				src: local('Repo Regular'), url('/assets/fonts/repo/Repo.woff2') format('woff2');
 				 font-display: swap;
-				}
+				} */
+
+
+		@font-face {
+  		  font-family: 'Avenir';
+   		  font-style: normal;
+          font-weight: 500;
+          src: local('Josefin Sans Regular'), url('/assets/fonts/avenir/AvenirNextCyr-Regular.woff2') format('woff2');
+        }
+
+   		@font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 300;
+        src: local('Josefin Sans Thin'), url('/assets/fonts/avenir/AvenirNextCyr-Light.woff2') format('woff2');
+        }
+		@font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 200;
+        src: local('Josefin Sans Thin'), url('/assets/fonts/avenir/AvenirNextCyr-UltraLightIt.woff2') format('woff2');
+        }
+		@font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 200;
+        src: local('Josefin Sans Thin'), url('/assets/fonts/avenir/AvenirNextCyr-Thin.woff2') format('woff2');
+        }
+
+    
+    @font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Josefin Sans Light'), url('/assets/fonts/avenir/AvenirNextCyr-Regular.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Avenir';
+            font-style: normal;
+            font-weight: 600;
+            src: local('Josefin Sans SemiBold'), url('/assets/fonts/avenir/AvenirNextCyr-Demi.woff2') format('woff2');
+            }
+
+            
+    @font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 700;
+        src: local('Josefin Sans Bold'), url('/assets/fonts/avenir/AvenirNextCyr-Bold.woff2') format('woff2');
+        }
+
+		@font-face {
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 800;
+        src: local('Josefin Sans Bold'), url('/assets/fonts/avenir/AvenirNextCyr-Heavy.woff2') format('woff2');
+        }
 
 		p,h1,h2,h3,h4,h5,h6,span,a,label{
-			font-family: "Repo Regular";
+			font-family: "Avenir";
 			letter-spacing: 0.7px;
 		}
 		</style>
@@ -89,13 +146,18 @@
 		
 
 		<?= $core->web['scripts']['header'] ?? '' ?>
+
+	
+		  <!-- Подключете Masonry.js -->
+		  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script> -->
+
 	</head>
 
 	<!-- CSS FOR CURRENT PAGE GENERATOR FROM ALPINE -->
 
 		<!-- INIT BODY FUNCTION. CONNECTED WITH ALPINE X_DATA  -->
 
-		<body :class="data.darkMode == true ? 'dark' : '' " x-data="dataset" @update.window="updatedata($event.detail)" id="body" x-init="$watch('data', value => console.log(value))" >
+		<body :class="{ 'dark': data.darkMode, 'overflow-hidden': data.modalOpen }"  x-data="dataset" @update.window="updatedata($event.detail)" id="body" x-init2="$watch('data', value => console.log(value))" style="background-color:black; color:white;" >
 
 
 			<!-- NOTIFICATION CONTAINER. ALPINE ADD MESSAGES FROM CORE  -->
@@ -116,11 +178,15 @@
 			</template>
 		</div>
 
+		
 
 <?php if($user->logged_in && $user->is_superAdmin()) { ?>
-	
+
+	<div style="width:100px;height: 50px;position: fixed;right: 100px;bottom: 60px;background-color: red;z-index: 1000;display: flex;justify-content: center;align-items: center;border-radius: 25px;color: white;font-weight: bold;letter-spacing: 1.2px;font-size: 18px;cursor: pointer;" id="dev_save">Save</div>
+
+	<?php } ?>
+
 	<div style="display: none;" id="tailwindCss"></div>
-	<div style="width:100px;height: 50px;position: fixed;right: 100px;bottom: 60px;background-color: red;z-index: 1000;display: flex;justify-content: center;align-items: center;border-radius: 25px;color: white;font-weight: bold;letter-spacing: 1.2px;font-size: 18px;cursor: pointer;" id="dev_save">Gen CSS</div>
 	<script src="/assets/plugins/tailwindcss.3.3.1.js"></script>
 	<script>
 		  tailwind.config = {
@@ -128,7 +194,7 @@
 
 		  }
 	</script>
-<?php } ?>
+
 
 
 

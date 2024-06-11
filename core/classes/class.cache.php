@@ -2,7 +2,7 @@
 if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed.'); }
 
 /** =========================================================
- * Class Cache
+ * Class Core
  * ========================================================== */
 class Cache{
 	const PATH = BASEPATH."cache/";

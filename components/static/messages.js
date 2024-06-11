@@ -56,7 +56,7 @@ export let Messages = {
     response = api.response;
     response['obj'] = response['rooms'];
     response['keyName'] = 'messages';
-
+    response['clearForm'] = true;
     if ("keyName" in options && options['keyName'] != '' && options['keyName'] != null) response.keyName = options['keyName'];
 
     if ("initial" in options && options['initial'] == true) return Handler.responseHandler(response);

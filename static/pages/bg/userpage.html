@@ -1,602 +1,1596 @@
-<div class="bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 w-full dark:bg-gray-900" x-data="{ tab: 'profile' }">
+<div class="bg-black  w-full " x-data="{ tab: data.pageUrl.tab,
+  
+     open(tabChange) { 
+        if(tabChange == 'bPortfolio' || tabChange == 'myAds' || tabChange == 'postAd' || tabChange == 'chats'){
+            if(data.user.userlevel == 2 && !data.user.active_membership){
+              return this.tab = 'noAccess';
+            }
+        }
+        
 
-    <div class="w-[96%] mx-auto md:flex pb-[60px]">
-        <div class="p-3 lg:p-0 md:w-1/6 min-w-[260px]">
-            <div class="bg-white dark:bg-gray-950 md:mr-[50px] w-full lg:w-2/3 rounded-[15px] px-3 py-5 mb-3 mt-1 lg:mt-10" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);">
-                <p class="font-bold dark:text-gray-200" x-text="data.user.first_name + ' ' + data.user.last_name"></p>
-                <p class="text-[14px] dark:text-gray-200" x-text="data.user.email"></p>
+        this.tab = tabChange; history.pushState(null, null, window.location.pathname + '?tab='+ tabChange);
+       },
+     }">
+    <div class="container bg-black rounded-[15px] mt-3 mx-auto m-3 p-3">
+        <p class="w-full  font-semibold text-center text-base lg:text-2xl pt-2">Здравейте и добре дошли в ОТТО, </p>
+        <p class="w-full  italic font-semibold w-full lg:!w-1/2 mx-auto text-center py-4 text-base lg:text-lg">Вече сте член на нашата общност от ,,Амитаманти" и като такъв Вие официално получавате почетното звание ,,амитамант”. </p>
+    </div>
+
+    <div class="container mx-auto md:flex pb-4">
+        <div class="p-3 lg:p-0 mr-6" apiData="Memberships.get_my_memberships">
+
+            <div class="bg-white   w-full  rounded-[15px] p-5 " style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);">
+                <div x-data="{loading : false}" class="relative h-fit  roudned-xl flex items-center justify-center group  hover:brightness-50">
+                    <template x-if="!loading">
+                        <div>
+                            <template x-if="data.user.avatar.url_10x10">
+                                <img :src="data.user.avatar.url_10x10 " class="w-[130px] h-[130px] object-cover  rounded-full group-hover:brightness-50" alt="" src="">
+                            </template>
+
+                            <template x-if="!data.user.avatar.url_10x10">
+                                <div class="w-[130px] h-[130px] rounded-full border-dotted border-2   ">
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"></path>
+                                        </svg>
+                                        <!-- <p class="mb-2 text-xs lg:text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP</p> -->
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template x-if="loading">
+                        <label for="" class="flex flex-col items-center justify-center w-full h-full  cursor-pointer ">
+                            <i class="fa-solid fa-spinner animate-spin text-base lg:text-3xl text-gray-950"></i>
+                            <p class="mt-6 text-gray-950">Качване ...</p>
+                        </label>
+                    </template>
+
+                    <form class="hidden group-hover:block absolute">
+                        <div class="p-3 bg-gray-200 rounded-full ">
+                            <label for="avatar"><i class="fa-solid fa-camera  text-black cursor-pointer  text-[22px] "></i></label>
+                            <input @change="loading = true; await alpineListeners('User.post_user_avatar', $event); loading = false" type="file" name="avatar" class="hidden" id="avatar">
+                            <input type="hidden" name="emptyAvatar" value="asd">
+                        </div>
+
+                    </form>
+                </div>
+
+                <p class="font-bold text-black mt-6 text-center" x-text="data.user.first_name + ' ' + data.user.last_name"></p>
+                <p class="text-[14px] text-black text-center" x-text="data.user.email"></p>
+
+                <template x-if="data.user.active_membership">
+
+                    <div class="border-y border-gray-300 border-dashed flex justify-between py-2 mt-2 px-2">
+                        <div>
+                            <p class="text-sm text-black" x-text="data.my_memberships.membership.title "></p>
+                            <p>
+                                <span class="text-black text-xs">до : </span>
+                                <span class="text-black text-xs" x-text="data.my_memberships.date_end.split(' ')[0]"></span>
+                            </p>
+                        </div>
+
+                        <p class=" py-0.5 px-2 bg-emerald-500 text-white rounded-full text-xs font-semibold  tracking-wide h-fit ">Активен</p>
+                        <!-- <p class="text-xs" x-text=" Math.ceil((new Date(data.my_memberships.date_end) - new Date()) / (1000 * 60 * 60 * 24)) + ' дни' "></p> -->
+
+                    </div>
+
+                </template>
             </div>
-            <div class="bg-white dark:bg-gray-950 md:mr-[50px] w-full lg:w-2/3 rounded-[15px]" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);">
-                <nav class="flex  lg:flex-col  px-6 py-2 flex-wrap" id="nav_panel">
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'profile' }" x-on:click.prevent="tab = 'profile'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-user mr-2"></i> Профил</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'invoice' }" x-on:click.prevent="tab = 'invoice'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-file-invoice mr-2"></i>Фактура</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'orders' }" x-on:click.prevent="tab = 'orders'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-bag-shopping mr-2"></i> Поръчки</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'addresses' }" x-on:click.prevent="tab = 'addresses'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-location-dot mr-2"></i> Адреси</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'passwords' }" x-on:click.prevent="tab = 'passwords'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-lock mr-2"></i> Пароли</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'loyalCard' }" x-on:click.prevent="tab = 'loyalCard'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-certificate mr-2"></i> Лоялна карта</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'services' }" x-on:click.prevent="tab = 'services'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-certificate mr-2"></i>Оферти</button>
-                    <button :class="{ 'bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200': tab === 'digital' }" x-on:click.prevent="tab = 'digital'" class="text-start py-3 px-4 text-[15px] w-fit md:w-full rounded-[15px]" href="#"><i class="fa-solid fa-certificate mr-2"></i>Дигитални продукти</button>
+            <div class="bg-white   w-full  rounded-[15px]" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);">
+                <nav class="flex flex-col divide-y  divide-black px-6 py-2 flex-wrap mt-3" id="nav_panel">
 
-                    <a href="/logout" class="text-start py-3 pl-4 text-[15px] text-red-700 font-bold w-fit md:w-full rounded-[15px]"><i class="fa-solid fa-square-arrow-up-right mr-2"></i> Изход</a>
+                    <p :class="tab === 'profile' || tab == undefined ? ' bg-black text-white' : 'text-black' " @click="open('profile');" class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-solid fa-user mr-2"></i> Профил</p>
+
+                    <template x-if="data.user.userlevel == 1">
+                        <p :class=" tab === 'portfolio' ? ' bg-black text-white':  'text-black'  " @click="open('portfolio');" class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-black text-xs lg:text-base"><i class="fa-regular fa-address-book mr-2"></i> Портфолио</p>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 2">
+                        <p :class="tab === 'bPortfolio' ? ' bg-black text-white':  'text-black' " @click="open('bPortfolio'); " class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-black text-xs lg:text-base"><i class="fa-regular fa-address-book mr-2"></i> Б Портфолио</p>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 2">
+                        <p :class="tab === 'myAds' ? ' bg-black text-white':  'text-black' " @click="open('myAds');" class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-brands fa-adversal mr-2"></i> Моите обява</p>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 2">
+                        <p :class=" tab === 'postAd' ? ' bg-black text-white': 'text-black' " @click="open('postAd'); " class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-solid fa-file-circle-plus mr-2"></i> Добави обява</p>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 2">
+                        <p :class="tab === 'subusers' ? ' bg-black text-white': 'text-black' " @click="open('subusers'); " class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-solid fa-user-plus mr-2"></i> Допълнителни потребители</p>
+                    </template>
+
+                    <template x-if="data.user.userlevel == 2">
+                        <p :class="tab === 'favourites' ? ' bg-black text-white': 'text-black' " @click="open('favourites'); " class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-regular fa-heart mr-2"></i> Любими</p>
+                    </template>
+
+                    <p @click="forceChange('/bg/plans')" class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-black text-xs lg:text-base"><i class="fa-solid fa-hand-holding-dollar mr-2"></i> Планове </p>
+
+                    <p :class=" tab === 'passwords' ? ' bg-black text-white': 'text-black' " @click="open('passwords');" class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-solid fa-lock mr-2"></i> Пароли</p>
+                    <p :class=" tab === 'chats' ? ' bg-black text-white': 'text-black' " @click="open('chats');" class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-regular fa-comment mr-2"></i> Чатове</p>
+
+                    <a href="/logout" class="text-start py-3 pl-4 text-[15px] text-red-700 font-bold w-full  text-xs lg:text-base"><i class="fa-solid fa-square-arrow-up-right mr-2"></i> Изход</a>
 
                 </nav>
             </div>
         </div>
-        <div class="w-full md:w-5/6 p-3 md:p-0">
-            <div class="md:mt-10 ">
+        <div class="w-full md:w-5/6 p-3 md:p-0 grow text-black">
+            <div class="h-full">
 
                 <!-- ============== PROFILE =============== -->
-                <div x-show="tab == 'profile'">
+                <div x-show="tab == 'profile' || tab == undefined" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Профил</h2>
+                    <div class=" border border-gray-950 w-[50px]"></div>
 
                     <div apidata="User.get_accounts" keyname="user">
 
                         <form>
-                            <div class=" bg-white dark:bg-gray-950 rounded-[15px] p-3 sm:p-8 md:ml-auto w-full  md:mt-0 relative z-10 shadow-xl grid grid-cols-1 sm:grid-cols-2 ">
-                                <h2 class="text-gray-900 dark:text-gray-200 text-lg mb-1 font-medium title-font sm:col-span-2 dark:text-gray-200">Профил</h2>
+                            <div class=" bg-white   w-full   relative  grid grid-cols-2  mt-6">
 
-                                <div class="relative p-3">
-                                    <label for="city" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Имейл</label>
-                                    <input :value="data.user.email" type="text" disabled="" class="disabled p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
-
-                                <div class="relative p-3">
-                                    <label for="phone" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Телефон</label>
-                                    <input :value="data.user.phone" type="text" name="phone" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
+                                <div class="relative m-2 lg:m-3">
+                                    <input id="email" :value="data.user.email" type="text" disabled="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                    <label for="email" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 transform peer-focus:-translate-y-4  start-1">Имейл</label>
                                 </div>
 
-                                <div class="relative p-3">
-                                    <label for="f_name" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Име</label>
-                                    <input :value="data.user.first_name" type="text" name="first_name" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
-                                <div class="relative p-3">
-                                    <label for="l_name" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Фамилия</label>
-                                    <input :value="data.user.last_name" type="text" name="last_name" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
+                                <div class="relative m-2 lg:m-3">
+                                    <input id="phone" :value="data.user.phone" type="text" name="phone" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                    <label for="phone" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4   start-1">Телефон</label>
                                 </div>
 
-                                <div class="relative p-3">
-                                    <a @click="alpineListeners('User.put_accounts', $event)" keyname="user" class="flex items-center justify-center rounded-md px-6 py-3 text-base  bg-stone-900 dark:bg-gray-900 dark:hover:bg-gray-800 font-medium text-white cursor-pointer cursor-pointer shadow-sm hover:bg-stone-800">Запиши</a>
+                                <div class="relative m-2 lg:m-3">
+                                    <input :value="data.user.first_name" id="f_name" type="text" name="first_name" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                    <label for="f_name" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4   start-1">Име</label>
                                 </div>
+                                <div class="relative m-2 lg:m-3">
+                                    <input :value="data.user.last_name" id="l_name" type="text" name="last_name" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                    <label for="l_name" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4   start-1">Фамилия</label>
+                                    <!-- <label for="l_name" class="absolute top-2 left-2 peer-focus:-top-3 bg-white px-2 peer-focus:scale-75  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2">Фамилия</label> -->
+
+                                </div>
+
+                                <div>
+                                    <h2 class="mt-5 text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font col-span-2 text-black">Социални мрежи</h2>
+                                    <div class=" border border-gray-950 w-[50px]"></div>
+                                </div>
+
+                                <div x-data="{show:false}" class="col-span-2 ">
+                                    <!-- <div class="flex justify-between w-1/2 items-center m-3">
+                                        <p @click="show =! show" class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-full bg-black ">Социални мрежи</p>
+                                    </div> -->
+                                    <template x-if="data.user.userlevel == 2">
+                                        <p class="italic font-semibold mt-6  text-xs lg:text-base lg:w-1/2 text-black">Социални мрежи са видими само при активен абонамент на потребителя.</p>
+                                    </template>
+
+                                    <div class="w-full   relative  grid grid-cols-2  mt-6">
+                                        <div class="relative m-2 lg:m-3">
+                                            <input :value="data.user.instagram" id="instagram" type="text" name="instagram" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="instagram" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Instagram</label>
+                                        </div>
+
+                                        <div class="relative m-2 lg:m-3">
+                                            <input :value="data.user.linkedin" id="linkedin" type="text" name="linkedin" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="linkedin" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">LinkedIn</label>
+                                        </div>
+
+                                        <div class="relative m-2 lg:m-3">
+                                            <input :value="data.user.tiktok" id="tiktok" type="text" name="tiktok" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="tiktok" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Tik Tok</label>
+                                        </div>
+
+                                        <div class="relative m-2 lg:m-3">
+                                            <input :value="data.user.website" id="website" type="text" name="website" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="website" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Website </label>
+                                        </div>
+
+                                        <div class="relative m-2 lg:m-3">
+                                            <input :value="data.user.other_link" id="other_link" type="text" name="other_link" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="other_link" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Друг линк </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <p class="col-span-2 w-full md:w-1/2 py-4 md:py-10 italic font-semibold text-black text-xs md:text-base ">Споделените данни за контакт ще бъдат изложени във вашето портфолио в раздел ,,контакти”, те ще бъдат видими само за платените абонати на ОТТО.</p>
+
+                                <div class="relative m-2 lg:m-3 col-span-2 flex justify-center">
+                                    <a @click="alpineListeners('User.put_accounts', $event)" keyname="user" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                                </div>
+
                             </div>
                         </form>
+
                     </div>
 
                 </div>
                 <!-- END ============== PROFILE =============== -->
 
-                <!-- ============== invoice =============== -->
+                <!-- ============== PORTFOLIO =============== -->
+                <div x-show="tab == 'portfolio'" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full" apiData="User.get_portfolios_properties" data-bycode="1">
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Важно !</h2>
+                    <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
 
-                <div x-show="tab == 'invoice'">
+                    <div apiData="User.get_portfolio_types"></div>
 
-                    <div>
+                    <p class="col-span-2 py-4 md:py-6 italic font-semibold text-black text-xs md:text-base"> При въвеждането на данни, моля бъдете сигурни, че информацията е точна и актуална. Неправилни или неточни данни могат да доведат до неблагоприятни последствия за вашия професионален имидж, кариера и репутация. Вярно и изчерпателно попълнени профили, портфолиа и обяви не само подобряват вашите шансове за успех, но и укрепват доверието на клиентите и потребителите. Благодарим ви за вниманието и сътрудничеството!</p>
+
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Документ за самоличност</h2>
+                    <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
+
+                    <template x-if="true">
+                        <div class="py-6 pt-3">
+                            <p class="text-sm lg:text-lg font-semibold">Моля, качете нужните документ за самоличност.</p>
+                            <p class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit  bg-black text-white mt-2 mb-6" @click="data.passportModal = true">Качи документ</p>
+                        </div>
+                    </template>
+
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Портфолио</h2>
+                    <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
+
+                    <div id="tuk" x-data="{type:1, active:0, countSelected : 0 }" class="mt-10" x-init="$watch('active', value =>type = value)">
+                        <template x-if="data.my_portfolio">
+                            <div x-init="countSelected =  data.my_portfolio.subtypes.length"></div>
+                        </template>
+
                         <form>
-                            <div class="grid grid-cols-2 bg-white dark:bg-gray-950 rounded-[15px] p-8 flex flex-col md:ml-auto w-full  md:mt-0 relative z-10 shadow-xl  inline-grid grid-cols-2 ">
-                                <h2 class="text-gray-900 dark:text-gray-200 text-lg mb-1 font-medium title-font col-span-2">Данни за фактура</h2>
 
-                                <div class="relative p-3">
-                                    <label for="invoice_name" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Има на компанията</label>
-                                    <input :value="data.user.company.name" type="text" name="invoice_name" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
+                            <template x-if="data.my_portfolio">
+                                <div x-init="if(data.my_portfolio.type.id.toString() == 0){active = 1}else{active = data.my_portfolio.type.id.toString()}"></div>
+                            </template>
 
-                                <div apidata="Countries.get_countries" keyname="countries" class="relative p-3">
-                                    <label for="invoice_country" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Държава</label>
-                                    <select name="invoice_country" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                        <template x-for="country in data.countries">
-                                            <option :selected="country.id == data.user.company.country_id" x-text="country.title" :value="country.id"></option>
+                            <div class="relative mb-3 ">
+                                <template x-if="active != 0">
 
-                                        </template>
+                                    <select name="type_id" id="" @change="type = $el.value; $el.value == data.my_portfolio.type_id ? countSelected =  data.my_portfolio.subtypes.length : countSelected = 0" class="block px-2.5 pb-2.5 h-[45px]   focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                        <option value="1" :selected="type == 1">Пред камера</option>
+                                        <option value="2" :selected="type == 2">Зад камера</option>
                                     </select>
-                                </div>
-                                <div class="relative p-3">
-                                    <label for="invoice_city" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Град</label>
-                                    <input :value="data.user.company.city" type="text" name="invoice_city" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
-                                <div class="relative p-3">
-                                    <label for="invoice_address" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Адрес</label>
-                                    <input :value="data.user.company.address" type="text" name="invoice_address" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
-                                <div class="relative p-3">
-                                    <label for="invoice_phone" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Телефон</label>
-                                    <input :value="data.user.company.phone" type="text" name="invoice_phone" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
-                                <div class="relative p-3">
-                                    <label for="invoice_mol" class="leading-7 text-sm text-gray-600 dark:text-gray-200">МОЛ</label>
-                                    <input :value="data.user.company.mol" type="text" name="invoice_mol" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
-                                <div class="relative p-3">
-                                    <label for="invoice_vat" class="leading-7 text-sm text-gray-600 dark:text-gray-200">ЕИК</label>
-                                    <input :value="data.user.company.vat" type="text" name="invoice_vat" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                </div>
 
-                                <div class="relative p-3 flex items-center">
+                                </template>
 
-                                    <label class="inline-flex items-center">
-                                        <template x-if="data.user.company.vat_registered == 1">
-                                            <input type="checkbox" name="invoice_vat_registered" value="1" checked="" x-on:click="if($el.value == 0){$el.value = 1}else{$el.value = 0}" class="w-6 h-6 rounded-full">
-                                        </template>
-                                        <template x-if="data.user.company.vat_registered == 0">
-                                            <input type="checkbox" name="invoice_vat_registered" value="0" x-on:click="if($el.value == 0){$el.value = 1}else{$el.value = 0}" class="w-6 h-6 rounded-full">
+                                <label for="level" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Аз съм артист ?</label>
+                            </div>
+
+                            <!-- ПРЕД КАМЕРА ПОРТФОЛИО -->
+                            <template x-if="type == 1">
+                                <div>
+
+                                    <div class="grid grid-cols-2 gap-5">
+
+                                        <input type="hidden" name="type_id" value="1">
+
+                                        <template x-if="data.my_portfolio">
+                                            <div id="activediv" class="border border-black relative rounded-lg col-span-2">
+                                                <label for="portfolio_subtypes" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Роля </label>
+                                                <div class="p-3 grid grid-cols-1">
+                                                    <template x-for="option in data.portfolio_subtypes.filter(element => element.type_id === 1)">
+                                                        <div class="flex gap-2 space-y-2 items-center">
+                                                            <input type="checkbox" class="md:scale-125  accent-black " name="subtype_ids[]" @change="if($el.checked && countSelected == 3 ){ data.needPlan = true; $el.checked = false; countSelected++}; if(!$el.checked ){countSelected-- }; if($el.checked && countSelected < 4){ countSelected++ } " :checked="data.my_portfolio.subtype_ids.includes(option.id.toString())" :value="option.id">
+                                                            <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                        </div>
+                                                    </template>
+
+                                                </div>
+
+                                            </div>
                                         </template>
 
-                                        <span class="ml-2">Регистрирана по ДДС</span>
-                                    </label>
-                                </div>
+                                    </div>
 
-                                <div class="col-span-1 p-3">
-                                    <a @click="alpineListeners('User.put_accounts', $event)" keyname="user" class="flex items-center justify-center rounded-md px-6 py-3 text-base  cursor-pointer bg-stone-900 dark:bg-gray-900 dark:hover:bg-gray-800 font-medium text-white shadow-sm hover:bg-stone-800">Запиши</a>
-                                </div>
+                                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
 
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-
-                <!-- END ============== invoice =============== -->
-
-                <!-- ============== orders =============== -->
-                <div x-show="tab == 'orders'">
-
-                    <div apidata="Shop.get_orders">
-                        <template x-for="order in data.orders">
-                            <div x-data="{expanded: false}" class=" shadow-2xl py-3 mb-2 px-3 bg-white dark:bg-gray-950 rounded-[15px]">
-                                <button @click="expanded = ! expanded" class="drop-shadow-xl hover:drop-shadow-xl w-full text-left text-gray-900 dark:text-gray-200 text-lg mb-1 font-medium title-font ">
-                                    Поръчка -
-                                    <span x-text="order.number">993593</span>
-                                    Общо
-                                    <span x-text="order.price">151.05</span>
-                                    <span x-text="order.currency.symbol">лв.</span>
-                                    <span class="float-right">
-                                        <i x-show="!expanded" class="fa-solid fa-plus" style="display: none;"></i>
-                                        <i x-show="expanded" class="fa-solid fa-minus" style=""></i></span>
-                                </button>
-
-                                <div x-show="expanded">
-
-                                    <div class="grid lg:grid-cols-3 gap-4 xl:gap-20 p-5">
-
-                                        <div class="bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 px-6 py-[10px] rounded-[25px]">
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Дата : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.date_created"></span>
-                                            </div>
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Плащане : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.payment.title"></span>
-                                            </div>
-
-                                            <!-- <template x-if="order.promocode_discount != 0">
-                            <div class="my-2">
-                              <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Отстъпка от промокод : </span>
-                              <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="'- ' + order.promocode_discount + ' ' + order.currency.symbol"></span>
-                            </div>
-                          </template> -->
-
-                                            <!-- <template x-if="order.tokens_price != 0">
-                            <div class="my-2">
-                              <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Отстъпка от промоточки : </span>
-                              <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="'- ' + order.tokens_price + ' ' + order.currency.symbol"></span>
-                            </div>
-                          </template> -->
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Цена : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.price + ' ' + order.currency.symbol"></span>
-                                            </div>
-
-                                            <!-- <div class="my-2">
-                            <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Доставка : </span>
-                            <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.shipping_price + ' ' + order.currency.symbol"></span>
-                          </div> -->
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Общо за плащане : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.total_price + ' ' + order.currency.symbol"></span>
-                                            </div>
-
+                                        <div class="relative">
+                                            <select name="properties[level]" id="level" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.level.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                            <label for="level" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Ниво на уменията</label>
                                         </div>
 
-                                        <div class="bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 px-6 py-[10px] rounded-[25px]">
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Адрес за доставка : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.address.shipping_address"></span>
-                                            </div>
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Телефон : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.phone"></span>
-                                            </div>
-
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Статус : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.status.title"></span>
-                                            </div>
-
+                                        <div class="relative">
+                                            <select name="properties[freelance]" id="freelance" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.freelance.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                            <label for="freelance" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Собственост на ?</label>
                                         </div>
 
-                                        <div class="bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 px-6 py-[10px] rounded-[25px]">
+                                        <div class="text-white relative !w-full bg-white" x-data x-init="flatpickrInstance = flatpickr($el.querySelector('input'), {dateFormat: 'Y-m-d',})">
+                                            <input name="properties[birthday]" id="birthday" :value="data.my_portfolio.properties.birthday.value" type="text" placeholder="YYYY-MM-DD" class="block px-2.5 pb-2.5 h-[45px] !w-full focus:!outline-none pt-4 !w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" />
+                                            <label for="birthday" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Дата на раждане</label>
+                                        </div>
 
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Имейл : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.email"></span>
+                                        <div class="relative">
+                                            <select name="properties[gender]" id="gender" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.gender.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                            <label for="gender" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Пол</label>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="ethnicity" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Какъв етнос сте?</label>
+                                            <select name="properties[ethnicity]" id="ethnicity" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.ethnicity.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="employment_status" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Трудов статус: </label>
+                                            <select name="properties[employment_status]" id="employment_status" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.employment_status.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="hair_color" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Цвят коса </label>
+                                            <select name="properties[hair_color]" id="hair_color" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.hair_color.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="eye_color" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Цвят очи </label>
+                                            <select name="properties[eye_color]" id="eye_color" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.eye_color.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-5 mt-6" x-data="{showLocation : 1}">
+                                        <template x-if="data.my_portfolio">
+                                            <div>
+                                                <div apidata="Countries.get_countries" keyname="countries" class="relative">
+                                                    <select name="properties[country_id1]" id="country_id" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                        <template x-for="country in data.countries">
+                                                            <option x-text="country.title" :selected="data.my_portfolio.properties.country_id1.value == country.id" :value="country.id"></option>
+
+                                                        </template>
+                                                    </select>
+                                                    <label for="country_id" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Държава</label>
+                                                </div>
                                             </div>
+                                        </template>
 
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Име : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.first_name"></span>
+                                        <div class=" relative">
+                                            <input type="text" id="city1" name="properties[city1]" :value="data.my_portfolio.properties.city1.value" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="city1" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Град </label>
+                                        </div>
+
+                                        <template x-if="data.my_portfolio">
+
+                                            <div x-show="showLocation > 1" class="relative">
+                                                <select name="properties[country_id2]" id="country_id2" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                    <template x-for="country in data.countries">
+                                                        <option x-text="country.title" :selected="data.my_portfolio.properties.country_id2.value == country.id" :value="country.id"></option>
+
+                                                    </template>
+                                                </select>
+                                                <label for="country_id2" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Държава</label>
                                             </div>
+                                        </template>
 
-                                            <div class="my-2">
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Фамилия : </span>
-                                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="order.last_name"></span>
+                                        <div x-show="showLocation > 1" class="relative">
+                                            <input type="text" id="city2" name="properties[city2]" :value="data.my_portfolio.properties.city2.value" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="city2" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Град</label>
+                                        </div>
+
+                                        <template x-if="data.my_portfolio">
+                                            <div x-show="showLocation > 2" class="relative">
+                                                <select name="properties[country_id3]" id="country_id3" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                    <template x-for="country in data.countries">
+                                                        <option x-text="country.title" :selected="data.my_portfolio.properties.country_id3.value == country.id" :value="country.id"></option>
+                                                    </template>
+                                                </select>
+                                                <label for="country_id3" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Държава</label>
                                             </div>
+                                        </template>
 
+                                        <div x-show="showLocation > 2" class="relative">
+                                            <input type="text" id="city3" name="properties[city3]" :value="data.my_portfolio.properties.city3.value" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="city3" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Град</label>
+                                        </div>
+
+                                        <p x-show="showLocation < 3" @click="showLocation++" class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit col-span-2 md:col-span-1  bg-black text-white mt-2 mb-6">
+                                            <i class="fa-solid fa-plus"></i>
+                                            Добави локация
+                                        </p>
+
+                                    </div>
+
+                                    <div class="col-span-2">
+                                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black pt-2 md:pt-8">Мерки на тялото</h2>
+                                        <div class=" border border-gray-950 w-[50px]  "></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-5 mt-6">
+
+                                        <div class="border border-black col-span-2 rounded-lg relative">
+                                            <label for="clothing_size" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Размери на дрехите </label>
+                                            <div class="p-3 flex flex-wrap gap-5">
+                                                <template x-for="option in data.my_portfolio.properties.clothing_size.options">
+                                                    <div class="flex gap-2 space-y-2 items-center">
+                                                        <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[clothing_size][]" :value="option.id">
+                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <div class="relative col-span-2 md:col-span-1">
+                                            <label for="body_type" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Тип тяло </label>
+                                            <select name="properties[body_type]" id="body_type" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.body_type.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
                                         </div>
 
                                     </div>
 
-                                    <hr class="my-3">
-                                    <div class="bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 px-[15px] py-[10px] rounded-[25px]">
+                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-5 mt-6">
 
-                                        <p class="text-gray-900 dark:text-gray-200 text-lg mb-1 font-bold title-font ">Продукти :</p>
-                                        <div class="grid xl:grid-cols-2 gap-3 lg:gap-10">
+                                        <template x-if="data.my_portfolio">
+                                            <div class="relative">
+                                                <label for="height" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Височина </label>
+                                                <select name="properties[height]" id="height" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                                    <template x-for="i in 181">
+                                                        <option :value="i + 49" :selected="i + 49 == data.my_portfolio.properties.height.value" x-text="i + 49 + ' СМ' "></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </template>
 
-                                            <!--  -->
+                                        <template x-if="data.my_portfolio">
+                                            <div class="relative">
+                                                <label for="chest" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Гръдна обиколка </label>
+                                                <select name="properties[chest]" id="chest" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                                    <template x-for="i in 151">
+                                                        <option :value="i + 29" :selected="i + 29 == data.my_portfolio.properties.chest.value" x-text="i + 29 + ' СМ' "></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </template>
 
-                                            <div class="mt-[10px] ">
+                                        <template x-if="data.my_portfolio">
+                                            <div class="relative">
+                                                <label for="waist" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Талия </label>
+                                                <select name="properties[waist]" id="waist" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                                    <template x-for="i in 221">
+                                                        <option :value="i + 29" :selected="data.my_portfolio.properties.waist.value == i + 29" x-text="i + 29 + ' СМ' "></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </template>
 
-                                                <template x-for="product in order.products">
-                                                    <div class="" :data-id="'cartProduct-'+product.id">
-                                                        <div class="p-2 flex  bg-white dark:bg-gray-950 rounded-[15px] mt-[15px] shadow md:h-[120px]">
+                                        <template x-if="data.my_portfolio">
+                                            <div class="relative">
+                                                <label for="hans" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Ханш </label>
+                                                <!-- <input type="number" name="properties[hans]" id="hans" :value="data.my_portfolio.properties.hans.value" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""> -->
+                                                <select name="properties[hans]" id="hans" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                                    <template x-for="i in 171">
+                                                        <option :value="i + 29" :selected="i + 29 == data.my_portfolio.properties.hans.value" x-text="i + 29 + ' СМ' "></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </template>
 
-                                                            <img :src="product.images[0] ? product.images[0].url : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain max-h-[150px] md:max-h-unset">
+                                        <template x-if="data.my_portfolio">
 
-                                                            <div class="md:pl-10 pt-1 grow">
-                                                                <h1 @click="forceChange(product.url)" class="text-[15px] text-neutral-800 font-bold hover:text-orange-400 dark:text-gray-200" x-text="product.title">ЛУК СУХ КГ</h1>
-                                                                <!-- START TAGS ICONS  -->
-                                                                <div class="flex pt-3 md:h-5 p-2 ">
-                                                                    <template x-for="tag in product.tags">
-                                                                        <div class="w-[20px]" x-data="{visible : false }">
-                                                                            <img class="w-[20px]" :src="tag.icon" alt="" @mouseover="visible = true" @mouseout="visible = false">
-                                                                            <div x-show="visible" class="grid grid-cols-10 py-[10px] pr-[10px] absolute w-[350px] bg-white dark:bg-gray-950 z-50 left-0" style="box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2); border-radius:20px">
-                                                                                <div class="col-span-2 flex justify-center items-baseline">
-                                                                                    <img class="w-2/4 h-auto object-contain" :src="tag.icon" :title="tag.tag" alt="">
-                                                                                </div>
-                                                                                <div class="col-span-8">
-                                                                                    <p class="text-[15px] font-bold" x-text="tag.tag">Веган</p>
-                                                                                    <p class="text-[14px] " x-text="tag.desc">Веганската диета изключва не само месото, но и млечни и животински продукти като яйца, сирене, кашкавал, мляко и съставки като желатин, мед, някои форми на витамин D и много други.</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </template>
-                                                                </div>
-                                                                <!-- END TAGS ICONS  -->
-                                                            </div>
+                                            <div class="relative">
+                                                <label for="shoe_size" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Размер обувки </label>
+                                                <!-- <input type="number" name="properties[shoe_size]" id="shoe_size" :value="data.my_portfolio.properties.shoe_size.value" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""> -->
+                                                <select name="properties[shoe_size]" id="shoe_size" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                                    <template x-for="i in 35">
+                                                        <option :value="i + 17" :selected="i + 17 == data.my_portfolio.properties.shoe_size.value" x-text="i + 17 + ' EU.' "></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </template>
 
-                                                            <div class="md:px-5 flex flex-col justify-around items-end ">
+                                    </div>
 
-                                                                <div class="flex">
-                                                                    <p class="text-[14px]  font-bold">Купени </p>
-                                                                    <span class="ml-1 text-[14px]  font-bold" x-text="product.quantity + ' бр.'"></span>
-                                                                </div>
+                                    <div class="col-span-2">
+                                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black pt-8">Белези </h2>
+                                        <div class=" border border-gray-950 w-[50px]  "></div>
+                                    </div>
 
-                                                                <div class=" flex flex-col justify-between h-auto">
-                                                                    <div class="flex space-between">
-                                                                        <span class="font-bold">за</span>
-                                                                        <span x-text="product.variation.selling_price.toFixed(2)" class=" text-sm font-bold ml-1 text-[14px] "></span>
-                                                                        <span text="product.variation.currency" class=" text-sm font-bold ml-1 text-[14px] "> лв./</span>
-                                                                        <span x-text="product.variation.unit.title" class=" text-sm font-bold ml-1 text-[14px] "></span>
-                                                                    </div>
-                                                                </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-6">
 
-                                                                <div class="flex">
-                                                                    <p class="font-bold text-[14px] shrink-0" x-text=" 'Общо ' + product.total"> </p>
-                                                                    <span text="product.variation.currency" class="text-[14px] font-bold text-sm font-bold ml-1"> лв.</span>
-                                                                </div>
+                                        <div class="relative">
+                                            <label for="birthmarks" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Родилни белези </label>
+                                            <select name="properties[birthmarks]" id="birthmarks" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.birthmarks.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
 
-                                                            </div>
+                                        <div class="relative">
+                                            <label for="scars" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Придобити белези вследствие на травма </label>
+                                            <select name="properties[scars]" id="scars" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.scars.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
 
-                                                        </div>
+                                        <div class="relative">
+                                            <label for="tattoos" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Татуировки </label>
+                                            <select name="properties[tattoos]" id="tattoos" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.tattoos.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="piercings" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Пиърсинги </label>
+                                            <select name="properties[piercings]" id="piercings" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.piercings.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="hyaluron" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Хиалурон / филъри </label>
+                                            <select name="properties[hyaluron]" id="hyaluron" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.hyaluron.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <input type="text" name="properties[other_scar]" id="other_scar" :value="data.my_portfolio.properties.other_scar.value" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <label for="other_scar" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Други отличителни белези </label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-span-2">
+                                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black pt-8">Допълнителна информация </h2>
+                                        <div class=" border border-gray-950 w-[50px]  "></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-5 mt-6">
+
+                                        <div class="relative col-span-2">
+                                            <textarea name="properties[hobbies]" id="hobbies" :value="data.my_portfolio.properties.hobbies.value" cols="" rows="4" class="block px-2.5 pb-2.5   focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""></textarea>
+                                            <label for="hobbies" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Хобита или допълнителни умения </label>
+                                        </div>
+
+                                        <div class="relative col-span-2">
+                                            <textarea name="properties[articles]" id="articles" :value="data.my_portfolio.properties.articles.value" cols="" rows="4" class="block px-2.5 pb-2.5  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""></textarea>
+                                            <label for="articles" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Има ли статии за Вас, участвали ли сте в предавания, шоу програми, филми или други?</label>
+                                        </div>
+
+                                        <div class="relative col-span-2">
+                                            <textarea name="properties[experience]" id="experience" :value="data.my_portfolio.properties.experience.value" cols="" rows="4" class="block px-2.5 pb-2.5   focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""></textarea>
+                                            <label for="experience" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Опишете подробно Вашия опит</label>
+                                        </div>
+
+                                        <div class="border border-black rounded-lg relative col-span-2 md:col-span-1">
+                                            <label for="languages" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Езикови умения над средното ниво на владеене</label>
+                                            <div class="p-3 grid grid-cols-2 ">
+                                                <template x-for="option in data.my_portfolio.properties.languages.options">
+                                                    <div class="flex gap-2 space-y-2 items-center">
+                                                        <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[languages][]" :value="option.id">
+                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <div class="border border-black rounded-lg relative col-span-2 md:col-span-1">
+                                            <label for="not_want" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">В какви ангажименти НЕ бихте искали да участвате?</label>
+                                            <div class="p-3 ">
+                                                <template x-for="option in data.my_portfolio.properties.not_want.options">
+                                                    <div class="flex gap-2 space-y-2 items-center ">
+                                                        <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[not_want][]" :value="option.id">
+                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+                                        <div class="relative">
+                                            <label for="underwear" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Съгласни ли сте да се снимате по бельо (будоарна фотография)? </label>
+                                            <select name="properties[underwear]" id="underwear" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.underwear.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="showing_body" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Имате ли проблем с показването на която и да била част от тялото </label>
+                                            <select name="properties[showing_body]" id="showing_body" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.showing_body.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="relative">
+                                            <label for="outside_country" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Бихте ли приемали ангажименти извън страната? </label>
+                                            <select name="properties[outside_country]" id="outside_country" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in data.my_portfolio.properties.outside_country.options">
+                                                    <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </template>
+
+                            <!-- ЗАД КАМЕРА АТИСТИ -->
+                            <template x-if="type == 2">
+                                <div class="grid grid-cols-2 gap-5">
+                                    <input type="hidden" name="type_id" value="2">
+
+                                    <template x-if="data.my_portfolio">
+
+                                        <div class="border border-black relative rounded-lg col-span-2">
+                                            <label for="portfolio_subtypes" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Роля </label>
+                                            <div class="p-5 grid sm:grid-cols-2 grid-cols-1 md:grid-cols-3">
+                                                <template x-for="option in data.portfolio_subtypes.filter(element => element.type_id === 2)">
+                                                    <div class="flex gap-2 space-y-2 items-center">
+                                                        <input type="checkbox" class="md:scale-125  accent-black" name="subtype_ids[]" @change="if($el.checked && countSelected == 3){ data.needPlan = true; $el.checked = false; countSelected++}; if(!$el.checked ){countSelected-- }; if($el.checked && countSelected < 4){ countSelected++ } " :checked="data.my_portfolio.subtype_ids.includes(option.id.toString())" :value="option.id">
+                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
                                                     </div>
                                                 </template>
                                             </div>
 
                                         </div>
+                                    </template>
 
+                                    <div class="relative">
+                                        <label for="level2" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Ниво на уменията</label>
+                                        <select name="properties[level]" id="level2" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <template x-for="option in data.my_portfolio.properties.level.options">
+                                                <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+
+                                    <div class="relative">
+                                        <label for="freelance" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Собственост на ?</label>
+                                        <select name="properties[freelance]" id="freelance" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                            <template x-for="option in data.my_portfolio.properties.freelance.options">
+                                                <option x-text="option.title" :selected="option.selected == 1" :value="option.id"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+
+                                    <div class="relative col-span-2">
+                                        <textarea name="properties[articles]" id="articles" :value="data.my_portfolio.properties.articles.value" id="" cols="" rows="4" class="block px-2.5 pb-2.5   focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""></textarea>
+                                        <label for="articles" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Има ли статии за Вас, участвали ли сте в предавания, шоу програми, филми или други?</label>
+                                    </div>
+
+                                    <div class="relative col-span-2">
+                                        <textarea name="properties[experience]" id="experience" :value="data.my_portfolio.properties.experience.value" id="" cols="" rows="4" class="block px-2.5 pb-2.5   focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""></textarea>
+                                        <label for="experience" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Опишете подробно Вашия опит </label>
+                                    </div>
+
+                                    <div class="border border-black rounded-lg col-span-2 relative">
+                                        <label for="not_want" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">В какви ангажименти НЕ бихте искали да участвате?</label>
+                                        <div class="p-3">
+                                            <template x-for="option in data.my_portfolio.properties.not_want.options">
+                                                <div class="flex gap-2 space-y-2 items-center">
+                                                    <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[not_want][]" :value="option.id">
+                                                    <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </template>
+
+                            <div class="relative mt-16 flex justify-center">
+                                <a @click="alpineListeners('User.post_portfolios', $event)" keyname="portfolio" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                            </div>
+                        </form>
+
+                        <div>
+                            <p class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-10">Галерия </p>
+                            <div class=" border border-gray-950 w-[150px]" apidata="User.get_portfolio_subtypes"></div>
+                            <div class="grid grid-cols-2 lg:grid-cols-4 py-5 gap-2">
+                                <template x-for="image in data.my_portfolio.images">
+                                    <div class="relative">
+                                        <img :src="image.url" class="w-full aspect-square object-cover" alt="">
+                                        <div class="absolute top-0 right-2">
+                                            <div>
+                                                <form>
+                                                    <i @click="alpineListeners('User.delete_portfolio_images', $event); " :data-id="image.id" class="fa-regular fa-trash-can"></i>
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template x-if="!data.my_portfolio.images[0]">
+                                    <p>Нямате качени снимки. </p>
+                                </template>
+                            </div>
+
+                            <form class="" x-data="{loading : false}">
+                                <input type="hidden" name="emptyAvatar" value="asd">
+                                <div class="flex items-center justify-center w-full lg:w-1/2">
+
+                                    <template x-if="loading">
+                                        <label for="" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+                                            <i class="fa-solid fa-spinner animate-spin text-base lg:text-3xl text-gray-950"></i>
+                                            <p class="mt-6 text-gray-950">Качване ...</p>
+                                        </label>
+                                    </template>
+
+                                    <template x-if="!loading">
+                                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+
+                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                </svg>
+                                                <p class="mb-2 text-xs lg:text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP</p>
+                                            </div>
+                                            <input id="dropzone-file" multiple @change="loading = true; await alpineListeners('User.post_user_images', $event); loading = false " name="images[]" type="file" class="hidden" />
+                                        </label>
+                                    </template>
+
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <div>
+                            <p class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-5 lg:mt-20">Файлове </p>
+                            <div class=" border border-gray-950 w-[150px]" apidata="User.get_portfolio_subtypes"></div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
+
+                                <form class="" x-data="{loading : false}">
+
+                                    <input type="hidden" name="emptyAvatar" value="asd">
+
+                                    <div class="flex items-center justify-center w-full">
+
+                                        <template x-if="loading">
+                                            <label for="" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+                                                <i class="fa-solid fa-spinner animate-spin text-base lg:text-3xl text-gray-950"></i>
+                                                <p class="mt-6 text-gray-950">Качване ...</p>
+                                            </label>
+                                        </template>
+
+                                        <template x-if="!loading">
+                                            <label for="dropzone-files2" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+                                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                    </svg>
+                                                    <p class="mb-2 text-xs lg:text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                    <!-- <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP</p> -->
+                                                </div>
+                                                <input id="dropzone-files2" multiple @change="loading = true; await alpineListeners('User.post_user_files', $event); loading = false" name="files[]" type="file" class="hidden" />
+                                            </label>
+                                        </template>
+                                    </div>
+                                </form>
+
+                                <div class="md:py-5">
+                                    <p class="font-semibold">Качени документи : </p>
+                                    <template x-if="data.my_portfolio.files[0]">
+
+                                        <ul class="list-disc pl-5">
+
+                                            <template x-for="file in data.my_portfolio.files">
+                                                <li class="flex">
+                                                    <a target="_blank" :href="file.url" x-text="file.filename"></a>
+                                                    <p @click="alpineListeners('User.delete_portfolio_files', $event)" :data-id="file.id">x</p>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+
+                                    <template x-if="!data.my_portfolio.files[0]">
+                                        <p>Нямате качени Файлове. </p>
+                                    </template>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <p class="col-span-2  py-10 italic font-semibold text-black text-xs md:text-base ">Внимание! При всяка невярна или неточна информация, може да рефлектира на вашият имидж, кариера, портфолио, заетост и отзиви на клиенти.</p>
+
+                </div>
+                <!-- END ============== END PORTFOLIO =============== -->
+
+                <!-- ==============Start BUISNESS PORTFOLIO =============== -->
+                <div x-show="tab == 'bPortfolio'" apiData="User.get_my_bussiness_portfolio" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Важно !</h2>
+                    <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
+
+                    <p class="col-span-2  py-6 italic font-semibold text-black text-xs md:text-base"> При въвеждането на данни, моля бъдете сигурни, че информацията е точна и актуална. Неправилни или неточни данни могат да доведат до неблагоприятни последствия за вашия професионален имидж, кариера и репутация. Вярно и изчерпателно попълнени профили, портфолиа и обяви не само подобряват вашите шансове за успех, но и укрепват доверието на клиентите и потребителите. Благодарим ви за вниманието и сътрудничеството!</p>
+
+                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Документ за самоличност</h2>
+                    <div class=" border border-gray-950 w-[50px]" apiData="User.get_my_passport"></div>
+
+                    <template x-if="true">
+                        <div class="py-6 pt-3">
+                            <p class="text-base lg:text-lg font-semibold">Моля, качете нужните документ за самоличност.</p>
+                            <p class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit  bg-black text-white mt-2 mb-6" @click="data.passportModal = true">Качи документ</p>
+                        </div>
+                    </template>
+
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Портфолио</h2>
+                    <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
+
+                    <div apidata="Countries.get_countries" keyname="countries">
+                        <div apiData="User.get_portfolio_types"></div>
+
+                        <form>
+                            <div class=" bg-white   w-full   relative  mt-6">
+
+                                <div class="grid grid-cols-2">
+
+                                    <div class="relative m-2 lg:m-3 col-span-2">
+                                        <input :value="data.my_bussiness_portfolio.companyName" id="companyName" type="text" name="companyName" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                        <label for="companyName" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Име на компанията</label>
+                                    </div>
+
+                                    <div class="relative m-2 lg:m-3 col-span-2">
+                                        <textarea x-text="data.my_bussiness_portfolio.companyDescription" name="companyDescription" placeholder="" id="companyDescription" cols="30" rows="10" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder=""></textarea>
+                                        <label for="companyDescription" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Описание</label>
+                                    </div>
+
+                                    <template x-if="data.my_bussiness_portfolio">
+                                        <div apidata="Countries.get_countries" keyname="countries" class="relative m-2 lg:m-3">
+                                            <label for="country_id" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Държава</label>
+
+                                            <select name="country_id" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="country in data.countries">
+                                                    <option :selected="country.id == data.my_bussiness_portfolio.country.id" x-text="country.title" :value="country.id"></option>
+
+                                                </template>
+                                            </select>
+
+                                        </div>
+                                    </template>
+
+                                    <div class="relative m-2 lg:m-3 ">
+                                        <input :value="data.my_bussiness_portfolio.business_activity" type="text" id="business_activity" name="business_activity" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                        <label for="business_activity" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Дейност компанията</label>
+                                    </div>
+
+                                </div>
+
+                                <div class="relative m-2 lg:m-3 flex justify-center my-16">
+                                    <a @click="alpineListeners('User.post_portfolios_bussiness', $event)" keyname="portfolio" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <div>
+                            <p class="text-base lg:text-2xl pt-10">Галерия </p>
+                            <div class="grid grid-cols-2 lg:grid-cols-4 py-5 gap-2">
+                                <template x-for="image in data.my_bussiness_portfolio.images">
+                                    <div class="relative">
+                                        <img :src="image.url" class="w-full aspect-square object-cover" alt="">
+                                        <div class="absolute top-0 right-2">
+                                            <div>
+                                                <form>
+                                                    <i @click="alpineListeners('User.delete_portfolio_images', $event); " keyName="my_bussiness_portfolio" :data-id="image.id" class="fa-regular fa-trash-can"></i>
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template x-if="!data.my_bussiness_portfolio.images[0]">
+                                    <p>Нямате качени снимки. </p>
+                                </template>
+                            </div>
+
+                            <form class="" x-data="{loading : false}">
+                                <input type="hidden" name="emptyAvatar" value="asd">
+
+                                <div class="flex items-center justify-center w-full lg:w-1/2">
+
+                                    <template x-if="loading">
+                                        <label for="" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+                                            <i class="fa-solid fa-spinner animate-spin text-base lg:text-3xl text-gray-950"></i>
+                                            <p class="mt-6 text-gray-950">Качване ...</p>
+                                        </label>
+                                    </template>
+
+                                    <template x-if="!loading">
+                                        <label for="dropzone-file3" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                </svg>
+                                                <p class="mb-2 text-xs lg:text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP</p>
+                                            </div>
+                                            <input id="dropzone-file3" multiple @change="loading = true; await alpineListeners('User.post_user_images', $event); loading = false" keyName="my_bussiness_portfolio" name="images[]" type="file" class="hidden" />
+                                        </label>
+                                    </template>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <p class="col-span-2 w-full lg:w-1/2 py-10 italic font-semibold text-black text-xs md:text-base">Внимание! При всяка невярна или неточна информация, може да рефлектира на вашият имидж, кариера, портфолио, заетост и отзиви на клиенти.</p>
+
+                </div>
+                <!-- END ============== END BUISNESS PORTFOLIO =============== -->
+
+                <!-- ============== POST ADS =============== -->
+                <div x-show="tab == 'postAd'" apiData="Ads.get_ads_types" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+
+                    <form>
+                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Добави Обява</h2>
+
+                        <div class="  border border-gray-950 w-[80px] mt-2"></div>
+                        <div x-data="{selectedAdIndex: 0  }" class="relative   grid grid-cols-1 md:grid-cols-2 gap-1.5 mt-6">
+
+                            <input type="hidden" name="type_id" :value="data.ads_types[selectedAdIndex].id">
+                            <input type="hidden" name="category_id" value="1">
+                            <input type="hidden" name="status_id" value="1">
+
+                            <div class="relative m-2 lg:m-3 md:col-span-2">
+                                <label for="type" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Тип обява </label>
+                                <select x-model.number="selectedAdIndex" id="type" class="p-2 text-xs md:text-base h-[45px] w-full bg-white text-black rounded-md border border-black outline-slate-600 transition-colors duration-200 ease-in-out">
+                                    <template x-for="(type, index) in data.ads_types" :key="index">
+                                        <option :value="index" x-text="type.title"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <div class="relative m-2 lg:m-3 md:col-span-2">
+                                <div class="relative">
+                                    <input type="text" name="title" id="titleAd" placeholder="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                    <label for="titleAd" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Заглавие</label>
+                                </div>
+                            </div>
+
+                            <div class="relative m-2 lg:m-3 md:col-span-2">
+                                <textarea name="description" placeholder="" id="description" rows="5" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer"></textarea>
+                                <label for="description" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Oписание</label>
+                            </div>
+
+                            <div class="relative m-2 lg:m-3">
+                                <label for="title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Постер или фоново лого</label>
+                                <input type="file" name="images[]" placeholder="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                            </div>
+
+                            <template x-for="field in data.ads_types[selectedAdIndex].fields">
+
+                                <div class="relative m-2 lg:m-3">
+
+                                    <!-- TYPE STRING -->
+                                    <template x-if="field.type == 'string' ">
+                                        <div>
+                                            <input type="text" :id="field.title" placeholder="" :name="'fields['+ field.id + ']'" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE STRING  -->
+
+                                    <!-- TYPE NUMBER -->
+                                    <template x-if="field.type == 'number' ">
+                                        <div>
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                            <input type="number" :name="'fields['+ field.id + ']'" class=" p-2 w-full bg-white  rounded-md border border-black outline-slate-600 transition-colors duration-200 ease-in-out">
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE NUMBER  -->
+
+                                    <!-- TYPE SELECT -->
+                                    <template x-if="field.type == 'select' ">
+                                        <div>
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Сектор</label>
+                                            <select :name="'fields['+ field.id + ']'" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in field.options">
+                                                    <option :value="option.title" x-text="option.title">Актьори</option>
+                                                </template>
+                                            </select>
+
+                                        </div>
+                                    </template>
+                                    <!--END TYPE SELECT -->
+
+                                    <!-- TYPE TYPE DATE -->
+                                    <template x-if="field.type == 'date' ">
+                                        <div id="divDate" class="text-black" x-data x-init="flatpickrInstance = flatpickr($el.querySelector('input'), {dateFormat: 'Y-m-d',})">
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                            <input :name="'fields['+ field.id + ']'" type="text" placeholder="YYYY-MM-DD" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" />
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE DATE  -->
+
+                                    <!-- TYPE TYPE FILE -->
+                                    <template x-if="field.type == 'file' ">
+                                        <div>
+                                            <label :for="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Upload document with the job information</label>
+                                            <input type="file" :name="'fields['+ field.id + ']'" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" />
+
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE FILE  -->
+
+                                </div>
+
+                            </template>
+
+                            <template x-if="data.ads_types[selectedAdIndex].id == 1">
+                                <div class="relative m-2 lg:m-3">
+                                    <label for="fileRequired" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Файл при кандидатсване</label>
+                                    <select name="fileRequired" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                        <option value="0">Не</option>
+                                        <option value="1">Да</option>
+                                    </select>
+                                </div>
+                            </template>
+
+                        </div>
+
+                        <div class="relative m-2 lg:m-3 flex justify-center my-16">
+                            <a @click="res = await alpineListeners('Ads.post_ads', $event); res == 1 ? tab = 'myAds' : '' " class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- END ============== END POST ADS =============== -->
+
+                <!-- ============== Edit ADS =============== -->
+                <div x-show="tab == 'editAd'" apiData="Ads.get_ads_types" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+                    <form>
+                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Редакция на обява</h2>
+                        <div class="  border border-gray-950 w-[80px] mt-2"></div>
+
+                        <div class="relative   grid grid-cols-1 md:grid-cols-2 mt-6">
+                            <input type="hidden" name="id" :value="data.editAd.id">
+                            <input type="hidden" name="type_id" :value="data.editAd.type_id">
+                            <!-- <input type="hidden" name="type_id" :value="data.ads_types[selectedAdIndex].id">
+                            <input type="hidden" name="category_id" value="1">
+                            <input type="hidden" name="status_id" value="1"> -->
+
+                            <div class="relative m-2 lg:m-3">
+                                <div class="relative">
+                                    <input type="text" :value="data.editAd.title" name="title" id="titleAd" placeholder="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                    <label for="titleAd" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Заглавие</label>
+                                </div>
+                            </div>
+
+                            <!-- <div class="relative m-2 lg:m-3">
+                                <div class="relative">
+                                    <input type="text" id="subtitleAdE" :value="data.editAd.subtitle" name="subtitle" placeholder="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                    <label for="subtitleAdE" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Под заглавие</label>
+                                </div>
+                            </div> -->
+
+                            <div class="relative m-2 lg:m-3  md:col-span-2">
+
+                                <textarea name="description" placeholder="" :value="data.editAd.description" id="description" rows="5" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer"></textarea>
+                                <label for="description" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Oписание</label>
+
+                            </div>
+
+                            <template x-if="data.editAd.type_id == 1">
+                                <div class="relative m-2 lg:m-3">
+                                    <label for="fileRequired" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Файл при кандидатсване</label>
+                                    <select name="fileRequired" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                        <option value="0">Не</option>
+                                        <option value="1">Да</option>
+                                    </select>
+                                </div>
+                            </template>
+
+                            <!-- </template> -->
+
+                            <template x-for="field in data.editAd.fields">
+
+                                <div class="relative m-2 lg:m-3">
+
+                                    <!-- TYPE STRING -->
+                                    <template x-if="field.type == 'string' ">
+                                        <div>
+                                            <input type="text" :id="field.title" :value="field.value" placeholder="" :name="'fields['+ field.id + ']'" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE STRING  -->
+
+                                    <!-- TYPE NUMBER -->
+                                    <template x-if="field.type == 'number' ">
+                                        <div>
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                            <input type="number" :name="'fields['+ field.id + ']'" :value="field.value" class=" p-2 w-full bg-white  rounded-md border border-black outline-slate-600 transition-colors duration-200 ease-in-out">
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE NUMBER  -->
+
+                                    <!-- TYPE SELECT -->
+                                    <template x-if="field.type == 'select' ">
+                                        <div>
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Сектор</label>
+                                            <select :name="'fields['+ field.id + ']'" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" placeholder="">
+                                                <template x-for="option in field.options">
+                                                    <option :value="option.title" x-text="option.title" :selected="option.selected == 1">Актьори</option>
+                                                </template>
+                                            </select>
+
+                                        </div>
+                                    </template>
+                                    <!--END TYPE SELECT -->
+
+                                    <!-- TYPE TYPE DATE -->
+                                    <template x-if="field.type == 'date' ">
+                                        <div id="divDate" class="text-black" x-data x-init="flatpickrInstance = flatpickr($el.querySelector('input'), {dateFormat: 'Y-m-d',})">
+                                            <label :for="field.title" x-text="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                            <input :name="'fields['+ field.id + ']'" :value="field.value" type="text" placeholder="YYYY-MM-DD" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" />
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE DATE  -->
+
+                                    <!-- TYPE TYPE FILE -->
+                                    <template x-if="field.type == 'file' ">
+                                        <div class="">
+                                            <label :for="field.title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Upload document with the job information</label>
+                                            <input type="file" :name="'fields['+ field.id + ']'" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer" />
+
+                                        </div>
+                                    </template>
+                                    <!-- END TYPE FILE  -->
+
+                                </div>
+                            </template>
+
+                        </div>
+
+                        <div class="relative m-2 lg:m-3">
+                            <label for="title" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Постер или фоново лого</label>
+                            <input type="file" name="images[]" placeholder="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                        </div>
+
+                        <div class="flex gap-3">
+                            <template x-for="image in data.editAd.images">
+                                <div class="w-[100px] h-[100px] !block">
+                                    <form>
+                                        <i :data-ad_id="data.editAd.id" keyName="editAd" @click="alpineListeners('Ads.delete_ads_images', $event);" :data-id="image.id" class="fa-regular fa-trash-can"></i>
+                                    </form>
+                                    <img :src="image.url" alt="" class="w-full object-cover">
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="relative m-2 lg:m-3 flex justify-center my-16">
+                            <a @click="res = await alpineListeners('Ads.post_ads', $event); res == 1 ? tab = 'myAds' : '' " class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- END ============== END EDIT AD =============== -->
+
+                <!-- ============== MY ADS =============== -->
+                <div x-show="tab == 'myAds'" apiData="Ads.get_ads" keyname="myAds" :data-user="data.user.id" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+
+                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Моите обяви</h2>
+                    <div class="  border border-gray-950 w-[80px] mt-2"></div>
+                    <div class="relative    mt-6">
+                        <template x-if="data.myAds.result.length == 0">
+                            <p class="text-black">Все още нямате качени обяви. </p>
+                        </template>
+
+                        <template x-for="(ad,index) in data.myAds.result" :key="index">
+                            <div class="group grid grid-cols-1 md:grid-cols-5 p-5 pt-0 border-l-2 border-b w-full mx-auto bg-white text-black shadow-lg rounded-t-md my-5 relative">
+                                <div class="col-span-4 order-last md:order-first">
+                                    <p x-text="ad.title" class="font-bold text-sm lg:text-2xl mt-1 md:mt-3">Application type:</p>
+                                    <p x-text="ad.subtitle" class=" text-black  text-xs lg:text-xl mt-1 md:mt-3">Portfolio appication</p>
+                                    <p x-text="ad.description" class="w-full text-xs lg:text-base  mt-1 md:mt-3 line-clamp-3"></p>
+
+                                    <div class="w-full grid grid-cols-2 gap-3 mt-5">
+                                        <template x-for="field in ad.fields">
+                                            <template x-if="field.type != 'file'">
+
+                                                <div>
+                                                    <p x-text="field.title" class="text-black text-xs lg:text-base">Ad type:</p>
+                                                    <p x-text="field.value" class="font-bold text-xs lg:text-base">Job application</p>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </div>
+
+                                </div>
+
+                                <div class="flex items-center justify-center col-span-1">
+                                    <img class="max-h-[40px] md:max-h-[250px] w-auto" :src="ad.images[0] ? ad.images[0].url : ad.user_info.avatar.url " alt="">
+                                </div>
+
+                                <div class="lg:hidden group-hover:block lg:absolute top-0 right-2">
+                                    <div class="flex gap-1.5">
+                                        <i @click="data.requestsAd = ad; tab = 'requestsAd'" class="fa-solid fa-users bg-black hover:bg-white hover:text-black hover:border-black text-white border-white border p-2 lg:p-3 rounded-md cursor-pointer"></i>
+                                        <i @click="data.editAd = ad; tab = 'editAd'" class="fa-solid fa-pencil bg-black hover:bg-white hover:text-black hover:border-black text-white border-white border p-2 lg:p-3 rounded-md cursor-pointer"></i>
+                                        <form>
+                                            <i @click="alpineListeners('Ads.delete_ads', $event); " keyName="myAds" :data-id="ad.id" class="fa-regular fa-trash-can bg-black text-white hover:bg-white hover:text-black hover:border-black border-white border p-2 lg:p-3 rounded-md cursor-pointer"></i>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+                <!-- ========================= END MY ADS =============== -->
+
+                <!-- ============== START Request ADS =============== -->
+                <div x-show="tab == 'requestsAd'" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+                    <template x-if="tab == 'requestsAd' ">
+                        <form>
+
+                            <div x-init="alpineListeners('Ads.get_ads_requests', $el)" :data-ads_id="data.requestsAd.id"></div>
+                        </form>
+                    </template>
+
+                    <!-- <div apiData="Ads.get_ads_requests" data-ads_id="44"></div> -->
+                    <div class="flex items-center gap-5">
+                        <h2 class="text-gray-900 text-black text-sm lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Кандидатсвания :</h2>
+                        <p class="text-xs lg:text-base">
+                            <span>Обява №</span>
+                            <span x-text="data.requestsAd.id"></span>
+                            <span x-text="data.requestsAd.title"></span>
+                        </p>
+                    </div>
+                    <div class="  border border-gray-950 w-[80px] mt-2"></div>
+                    <div class="relative grid grid-cols-2 lg:grid-cols-4 gap-5 mt-6  ">
+
+                        <template x-for="user in data.ads_requests">
+                            <div class="w-full h-full shadow-lg border p-2 px-4 rounded-md cursor-pointer flex justify-between">
+                                <div class="w-full  flex flex-col justify-between">
+                                    <div class="flex flex-col justify-between">
+                                        <div @click="forceChange('/bg/artist?id='+user.portfolio.id)">
+                                            <span x-text="user.portfolio.user_info.first_name" class=" text-xs lg:text-lg mt-2 text-black font-semibold"></span>
+                                            <span x-text="user.portfolio.user_info.last_name" class="text-xs lg:text-lg mt-2 text-black font-semibold"></span>
+                                        </div>
+
+                                        <div class="leading-none">
+                                            <template x-for="subtype in user.portfolio.subtypes">
+                                                <span x-text="subtype.title + ', '" class=" text-xs text-center italic ">Photographer</span>
+                                            </template>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="">
+                                        <img @click="forceChange('/bg/artist?id='+user.portfolio.id)" class="w-full h-auto aspect-square object-cover rounded-md aspect-square" :src="user.portfolio.user_info.avatar.url_10x10 != '' ? user.portfolio.user_info.avatar.url_10x10 : data.settings.logo" alt="">
+                                        <div class="flex gap-1 flex-wrap mt-2">
+                                            <template x-for="file in user.files ">
+                                                <a target="_blank" class=" flex gap-2 w-fit border bg-black text-white rounded-md flex items-center px-2 py-1 lg:px-4 lg:py-1.5 hover:bg-white hover:text-black" :href="file.url"><i class="fa-solid fa-download text-xs lg:text-base"></i></a>
+                                            </template>
+
+                                        </div>
+                                        <div @click="data.messageArtist = user.portfolio" class="flex gap-2 w-fit border bg-black text-white rounded-md flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black text-xs lg:text-base">
+                                            <i class="fa-regular fa-message"></i>
+                                            <p>Съобщение</p>
+                                        </div>
                                     </div>
 
                                 </div>
 
                             </div>
                         </template>
+
                     </div>
-
                 </div>
-                <!-- END ============== orders =============== -->
+                <!-- ========================= END Request ADS =============== -->
 
-                <!-- ============== addresses =============== -->
-                <div x-show="tab == 'addresses'" x-data="{show_add_address:false}">
-                    <div class="shadow-2xl py-3 mb-2 px-3 bg-white dark:bg-gray-950 rounded-[15px]">
-                        <div>
+                <!-- =================== START favourites ===================-->
+                <div x-show="tab == 'favourites'" apiData="User.get_favorites" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full ">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-10">
 
-                            <div class="flex flex-wrap gap-3">
-                                <template x-for="address in data.user.addresses">
+                        <template x-for="portfolio in data.favoritesPortfolios">
+                            <template x-if=" portfolio.user_info.avatar.url_10x10 != '' ">
 
-                                    <div class="rounded-[15px] relative shadow-xl bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 w-[300px]  p-5 ">
-                                        <div class="flex gap-3">
-                                            <p x-text="address.country.title"></p>
-                                            <p x-text="address.city"></p>
-                                            <p x-text="address.post_code"></p>
-                                        </div>
-                                        <p x-text="address.shipping_address"></p>
-                                        <form>
-                                            <input type="hidden" name="id" :value="address.id">
-                                            <a @click="alpineListeners('User.delete_user_address', $event);  " class=" text-red-600 cursor-pointer  font-bold absolute right-2 top-2">X</a>
-                                        </form>
+                                <div class="w-full   rounded-md cursor-pointer ">
 
-                                    </div>
-
-                                </template>
-                            </div>
-
-                            <form class="w-[610px] rounded-[15px] shadow-xl bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 mt-4 p-5">
-                                <input type="hidden" name="country_id" value="1">
-                                <input type="hidden" name="shipping_address2" value="a">
-                                <p @click="show_add_address = ! show_add_address" class="col-span-2 font-bold text-[#000000ba] flex justify-between dark:text-gray-200">Добави нов адрес
-                                    <span class="float-right">
-                                        <i x-show="!show_add_address" class="fa-solid fa-plus text-[22px] text-[#71be44]" style="display: none;"></i>
-                                        <i x-show="show_add_address" class="fa-solid fa-minus text-[22px] text-[#71be44]"></i>
-                                    </span>
-
-                                </p>
-                                <div x-show="show_add_address" class="grid grid-cols-1 sm:grid-cols-2 mt-3">
-
-                                    <div apidata="Countries.get_countries" keyname="countries" class="relative px-3">
-                                        <label for="country" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Държава</label>
-                                        <select name="country_id" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
-                                            <template x-for="country in data.countries">
-                                                <option :selected="country.id == 3" x-text="country.title" :value="country.id"></option>
-
+                                    <div class="h-fit relative group" x-data="{hover:false}" @mouseover="hover = true" @mouseover.away="hover = false">
+                                        <div class="z-10 bg-white rounded-md h-5 2xl:h-6 w-5 2xl:w-6 border border-black flex items-center justify-center absolute top-1.5 left-1.5">
+                                            <template x-if="data.favoritesPortfolios.some(obj => obj.id === portfolio.id)">
+                                                <i @click="alpineListeners('User.delete_favorites', $event)" :data-id="portfolio.id" class="fa-solid fa-check text-sm 2xl:text-[18px] text-black"></i>
                                             </template>
-                                        </select>
+                                            <template x-if="!data.favoritesPortfolios.some(obj => obj.id === portfolio.id)">
+                                                <div @click="alpineListeners('User.post_favorites', $event)" :data-portfolio_id="portfolio.id" class="absolute w-full h-full top-0 left-0"></div>
+                                            </template>
+                                        </div>
+
+                                        <img class="w-full  object-cover " style="aspect-ratio: 5/7;" :src="portfolio.user_info.avatar.url_10x10 ? portfolio.user_info.avatar.url_10x10 : data.settings.logo" alt="">
+
+                                        <div @click="if(data.screenWidth >= 1024){forceChange('/bg/artist?id='+portfolio.id)}" class="opacity-0 group-hover:!opacity-80  absolute top-0 h-full w-full bg-black   px-2.5 py-2.5   !text-sm flex flex-col justify-between">
+
+                                            <div>
+
+                                                <div class="text-white hidden group-hover:block 2xl:space-y-0.5 pt-[25px] 2xl:pt-[35px] !text-sm">
+                                                    <div class=" flex flex-wrap gap-1.5">
+                                                        <template x-for="subtype in portfolio.subtypes">
+                                                            <p class="text-white text-xs 2xl:text-sm" x-text="subtype.title + ','"></p>
+                                                        </template>
+                                                    </div>
+                                                </div>
+
+                                                <template x-if="portfolio.type_id == 1">
+                                                    <div class="text-white hidden group-hover:block  !text-sm">
+                                                        <div class="flex gap-1 2xl:mt-6">
+                                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                                <p class="text-white text-xs 2xl:text-sm" x-text="data.countries.find(obj=>obj.id == portfolio.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                                            </template>
+                                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                                <p class="text-white text-xs 2xl:text-sm" x-text="', ' + portfolio.properties.find(obj=>obj.code == 'city1').value"></p>
+                                                            </template>
+                                                        </div>
+
+                                                        <div class="mt-1 2xl:mt-6 text-xs 2xl:text-sm">
+                                                            <span>Височина </span>
+                                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'height').value + ' СМ' "></span>
+                                                        </div>
+
+                                                        <div class="mt-1 2xl:mt-6 text-xs 2xl:text-sm">
+                                                            <span>Ниво на уменията - </span>
+                                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'level').value "></span>
+                                                        </div>
+
+                                                        <div class="mt-1 2xl:mt-6 text-xs 2xl:text-sm">
+                                                            <span>Работи </span>
+                                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'freelance').value "></span>
+                                                        </div>
+
+                                                    </div>
+                                                </template>
+
+                                                <template x-if="portfolio.type_id == 2">
+                                                    <div class="text-white hidden group-hover:block  ">
+                                                        <div class="flex gap-1">
+                                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                                <p class="text-white text-xs 2xl:text-sm" x-text="data.countries.find(obj=>obj.id == portfolio.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                                            </template>
+                                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                                <p class="text-white text-xs 2xl:text-sm" x-text="', ' + portfolio.properties.find(obj=>obj.code == 'city1').value"></p>
+                                                            </template>
+                                                        </div>
+                                                        <div class="mt-1 2xl:mt-6 text-xs 2xl:text-sm">
+                                                            <span>Ниво на уменията - </span>
+                                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'level').value "></span>
+                                                        </div>
+                                                        <div class="mt-1 2xl:mt-6 text-xs 2xl:text-sm">
+                                                            <span>Работи </span>
+                                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'freelance').value "></span>
+                                                        </div>
+
+                                                        <!-- <p x-text="portfolio.properties.find(obj=>obj.code == 'experience').value" class="line-clamp-3  mt-3.5 text-white"></p> -->
+
+                                                    </div>
+
+                                                </template>
+
+                                            </div>
+
+                                            <div class="flex   gap-2 z-10">
+
+                                                <div @click="forceChange('/bg/artist?id='+portfolio.id)" class="mt-3.5 flex gap-2 w-fit 2xl:w-full border bg-white text-black rounded flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black 2xl:!hidden group-hover:flex text-xs 2xl:text-sm">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                    <p class="hidden 2xl:block">Преглед</p>
+                                                </div>
+
+                                                <div @click="data.messageArtist= portfolio" class="mt-1 mt-3.5 flex gap-2 w-fit  border bg-white text-black rounded flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black hidden group-hover:flex text-xs 2xl:text-sm">
+                                                    <i class="fa-regular fa-message"></i>
+                                                    <p class="hidden 2xl:block">Съобщение</p>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
 
-                                    <div class="px-3">
-                                        <label for="country" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Град</label>
-                                        <input class="w-full p-2  rounded-xl border-2 border-[#e1e1e1] outline-slate-600 dark:bg-gray-950 dark:text-gray-200" type="text" name="city" value="" placeholder="Град">
-                                    </div>
-                                    <div class="px-3">
-                                        <label for="country" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Адрес</label>
-                                        <input class="w-full p-2  rounded-xl border-2 border-[#e1e1e1] outline-slate-600 dark:bg-gray-950 dark:text-gray-200" type="text" name="shipping_address" value="" placeholder="Адрес">
-                                    </div>
-                                    <div class="px-3">
-                                        <label for="country" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Пощенски код</label>
-                                        <input class="w-full p-2  rounded-xl border-2 border-[#e1e1e1] outline-slate-600 dark:bg-gray-950 dark:text-gray-200" type="text" name="post_code" value="" placeholder="Пощенски код">
-                                    </div>
-                                    <div class="px-3">
-                                        <label for="streetName" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Улица</label>
-                                        <input class="w-full p-2  rounded-xl border-2 border-[#e1e1e1] outline-slate-600 dark:bg-gray-950 dark:text-gray-200" type="text" name="streetName" value="" placeholder="Улица">
-                                    </div>
-                                    <div class="px-3">
-                                        <label for="streetNumber" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Улица №</label>
-                                        <input class="w-full p-2  rounded-xl border-2 border-[#e1e1e1] outline-slate-600 dark:bg-gray-950 dark:text-gray-200" type="text" name="streetNumber" value="" placeholder="Улица  №">
+                                    <div class="2xl:mt-1 leading-none">
+                                        <span x-text=" portfolio.user_info.first_name" class="leading-none  text-black font-semibold text-xs 2xl:text-lg"></span>
+                                        <span x-text="portfolio.user_info.last_name" class="leading-none  text-black font-semibold text-xs 2xl:text-lg"></span>
                                     </div>
 
-                                    <div class="sm:col-span-2 p-3">
-                                        <a @click="alpineListeners('User.post_user_address', $event)" class="flex items-center justify-center rounded-md px-6 py-3 text-base bg-stone-900 cursor-pointer dark:bg-gray-950 dark:hover:text-orange-400  font-medium text-white shadow-sm hover:bg-stone-800">Запиши</a>
+                                </div>
+
+                            </template>
+                        </template>
+                    </div>
+                </div>
+                <!-- =================== END favourites ===================-->
+
+                <!-- =================== START CHAT GROUP MESSAGES ===================-->
+                <div x-show="tab == 'chats'" apiData="Messages.get_messages_rooms" keyname="messages" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+                    <div x-data="{room:0, type: 'group' }" class="container mx-auto md:shadow-lg rounded-md h-full">
+
+                        <div class="flex flex-col md:flex-row justify-between text-white h-full">
+                            <div class="flex flex-col w-full md:w-3/5 xl:w-2/5 border-r-2 overflow-y-auto">
+                                <div class="border-b-2 grid grid-cols-2 text-center">
+                                    <p :class="type == 'group' ? 'bg-black text-white' : ' bg-white text-black ' " class="py-2  cursor-pointer rounded" @click="type = 'group'; room = data.messages.findIndex(obj => obj.public === true); ">Групи</p>
+                                    <p :class="type == 'private' ? ' bg-black text-white ' : 'bg-white text-black' " class="py-2 cursor-pointer rounded" @click="type = 'private'; room = data.messages.findIndex(obj => obj.public === false); ">Лични</p>
+                                </div>
+
+                                <div class="max-h-[140px] md:max-h-full overflow-y-auto md:border-none border-b-2 border-black">
+
+                                    <template x-for="(group, index) in data.messages" :key="index">
+                                        <div>
+
+                                            <!-- НАМИРАМЕ ПЪРИВЯ ГРУПОВ ЧАТ И ГО СЛАГАМЕ АКТИВЕН -->
+                                            <template x-init="room = data.messages.findIndex(obj => obj.public === true);"></template>
+
+                                            <template x-if="group.public && type == 'group' || !group.public && type == 'private' ">
+                                                <div @click="room = index" :class="index == room ? 'border-l-4' : '' " class="flex flex-row py-1.5 px-1 md:py-4 md:px-2 items-center border-b-2  border-black">
+                                                    <div class="w-1/4">
+
+                                                        <!-- АКО Е ПУБЛИК ЧАТ ВЗИМАМЕ СНИМКАТА НА ОБЯВАТА -->
+                                                        <template x-if="group.public">
+                                                            <img :src="group.object.user_info.avatar.url_10x10" class="object-cover h-12 w-12 rounded-full" alt="" />
+                                                        </template>
+
+                                                        <!-- AKO E PRIVATE чат взимаме снимката на другия потребител.  -->
+                                                        <template x-if="!group.public">
+                                                            <img :src="group.users_info[group.users_info.findIndex(obj => obj.id !== data.user.id)].avatar.url_10x10" class="object-cover h-12 w-12 rounded-full" alt="" />
+                                                        </template>
+
+                                                    </div>
+                                                    <div class="w-full">
+                                                        <div x-text="group.object.title != '' ? group.object.title : group.users_info[group.users_info.findIndex(obj => obj.id !== data.user.id)].names" class="text-xs lg:text-lg font-semibold text-black">MERN Stack</div>
+                                                        <span x-text="group.messages[0] ? group.messages[0].text : group.date_created" class="text-xs lg:text-sm text-gray-500">Lusi : Thanks Everyone</span>
+
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+
+                                    </template>
+
+                                </div>
+
+                            </div>
+                            <div class="w-full md:px-5 flex flex-col shadow-lg  md:border-none md:shadow-none md:mt-0 border-2 border-gray-300 mt-6 rounded justify-between">
+                                <div class="flex flex-col mt-5 min-h-[150px] max-h-[150px] lg:max-h-full grow overflow-y-auto">
+
+                                    <template x-for="message in data.messages[room].messages.reverse()">
+                                        <div :class="message.user_id != data.user.id ? 'flex-row-reverse' : '' " class="flex justify-end mb-4">
+                                            <div :class="message.user_id != data.user.id ? 'bg-gray-50 shadow text-black' : ' bg-black text-white' " class="mr-2 py-3 px-4  rounded-bl-3xl rounded-tl-3xl rounded-tr-xl " x-text="message.text">
+                                                Welcome to group everyone !
+                                            </div>
+                                            <!-- <img src="https://source.unsplash.com/vpOeXr5wmR4/600x600" class="object-cover h-8 w-8 rounded-full" alt="" /> -->
+                                        </div>
+                                    </template>
+
+                                </div>
+                                <div class="">
+
+                                    <div class="relative border-t border-gray-300">
+                                        <form autocomplete="off">
+
+                                            <input required class="w-full  text-black  py-3 px-3 pr-20 rounded-md focus:outline-none" name="text" type="text" placeholder="type your message here..." />
+
+                                            <div @click="alpineListeners('Messages.post_messages', $event)" :data-room_id="data.messages[room].id" class=" h-full px-6 absolute right-0 top-0 flex items-center justify-center">
+                                                <i class="fa-regular fa-paper-plane text-[20px] text-gray-800"></i>
+                                            </div>
+
+                                        </form>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
 
                         </div>
                     </div>
                 </div>
-                <!-- END ============== addresses =============== -->
+                <!-- =================== END CHAT GROUP MESSAGES ===================-->
 
-                <!-- ============== passwords =============== -->
+                <!-- ============== START SUBUSERS  =============== -->
+                <div x-show="tab == 'subusers'" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Допълнителни потребители </h2>
+                    <div class=" border border-gray-950 w-[50px]"></div>
+
+                    <div apidata="User.get_subusers">
+                        <ul class="list-disc pl-5 pt-4 lg:pt-10 text-black">
+
+                            <template x-for="user in data.subusers">
+                                <li x-text="user.email" class="text-sm lg:text-base"></li>
+                            </template>
+                        </ul>
+
+                        <form>
+                            <div class=" bg-white   w-full   relative  grid grid-cols-1 sm:grid-cols-2  mt-6">
+
+                                <div class="relative m-2 lg:m-3">
+                                    <input type="text" id="addUsers" placeholder="" autocomplete="one-time-code" name="email" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                    <label for="addUsers" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Имейл</label>
+                                </div>
+
+                                <div class="relative m-2 lg:m-3">
+                                    <input type="password" id="addpassword" placeholder="" autocomplete="one-time-code" name="password" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                    <label for="addpassword" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Парола</label>
+                                </div>
+
+                                <div class="relative m-2 lg:m-3">
+                                    <a @click="alpineListeners('User.post_subusers', $event)" keyname="user" class="py-2 px-6 border border-black text-center w-full lg:w-1/2 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block text-sm lg:text-base">Добави потребител</a>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+                <!-- END ============== END SUBUSERS =============== -->
+
+                <!--  ============== END Passwords ===============  -->
                 <div x-show="tab == 'passwords'">
 
                     <form>
-                        <div class=" bg-white dark:bg-gray-950 rounded-[15px] p-8 flex flex-col md:ml-auto w-full  md:mt-0 relative z-10 shadow-xl   ">
-                            <h2 class="text-gray-900 dark:text-gray-200 text-lg mb-1 font-medium title-font ">Смяна на паролата</h2>
+                        <div class=" bg-white rounded-[15px] p-8 flex flex-col md:ml-auto w-full  md:mt-0 relative z-10 shadow-xl   ">
+                            <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black ">Смяна на паролата</h2>
+                            <div class=" border border-gray-950 w-[50px]"></div>
 
-                            <div class="w-fit p-3">
-                                <label for="f_name" class="leading-7 text-sm text-gray-600 dark:text-gray-200">Нова парола</label>
-                                <input type="password" name="password" class="p-2 w-full bg-white dark:bg-gray-950 rounded-xl border-2 border-[#e1e1e1] outline-slate-600 transition-colors duration-200 ease-in-out">
+                            <div class="py-6 lg:mt-5">
+
+                                <div class="relative lg:w-1/3">
+                                    <input type="password" id="newPass" name="password" placeholder="" class="block px-2.5 pb-2.5 h-[45px]  focus:!outline-none pt-4 w-full text-xs lg:text-sm text-black bg-white rounded-lg border border-black   peer">
+                                    <label for="newPass" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Нова парола</label>
+                                </div>
                             </div>
 
-                            <div class=" p-3">
-                                <button @click="alpineListeners('User.put_accounts', $event)" class="flex items-center justify-center rounded-md px-6 py-3 text-base  bg-stone-900 dark:bg-gray-900 dark:hover:bg-gray-800 font-medium text-white shadow-sm hover:bg-stone-800 cursor-pointer">Запиши</button>
+                            <div class=" lg:mt-5 w-full ">
+                                <p @click="alpineListeners('User.put_accounts', $event)" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</p>
                             </div>
 
                         </div>
                     </form>
                 </div>
-                <!-- END ============== passwords =============== -->
+                <!--  ============== END Passwords ===============  -->
 
-                <!-- ============== Loyal Program =============== -->
-                <div x-show="tab == 'loyalCard'">
+                <!-- ============== START SUBUSERS  =============== -->
+                <div x-show="tab == 'noAccess'" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
+                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Забранен достъп</h2>
+                    <div class=" border border-gray-950 w-[50px]"></div>
 
-                    <div class="shadow-2xl  bg-white dark:bg-gray-950 rounded-[15px] w-fit p-[50px]">
-
-                        <h2 class="text-gray-900 dark:text-gray-200 text-lg mb-1 font-medium title-font col-span-2 ml-[20px] mb-[20px]">Лоялна програма</h2>
-
-                        <div class="bg-[#f7f8f7] dark:bg-gray-800 dark:text-gray-200 px-6 py-[10px] rounded-[25px] w-fit">
-
-                            <div class="my-2">
-                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Клиент : </span>
-                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="data.user.first_name + ' ' + data.user.last_name">
-
-                                </span>
-                            </div>
-
-                            <div class="my-2">
-                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Email : </span>
-                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="data.user.email">
-
-                                </span>
-                            </div>
-
-                            <div class="my-2">
-                                <span class="text-[15px] text-gray-600 dark:text-gray-200 font-bold">Брой точки : </span>
-                                <span class="text-[15px] text-gray-600 dark:text-gray-200" x-text="data.user.balance">
-
-                                </span>
-                            </div>
-
-                        </div>
-
-                    </div>
+                    <p class="mt-10 ">Трябва да имате активен абонамент за да имате достъп до този раздел. </p>
+                    <p @click="data.needPlan = false; forceChange('/bg/plans')" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block text-sm lg:text-base mt-6">Абонирай се </p>
 
                 </div>
-                <!-- END ============== Loyal Program =============== -->
-
-                <!-- =============== START SEVICES===============  -->
-                <div x-show="tab == 'services'">
-
-                    <div apidata="Shop.get_orders" data-product_type='4' keyname="services" class="grid xl:!grid-cols-2 xxl:!grid-cols-3 grid-cols-1  gap-3">
-                        <template x-for="order in data.services">
-
-                            <template x-for="product in order.products">
-                                <div class="grid grid-cols-5 h-fit shadow-2xl py-3 mb-2 px-3 bg-white dark:bg-gray-950 rounded-[15px]">
-                                    <div class="w-full h-[200px] col-span-2">
-                                        <img :src="product.images[0] ? product.images[0].url : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain w-full h-full">
-                                    </div>
-                                    <div class="col-span-3">
-                                        <div class="flex justify-between w-full py-2  ">
-                                            <p x-text="product.title" class="font-bold "></p>
-                                            <p x-text="'№ '+order.number" class="font-bold"></p>
-
-                                        </div>
-
-                                        <div class="flex justify-between">
-
-                                            <div class="">
-                                                <span><i class="fa-regular fa-credit-card "></i></span>
-                                                <span x-text="product.quantity"></span>
-                                                <span>x</span>
-                                                <span x-text="product.total"></span>
-                                                <span x-text="product.variation.currency"></span>
-                                            </div>
-
-                                            <p>
-                                                <span><i class="fa-regular fa-calendar-days "></i></span>
-                                                <span x-text="new Date(product.date_created).toLocaleDateString('en-GB') "></span>
-                                            </p>
-                                        </div>
-
-                                        <p xtext="product.provider.title" class="w-full pt-3  font-bold">Доставчик ооД</p>
-                                        <div class="py-2">
-
-                                            <p class="py-1">
-                                                <span><i class="fa-solid fa-location-dot"></i></span>
-                                                <span xtext="product.provider.address">Бургас ул.твърдитца 11</span>
-                                            </p>
-                                            <p class="">
-                                                <span><i class="fa-solid fa-phone"></i></span>
-                                                <span xtext="product.provider.phone">08889 995 998</span>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-span-5 shadow" x-data="{showDescription : false }">
-                                        <div :class="!showDescription ? 'h-[100px]' : 'h-auto'" class="overflow-hidden">
-                                            <div x-html="product.description"></div>
-                                        </div>
-
-                                        <div class="text-center py-5">
-                                            <i @click="showDescription = ! showDescription" :class="showDescription ? 'fa-circle-up' : 'fa-circle-down'" class="fa-regular text-[32px]"></i>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </template>
-                        </template>
-                    </div>
-
-                </div>
-                <!-- =============== END SEVICES===============  -->
-
-                <!-- =============== START DIGITAL PRODUCTS ===============  -->
-                <div x-show="tab == 'digital'">
-
-                    <div apidata="Shop.get_orders" data-product_type='4' keyname="services" class="grid xl:!grid-cols-2 xxl:!grid-cols-3 grid-cols-1  gap-3">
-                        <template x-for="order in data.services">
-
-                            <template x-for="product in order.products">
-                                <div class="grid grid-cols-5 h-fit shadow-2xl py-3 mb-2 px-3 bg-white dark:bg-gray-950 rounded-[15px]">
-                                    <div class="w-full h-[200px] col-span-2">
-                                        <img :src="product.images[0] ? product.images[0].url : '/assets/designs/img/Fotter-Icon.svg'" class=" object-contain w-full h-full">
-                                    </div>
-                                    <div class="col-span-3">
-                                        <div class="flex justify-between w-full py-2  ">
-                                            <p x-text="product.title" class="font-bold "></p>
-                                            <p x-text="'№ '+order.number" class="font-bold"></p>
-
-                                        </div>
-
-                                        <div class="flex justify-between">
-
-                                            <div class="">
-                                                <span><i class="fa-regular fa-credit-card "></i></span>
-                                                <span x-text="product.quantity"></span>
-                                                <span>x</span>
-                                                <span x-text="product.total"></span>
-                                                <span x-text="product.variation.currency"></span>
-                                            </div>
-
-                                            <p>
-                                                <span><i class="fa-regular fa-calendar-days "></i></span>
-                                                <span x-text="new Date(product.date_created).toLocaleDateString('en-GB') "></span>
-                                            </p>
-                                        </div>
-
-                                        <p xtext="product.provider.title" class="w-full pt-3  font-bold">Доставчик ооД</p>
-                                        <div class="py-2">
-
-                                            <p class="py-1">
-                                                <span><i class="fa-solid fa-location-dot"></i></span>
-                                                <span xtext="product.provider.address">Бургас ул.твърдитца 11</span>
-                                            </p>
-                                            <p class="">
-                                                <span><i class="fa-solid fa-phone"></i></span>
-                                                <span xtext="product.provider.phone">08889 995 998</span>
-                                            </p>
-                                        </div>
-
-                                        <div class="py-2 w-1/2">
-                                            <a target="_blank" href="/" class="flex items-center justify-center rounded-md px-6 py-3 text-base border border-stone-900 font-medium text-black shadow-sm hover:text-white hover:bg-stone-800">
-                                                <i class="fa-solid fa-download text-[18px] mr-3 "></i>
-                                                Изтегли
-                                            </a>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-span-5 shadow" x-data="{showDescription : false }">
-                                        <div :class="!showDescription ? 'h-[100px]' : 'h-auto'" class="overflow-hidden">
-                                            <div x-html="product.description"></div>
-                                        </div>
-
-                                        <div class="text-center py-5">
-                                            <i @click="showDescription = ! showDescription" :class="showDescription ? 'fa-circle-up' : 'fa-circle-down'" class="fa-regular text-[32px]"></i>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </template>
-                        </template>
-                    </div>
-
-                </div>
-                <!-- =============== END SEVICES===============  -->
+                <!-- END ============== END SUBUSERS =============== -->
 
             </div>
         </div>
     </div>
+</div>
 </div>

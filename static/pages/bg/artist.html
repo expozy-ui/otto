@@ -1,0 +1,661 @@
+<div class="bg-white w-full">
+
+    <h2 class="   text-center mt-8 pb-4 lg:mt-12  text-[1.4em] lg:text-5xl text-black">
+        <span class="font-bold">OTTO.</span>
+        <span>Портфолио</span>
+    </h2>
+
+    <div class="w-full px-4 lg:px-0 xl:w-2/3 flex  h-auto flex-wrap mx-auto  lg:my-0 py-4 lg:py-10  " apiData="User.get_portfolios" :data-id="data.pageUrl.id" keyName="artist">
+
+        <div id="profile" class="w-full lg:w-3/5  " apiData="Countries.get_countries">
+
+            <div class=" md:p-12 text-center lg:text-left text-black">
+                <div class="flex ">
+
+                    <div class="grow flex flex-col  justify-center">
+
+                        <p class="text-sm lg:text-4xl text-center font-semibold" x-text="data.artist.user_info.first_name + ' ' + data.artist.user_info.last_name">Teddy Grozdanov </p>
+
+                        <div class="flex justify-center">
+                            <template x-for="subtype in data.artist.subtypes">
+                                <span x-text="subtype.title + ', '" class="text-xs lg:text-xs lg:text-md italic  pt-2 lg:pt-0 text-center ">Photographer</span>
+                            </template>
+                        </div>
+
+                        <div class="flex justify-center gap-2">
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'gender').value" class="text-xs lg:text-md  pt-2 lg:pt-0 text-center"></p>
+                            <template x-if="data.artist.properties.find(obj=>obj.code == 'birthday').value != ''">
+
+                                <p x-text="calculateAge(data.artist.properties.find(obj=>obj.code == 'birthday').value) + 'г.' " class="text-xs lg:text-md  pt-2 lg:pt-0 text-center"></p>
+                            </template>
+                        </div>
+
+                        <template x-if="data.artist">
+
+                            <div class="w-fit mx-auto flex">
+                                <div x-init="alpineListeners('User.get_user_ratings', $el)" :data-user_id="data.artist.user_id" class="shadow border border-gray-400 rounded-lg px-4 py-1 w-fit mx-auto mt-4">
+                                    <p x-text="data.user_ratings.rating.toFixed(1)" class="font-bold text-[22px]">0</p>
+                                </div>
+
+                            </div>
+                        </template>
+
+                        <P class="px-4 py-2 bg-black text-white hover:bg-white hover:text-black border border-black w-fit mx-auto rounded-lg mt-5 cursor-pointer text-xs md:text-sm" @click="data.user.userlevel == 2 && data.user.active_membership ? data.rateArtist = true : data.needPlan = true">Оценете артиста</P>
+
+                    </div>
+
+                    <img style="aspect-ratio: 5/7;" :src="data.artist.user_info.avatar.url_10x10" src="" class="w-1/2 md:!hidden shadow aspect-square object-cover ">
+
+                </div>
+
+                <p x-text="data.artist.properties.find(obj=>obj.code == 'experience').value" class="pt-8 text-xs lg:text-base border-b border-gray-300  pb-5 italic"></p>
+                <p class="text-sm lg:text-2xl font-semibold my-4 lg:my-6 text-black">Характеристики</p>
+                <div class="grid grid-cols-2 gap-1 pb-3">
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'level').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Ниво на уменията </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'level').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'ethnicity').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Етнос</p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'ethnicity').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'employment_status').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Трудов статус</p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'employment_status').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'hair_color').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Цвят коса</p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'hair_color').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'body_type').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Тип тяло </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'body_type').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'freelance').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Работи </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'freelance').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'hobbies').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Хобита или допълнителни умения (като жонглиране, и…ло, пеене, футболни умения, балетни танци и т.н). </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'hobbies').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'articles').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Статии, участия в предавания, шоу програми или други </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'articles').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'languages').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Езикови умения над средното ниво на владеене: </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'languages').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'not_want').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Ангажименти, в които <span class="font-bold">Не</span> би участвал/а:</p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'not_want').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'underwear').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Съгласен ли е артиста да снима будоарна фотография (по бельо): </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'underwear').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'outside_country').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Прием на ангажименти извън страната:</p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'outside_country').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'showing_body').value != ''">
+                        <div class="relative pr-6 py-1 text-left col-span-2">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Проблем с показването на определена част от тялото: </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'showing_body').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                </div>
+
+                <p class="text-sm lg:text-2xl font-semibold py-4 lg:py-6 text-black border-t border-gray-300">Мерки на тялото</p>
+
+                <div class="grid grid-cols-2 gap-1 pb-3">
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'height').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Височина </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'height').value + ' СМ'" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'chest').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Гръдна обиколка </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'chest').value + ' СМ'" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'waist').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Талия </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'waist').value + ' СМ' " class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'hans').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Ханш </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'hans').value + ' СМ'" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'shoe_size').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Размер обувки </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'shoe_size').value + ' EU.'" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'clothing_size').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Размери на дрехите</p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'clothing_size').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+                </div>
+
+                <p class="text-sm lg:text-2xl font-semibold py-4 lg:py-6 text-black border-t border-gray-300">Отличителни белези</p>
+                <div class="grid grid-cols-2 gap-1 pb-3">
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'birthmarks').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Родилни белези </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'birthmarks').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'scars').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Придобити белези вследствие на травма </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'scars').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'tattoos').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Татуировки </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'tattoos').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'piercings').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Пиърсинги </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'piercings').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'hyaluron').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Хиалурон / филъри </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'hyaluron').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+
+                    <template x-if="data.artist.properties.find(obj=>obj.code == 'other_scar').value != ''">
+                        <div class="relative pr-6 py-1 text-left">
+                            <p class="leading-none text-gray-900 text-xs lg:text-sm">Други отличителни белези </p>
+                            <p x-text="data.artist.properties.find(obj=>obj.code == 'other_scar').value" class="text-black  font-semibold text-xs lg:text-base"></p>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="grid grid-cols-2 border-t border-gray-300">
+                    <p class="text-sm lg:text-2xl font-semibold my-4 lg:my-6 text-black col-span-2">Контакти</p>
+
+                    <div class="flex flex-col gap-1.5">
+                        <template x-if="data.user.userlevel == 2 && data.user.active_membership">
+
+                            <div class="flex flex-col gap-1.5">
+                                <template x-if="data.artist.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                    <div class="text-gray-950 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                        <i class="fa-solid fa-location-dot mr-2 text-gray-900 text-sm lg:text-[22px]" aria-hidden="true"></i>
+
+                                        <div class="flex justify-center">
+                                            <template x-if="data.artist.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                <p class="text-black" x-text="data.countries.find(obj=>obj.id == data.artist.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                            </template>
+                                            <template x-if="data.artist.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                <p class="text-black" x-text="', ' + data.artist.properties.find(obj=>obj.code == 'city1').value"></p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="data.artist.properties.find(obj=>obj.code == 'country_id2').value != ''">
+                                    <div class="text-gray-950 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                        <i class="fa-solid fa-location-dot mr-2 text-gray-900 text-sm lg:text-[22px]" aria-hidden="true"></i>
+
+                                        <div class="flex justify-center">
+                                            <template x-if="data.artist.properties.find(obj=>obj.code == 'country_id2').value != ''">
+                                                <p class="text-black" x-text="data.countries.find(obj=>obj.id == data.artist.properties.find(obj=>obj.code == 'country_id2').value).title  "></p>
+                                            </template>
+                                            <template x-if="data.artist.properties.find(obj=>obj.code == 'city2').value != ''">
+                                                <p class="text-black" x-text="', ' + data.artist.properties.find(obj=>obj.code == 'city2').value"></p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="data.artist.properties.find(obj=>obj.code == 'country_id3').value != ''">
+                                    <div class="text-gray-950 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                                        <i class="fa-solid fa-location-dot mr-2 text-gray-900 text-sm lg:text-[22px]" aria-hidden="true"></i>
+
+                                        <div class="flex justify-center">
+                                            <template x-if="data.artist.properties.find(obj=>obj.code == 'country_id3').value != ''">
+                                                <p class="text-black" x-text="data.countries.find(obj=>obj.id == data.artist.properties.find(obj=>obj.code == 'country_id3').value).title  "></p>
+                                            </template>
+                                            <template x-if="data.artist.properties.find(obj=>obj.code == 'city3').value != ''">
+                                                <p class="text-black" x-text="', ' + data.artist.properties.find(obj=>obj.code == 'city3').value"></p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <template x-if="data.artist.user_info.phone != '' ">
+                            <p class="text-left">
+                                <i class="fa-solid fa-phone text-sm lg:text-[22px]" aria-hidden="true"></i>
+
+                                <template x-if="data.user.userlevel == 2 && data.user.active_membership">
+                                    <span x-text="data.artist.user_info.phone"></span>
+                                </template>
+
+                                <template x-if="data.user.userlevel != 2 || !data.user.active_membership">
+                                    <span @click="data.needPlan = true" class="cursor-pointer" x-text="data.artist.user_info.phone.slice(0, 3)+ 'x'.repeat(8)"></span>
+                                </template>
+
+                            </p>
+                        </template>
+
+                        <p class="text-left">
+                            <i class="fa-solid fa-envelope text-sm lg:text-[22px]" aria-hidden="true"></i>
+                            <template x-if="data.user.userlevel == 2 && data.user.active_membership">
+                                <span x-text="data.artist.user_info.email"></span>
+                            </template>
+
+                            <template x-if="data.user.userlevel != 2 || !data.user.active_membership">
+                                <span @click="data.needPlan = true" class="cursor-pointer" x-text="data.artist.user_info.email.slice(0, 3)+ 'x'.repeat(8)"></span>
+                            </template>
+
+                        </p>
+                    </div>
+
+                    <template x-if="data.user.userlevel == 2 && data.user.active_membership">
+                        <div class=" lg:w-full mx-auto flex flex-wrap items-start justify-end gap-4 ">
+                            <template x-if="data.artist.user_info.instagram != '' ">
+                                <a :href="data.artist.instagram" target="_blank" class="cursor-pointer">
+                                    <i class="fa-brands fa-instagram text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.artist.user_info.linkedin != '' ">
+                                <a :href="data.artist.user_info.linkedin" target="_blank" class="cursor-pointer">
+                                    <i class="fa-brands fa-linkedin text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.artist.user_info.tiktok != '' ">
+                                <a :href="data.artist.user_info.tiktok" target="_blank" class="cursor-pointer">
+                                    <i class="fa-brands fa-tiktok text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.artist.website != '' ">
+                                <a :href="data.artist.website" target="_blank" class="cursor-pointer">
+                                    <i class="fa-solid fa-globe text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                                </a>
+                            </template>
+
+                            <template x-if="data.artist.other_link != '' ">
+                                <a :href="data.artist.other_link" target="_blank" class="cursor-pointer">
+                                    <i class="fa-solid fa-globe text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                                </a>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template x-if="data.user.userlevel != 2 || !data.user.active_membership">
+                        <div @click="data.needPlan = true" class=" lg:w-full mx-auto flex flex-wrap items-start justify-end gap-4 cursor-pointer">
+                            <i class="fa-brands fa-instagram text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                            <i class="fa-brands fa-linkedin text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                            <i class="fa-brands fa-tiktok text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                            <i class="fa-solid fa-globe text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                            <i class="fa-solid fa-globe text-sm lg:text-[22px] text-gray-900" aria-hidden="true"></i>
+                        </div>
+                    </template>
+
+                    <div class="flex flex-wrap gap-3 pt-6 col-span-2">
+
+                        <template x-for="file in data.artist.files">
+
+                            <a :href="file.url">
+                                <div class="shadow rounded-md  border border-gray-300 overflow-hidden">
+                                    <div class="flex items-center lg:p-4 px-2 py-1 lg:py-2.5 ">
+                                        <div class="h-8 w-8 lg:w-12 lg:h-12 bg-black text-white flex items-center justify-center rounded-full">
+                                            <i class="fa-solid fa-file-arrow-down text-sm lg:text-2xl "></i>
+                                        </div>
+                                        <div class="ml-1 lg:ml-4">
+                                            <div x-text="file.filename" class="text-sm max-w-[120px] pr-2 overflow-hidden font-semibold text-gray-800">example.txt</div>
+                                            <div x-text="file.filename.split('.').pop()" class="text-xs text-gray-500">.txt</div>
+                                            <div x-text="file.date_created.split(' ')[0]" class="text-xs text-gray-400">20 май 2024</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </template>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="w-full lg:w-2/5 px-10 order-first lg:order-last max-w-[250px] lg:max-w-full mx-auto">
+            <img style="aspect-ratio: 5/7;" :src="data.artist.user_info.avatar.url_10x10" src="" class="w-full hidden md:!block  shadow aspect-square object-cover ">
+        </div>
+
+    </div>
+
+    <div class="container lg:px-6  py-4 lg:py-10">
+        <template x-if="data.artist">
+            <div x-init="alpineListeners('Gallery.get_GalleryPosts', $el)" data-obj="artist" data-container="myMosaic"></div>
+        </template>
+
+        <div class="gridC" id="myMosaic">
+        </div>
+    </div>
+
+    <template x-if="data.user_ratings.all[0]">
+        <div class="bg-white py-8   md:py-16">
+
+            <div class="container px-4 lg:px-6">
+                <p class="text-sm lg:text-2xl font-semibold mt-2 lg:mt-6 text-black">Коментари </p>
+                <div class=" border rounded-full border-gray-300 w-[50px] min-w-[150px] mt-2"></div>
+
+                <div class="flex items-center gap-2">
+
+                    <div class="mt-6 divide-y divide-gray-200 grow ">
+                        <template x-for="rating in data.user_ratings.all">
+
+                            <div class="gap-3 py-5 flex md:flex-row flex-col  gap-4">
+                                <div class="flex gap-4">
+
+                                    <div>
+                                        <img :src="rating.bussiness_portfolio.avatar.url" src="" class="h-[60px] apsect-square object-cover rounded-full" alt="">
+                                    </div>
+                                    <div class="shrink-0 grow space-y-2 sm:w-48 md:w-72">
+
+                                        <div class="space-y-0.5">
+                                            <p x-text="rating.bussiness_portfolio.companyName" class="text-sm lg:text-base font-semibold text-gray-900 ">Micheal Gough</p>
+                                            <p x-text="rating.date_created" class="text-xs lg:text-sm font-normal text-gray-500 ">November 18 2023 at 15:35</p>
+                                        </div>
+
+                                        <div class=" !mt-0 text-black">
+                                            <p>
+                                                <span>оценка</span>
+                                                <span class="font-semibold" x-text="rating.rating"></span>
+                                                <span class="font-semibold">/</span>
+                                                <span class="font-semibold">10</span>
+                                            </p>
+                                            <!-- <template x-for="i in rating.rating">
+                                            <svg class="h-4 w-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+                                            </svg>
+                                        </template> -->
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="min-w-0 flex-1 space-y-4 sm:mt-0 grow">
+                                    <p x-text="rating.text" class="text-xs lg:text-base font-normal text-gray-500">My old IMAC was from 2013. This replacement was well needed. Very fast, and the colour matches my office set up perfectly. The display is out of this world and I’m very happy with this purchase.</p>
+
+                                </div>
+                            </div>
+
+                        </template>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <div apiData="User.get_portfolio_views" :data-portfolio_id="data.pageUrl.id" class="w-full block container mx-auto bg-white text-black px-4 lg:px-6 mt-4 lg:mt-0">
+        <span class="text-sm lg:text-2xl  font-semibold">Oбщо преглеждания : </span>
+        <span class="text-sm lg:text-2xl  font-semibold" x-text="data.portfolio_views.count"></span>
+
+        <p class="text-sm lg:text-2xl font-semibold mt-2 lg:mt-6">Преглеждания от Бизнес </p>
+        <div class=" border-2 rounded-full border-gray-950 w-[50px] min-w-[150px] mt-2"></div>
+        <div class="container grid grid-cols-4 sm:grid-cols-4 xl:grid-cols-6  gap-x-2 lg:gap-x-4 gap-y-2 lg:gap-y-8 py-2 lg:py-10">
+            <template x-for="i in 2">
+
+                <template x-for="user in data.portfolio_views.views.filter(obj => obj.bussiness_portfolio.id != 0)">
+
+                    <template x-if="user.bussiness_portfolio.avatar.url != '' ">
+                        <div class=" w-full   rounded-md cursor-pointerr">
+                            <div class=" relative group" x-data="{hover:false}" @mouseover="hover = true" @mouseover.away="hover = false">
+
+                                <img @click="forceChange('/bg/partner?id='+user.bussiness_portfolio.id)" class="w-full  object-cover " style="aspect-ratio: 5/7;" :src="user.bussiness_portfolio.avatar.url" src="" alt="">
+
+                                <div class="absolute bottom-0 w-full bg-black opacity-90 h-fit px-1 py-1 lg:px-2.5 lg:py-2 rounded-b-md  ">
+                                    <div @click="forceChange('/bg/partner?id='+user.bussiness_portfolio.id)">
+                                        <span x-text="user.bussiness_portfolio.companyName" class="text-[6px] lg:text-lg mt-1 lg:mt-2 text-white font-bold"></span>
+                                    </div>
+
+                                    <div class="hidden group2-hover:block">
+                                        <div class="mt-1 flex flex-wrap gap-1.5">
+                                            <p class="leading-3  text-xs lg:text-base  lg:mt-2 text-white" x-text="user.bussiness_portfolio.business_activity"></p>
+                                        </div>
+
+                                        <p x-text="user.bussiness_portfolio.companyDescription" class="line-clamp-3  lg:mt-3.5 text-white text-xs lg:text-base"></p>
+
+                                        <!-- <div class="mt-3.5 flex gap-2 w-fit border bg-black text-white rounded-md flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black hidden group-hover:flex text-xs lg:text-base">
+                                        <i class="fa-regular fa-message"></i>
+                                        <p>Съобщение</p>
+                                    </div> -->
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </template>
+
+                </template>
+            </template>
+        </div>
+
+        <p class="text-sm lg:text-2xl font-semibold mt-5">Преглеждания от Артисти </p>
+        <div class=" border-2 rounded-full border-gray-950 w-[50px] min-w-[150px] mt-2"></div>
+        <div class="container grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6  gap-x-2 lg:gap-x-4 gap-y-2 lg:gap-y-8 py-2 lg:py-10">
+            <template x-for="user in data.portfolio_views.views.filter(obj => obj.user_portfolio.id != 0)">
+                <template x-if=" user.user_portfolio.user_info.avatar.url_10x10 != '' ">
+
+                    <div class="w-full   rounded-md cursor-pointer ">
+
+                        <div class="h-fit relative group" x-data="{hover:false}" @mouseover="hover = true" @mouseover.away="hover = false">
+                            <div class="z-10 bg-white rounded-md h-5 2xl:h-6 w-5 2xl:w-6 border border-black flex items-center justify-center absolute top-1.5 left-1.5">
+                                <template x-if="data.favoritesPortfolios.some(obj => obj.id === user.user_portfolio.id)">
+                                    <i @click="alpineListeners('User.delete_favorites', $event)" :data-id="user.user_portfolio.id" class="fa-solid fa-check text-sm 2xl:text-[18px] text-black"></i>
+                                </template>
+                                <template x-if="!data.favoritesPortfolios.some(obj => obj.id === user.user_portfolio.id)">
+                                    <div @click="alpineListeners('User.post_favorites', $event)" :data-portfolio_id="user.user_portfolio.id" class="absolute w-full h-full top-0 left-0"></div>
+                                </template>
+                            </div>
+
+                            <img class="w-full  object-cover " style="aspect-ratio: 5/7;" :src="user.user_portfolio.user_info.avatar.url_10x10 ? user.user_portfolio.user_info.avatar.url_10x10 : data.settings.logo" alt="">
+
+                            <div @click="if(data.screenWidth >= 1024){forceChange('/bg/artist?id='+user.user_portfolio.id)}" class="opacity-0 group-hover:!opacity-80  absolute top-0 h-full w-full bg-black   px-2.5 py-2.5   !text-sm flex flex-col justify-between">
+
+                                <div>
+
+                                    <div class="text-white hidden group-hover:block 2xl:space-y-0.5 pt-[25px] 2xl:pt-[35px] !text-sm">
+                                        <div class=" flex flex-wrap gap-1.5">
+                                            <template x-for="subtype in user.user_portfolio.subtypes">
+                                                <p class="text-white text-xs 2xl:text-sm" x-text="subtype.title + ','"></p>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <template x-if="user.user_portfolio.type_id == 1">
+                                        <div class="text-white hidden group-hover:block  !text-sm">
+                                            <div class="flex gap-1 2xl:mt-4">
+                                                <template x-if="user.user_portfolio.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                    <p class="text-white text-xs 2xl:text-sm" x-text="data.countries.find(obj=>obj.id == user.user_portfolio.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                                </template>
+                                                <template x-if="user.user_portfolio.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                    <p class="text-white text-xs 2xl:text-sm" x-text="', ' + user.user_portfolio.properties.find(obj=>obj.code == 'city1').value"></p>
+                                                </template>
+                                            </div>
+
+                                            <div class="mt-1 2xl:mt-4 text-xs 2xl:text-sm">
+                                                <span>Височина </span>
+                                                <span x-text="user.user_portfolio.properties.find(obj=>obj.code == 'height').value + ' СМ' "></span>
+                                            </div>
+
+                                            <div class="mt-1 2xl:mt-4 text-xs 2xl:text-sm">
+                                                <span>Ниво на уменията - </span>
+                                                <span x-text="user.user_portfolio.properties.find(obj=>obj.code == 'level').value "></span>
+                                            </div>
+
+                                            <div class="mt-1 2xl:mt-4 text-xs 2xl:text-sm">
+                                                <span>Работи </span>
+                                                <span x-text="user.user_portfolio.properties.find(obj=>obj.code == 'freelance').value "></span>
+                                            </div>
+
+                                        </div>
+                                    </template>
+
+                                    <template x-if="user.user_portfolio.type_id == 2">
+                                        <div class="text-white hidden group-hover:block  ">
+                                            <div class="flex gap-1">
+                                                <template x-if="user.user_portfolio.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                    <p class="text-white text-xs 2xl:text-sm" x-text="data.countries.find(obj=>obj.id == user.user_portfolio.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                                </template>
+                                                <template x-if="user.user_portfolio.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                    <p class="text-white text-xs 2xl:text-sm" x-text="', ' + user.user_portfolio.properties.find(obj=>obj.code == 'city1').value"></p>
+                                                </template>
+                                            </div>
+                                            <div class="mt-1 2xl:mt-4 text-xs 2xl:text-sm">
+                                                <span>Ниво на уменията - </span>
+                                                <span x-text="user.user_portfolio.properties.find(obj=>obj.code == 'level').value "></span>
+                                            </div>
+                                            <div class="mt-1 2xl:mt-4 text-xs 2xl:text-sm">
+                                                <span>Работи </span>
+                                                <span x-text="user.user_portfolio.properties.find(obj=>obj.code == 'freelance').value "></span>
+                                            </div>
+
+                                            <!-- <p x-text="user.user_portfolio.properties.find(obj=>obj.code == 'experience').value" class="line-clamp-3  mt-3.5 text-white"></p> -->
+
+                                        </div>
+
+                                    </template>
+
+                                </div>
+
+                                <div class="flex   gap-2 z-10">
+
+                                    <div @click="forceChange('/bg/artist?id='+user.user_portfolio.id)" class="mt-3.5 flex gap-2 w-fit 2xl:w-full border bg-white text-black rounded flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black 2xl:!hidden group-hover:flex text-xs 2xl:text-sm">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        <p class="hidden 2xl:block">Преглед</p>
+                                    </div>
+
+                                    <div @click="data.messageArtist= portfolio" class="mt-1 mt-3.5 flex gap-2 w-fit  border bg-white text-black rounded flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black hidden group-hover:flex text-xs 2xl:text-sm">
+                                        <i class="fa-regular fa-message"></i>
+                                        <p class="hidden 2xl:block">Съобщение</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="2xl:mt-1 leading-none">
+                            <span x-text=" user.user_portfolio.user_info.first_name" class="leading-none  text-black font-semibold text-xs 2xl:text-lg"></span>
+                            <span x-text="user.user_portfolio.user_info.last_name" class="leading-none  text-black font-semibold text-xs 2xl:text-lg"></span>
+                        </div>
+
+                    </div>
+
+                </template>
+            </template>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
+<style>
+    .grid-item {
+        width: 33%;
+    }
+
+    @media (min-width: 1024px) {
+        .grid-item {
+            width: 33%;
+        }
+    }
+</style>
+<script>
+    function loadWall() {
+
+        var elem = document.querySelector('.gridC');
+        var msnry = new Masonry(elem, {
+            // set itemSelector so .grid-sizer is not used in layout
+            itemSelector: '.grid-item',
+            fitWidth: true,
+            // use element for option
+
+            percentPosition: true
+        });
+
+    }
+    window.loadWall = loadWall;
+    // loadWall();
+
+</script>

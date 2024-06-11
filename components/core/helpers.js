@@ -14,15 +14,20 @@ let Helpers = {
 			if (e.name != '') {
 
 				if (e.name.endsWith('[]') && e.type != 'file') {
-					if (object[e.name] !== undefined) {
-						if (e.value != '') {
-							object[e.name].push(e.value);
-						}
-					} else {
-						if (e.value != '') {
-							object[e.name] = [e.value];
+
+
+					if (e.checked) {
+						if (object[e.name] !== undefined) {
+							if (e.value != '') {
+								object[e.name].push(e.value);
+							}
+						} else {
+							if (e.value != '') {
+								object[e.name] = [e.value];
+							}
 						}
 					}
+
 				} else if (e.type == 'radio') {
 					if (e.checked == true) {
 
@@ -60,6 +65,8 @@ let Helpers = {
 
 
 		}
+
+
 		return object;
 	},
 

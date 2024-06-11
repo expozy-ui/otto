@@ -1,0 +1,77 @@
+<div class="is-section text-white !mt-10 is-section-auto" apiData="Ads.get_ads" :data-id="data.pageUrl.id" keyName="ad">
+    <div class="is-container v2 container w-full px-4 lg:!w-2/3 mx-auto" apiData="Ads.get_ads_requests" :data-ads_id="data.pageUrl.id">
+
+        <div class="flex flex-col-reverse md:flex-row">
+
+            <div class="grow">
+                <div class="">
+                    <div>
+
+                        <p x-text="data.ad.title" class="font-bold text-sm lg:text-3xl mt-3">Application type:</p>
+                        <p x-text="data.ad.subtitle" class="    text-xs lg:text-xl ">Portfolio appication</p>
+
+                        <div class="grid grid-cols-3">
+                            <template x-for="field in data.ad.fields">
+                                <template x-if="field.type != 'file' ">
+                                    <div>
+                                        <p x-text="field.title" class="text-gray-300 mt-5 text-xs lg:text-base">Ad type:</p>
+                                        <p x-text="field.value" class="font-bold text-xs lg:text-base">Job application</p>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+
+                        <div>
+                            <template x-if="data.ad.fields.find(obj=>obj.type == 'file').value != ''">
+                                <div class="w-fit">
+                                    <a class="block py-2 px-6 mt-3 border border-white !block min-w-[150px] text-center hover:bg-white hover:text-black transition rounded cursor-pointer text-sm lg:text-base" :href="data.ad.fields.find(obj=>obj.type == 'file').value"> File info</a>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="">
+                <img :src="data.ad.images[0] ? data.ad.images[0].url : data.ad.user_info.avatar.url" class="w-auto h-full max-h-[400px] object-scale-down aspect-square" alt="">
+
+            </div>
+        </div>
+
+        <template x-if="data.user.logged_in">
+            <div class="w-1/3 mt-5">
+
+                <template x-if="data.ads_requests.some(user => user.user_id === data.user.uid)">
+                    <div>
+                        <p class="font-semibold py-4 text-lg">Вече сте кандидатсвали по тази обява. </p>
+                    </div>
+                </template>
+
+                <template x-if="!data.ads_requests.some(user => user.user_id === data.user.uid) && data.user.userlevel != 2">
+                    <form>
+                        <template x-if="data.ad.fileRequired == 1">
+                            <div>
+
+                                <label for="file-input" class="sr-only">Choose file</label>
+                                <input type="file" multiple name="files[]" id="file-input" class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none 
+                                      file:bg-gray-50 file:border-0
+                                      file:me-3
+                                      file:py-2 file:px-2
+                                      ">
+
+                            </div>
+                        </template>
+
+                        <p @click="alpineListeners('Ads.post_ads_requests', $event)" keyName="ads_requests" :data-ads_id="data.ad.id" class="py-2 text-center px-6 uppercase  bg-white text-black mt-4 mb-10 border border-white hover:bg-black hover:text-white transition rounded cursor-pointer">Кандидатсвай</p>
+
+                    </form>
+                </template>
+            </div>
+        </template>
+
+        <p x-text="data.ad.description" class="w-full  my-5 text-xs lg:text-sm italic whitespace-pre-wrap border-t-2 border-white border-dashed pt-4"></p>
+
+    </div>
+</div>

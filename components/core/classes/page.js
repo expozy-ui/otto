@@ -68,9 +68,9 @@ export class PageClass {
 
 		if (this.id > 0) {
 
-			await api.get('pages/' + this.id);
+			await api.get('pages/' + this.id, false);
 		} else {
-			await api.get('pages?slug=' + this.slug);
+			await api.get('pages?slug=' + this.slug, false);
 		}
 
 
@@ -144,6 +144,9 @@ export class PageClass {
 			delete dataProxy['product'];
 		}
 
+		delete dataProxy['bPortfolio'];
+		delete dataProxy['artist'];
+
 
 
 		if (window.location.pathname.includes("products") && "products" in dataProxy) {
@@ -157,13 +160,13 @@ export class PageClass {
 
 		// debugger;
 
-		if (this.slug != 'checkout') {
-			document.getElementById('header').style.removeProperty('display');
-			document.getElementById('footer').style.removeProperty('display');
-		} else {
-			document.getElementById('header').style.display = "none";
-			document.getElementById('footer').style.display = "none";
-		}
+		// if (this.slug != 'checkout') {
+		// 	document.getElementById('header').style.removeProperty('display');
+		// 	document.getElementById('footer').style.removeProperty('display');
+		// } else {
+		// 	document.getElementById('header').style.display = "none";
+		// 	document.getElementById('footer').style.display = "none";
+		// }
 
 
 		document.getElementById('pageCss').innerHTML = this.css;
@@ -230,14 +233,14 @@ export class PageClass {
 
 
 	get_template_url() {
-		
-		if(this.private){
+
+		if (this.private) {
 			return `${SITEURL}/pages/privatejs.php?lang=${this.lang}&slug=${this.slug}`;
-			
+
 		} else {
 			return `${SITEURL}/static/pages/${this.lang}/${this.slug}.html`;
 		}
-		
+
 	}
 
 	get_css_url() {

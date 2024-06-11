@@ -1,0 +1,332 @@
+<div apiData="User.get_favorites"></div>
+
+<div class="w-full bg-white text-black" x-data="{sector:0} " apiData="Countries.get_countries">
+    <div class="px-2">
+        <h2 class="text-base   text-center mt-12 lg:text-5xl ">
+            <span class="font-bold">OTTO. </span>
+            <span>Артисти</span>
+        </h2>
+        <p class="text-black text-center pb-10 pt-4 text-xs lg:text-base ">ОТТО. не носи отговорност за достоверността на информацията в портфолиата.</p>
+
+        <form apiData="User.get_portfolio_filters" data-bycode="1" x-data="{plan : 1}">
+            <div apiData="User.get_portfolio_filters" class="grid grid-cols-2 lg:grid-cols-6 gap-4 container items-end" x-data="{selectedType: 'empty'}" x-init="$watch('selectedType', value => alpineListeners('User.get_portfolios', $el))">
+
+                <div class="col-span-2 lg:col-span-3 xl:col-span-2">
+                    <input type="hidden" :value="selectedType" name="type_id">
+
+                    <div class="grid grid-cols-2 md:col-span-3  gap-3">
+                        <p @click="selectedType != 1 ?  selectedType = 1 :  selectedType = 'empty'" :class="selectedType == 1 ? 'bg-black text-white' : 'text-black' " class=" py-2.5  px-2 lg:px-6 lg:text-sm text-xs text-center border border-black lg:hover:bg-black lg:hover:text-white transition rounded-lg cursor-pointer "> Артисти пред камера</p>
+                        <p @click="selectedType != 2 ?  selectedType = 2 :  selectedType = 'empty'" :class="selectedType == 2 ? 'bg-black text-white' : 'text-black' " class=" py-2.5  px-2 lg:px-6 lg:text-sm text-xs text-center border border-black lg:hover:bg-black lg:hover:text-white transition rounded-lg cursor-pointer "> Артисти зад камера</p>
+                    </div>
+
+                </div>
+
+                <div class="col-span-2 lg:col-span-2 relative">
+
+                    <input id="search" @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="text" placeholder="" name="search" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                    <label class="absolute text-xs md:text-lg  duration-300 transform -translate-y-3 scale-75 -top-1 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="search">Име или ключови думи</label>
+                </div>
+
+                <div class="relative col-span-2 sm:col-span-1 lg:col-span-2" apiData="User.get_portfolio_subtypes">
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="subtype_id" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="subtype in data.portfolio_subtypes">
+                            <option x-show="selectedType == subtype.type_id || selectedType == 'empty' " x-text="subtype.title" :value="subtype.id">мъж</option>
+                        </template>
+
+                    </select>
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Роля</label>
+                </div>
+
+                <div class="relative col-span-2 sm:col-span-1 lg:col-span-2">
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Професионален опит</label>
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[level]" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="option in data.portfolio_filters.level.options">
+                            <option x-text="option.title" :value="option.id"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div x-show="selectedType == 1 " class="relative col-span-1  lg:col-span-2 w-full bg-white">
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[gender]" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="option in data.portfolio_filters.gender.options">
+                            <option x-text="option.title" :value="option.id"></option>
+                        </template>
+
+                    </select>
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Пол</label>
+                </div>
+
+                <!-- <div x-show="selectedType == 1 " x-data="{open:false}" @mousedown.outside="open = false" class="  relative h-fit">
+                    <p @click="open = ! open" :class="open ? 'bg-black text-white' : 'bg-white text-black' " class="py-2 px-6 border border-black hover:bg-black hover:text-white transition rounded-md cursor-pointer text-xs lg:text-base">Възраст</p>
+                    <div x-show="open" class="z-20  absolute left-0 mt-1 text-black py-2 pb-4 px-4 shadow   bg-white border rounded-md">
+                        <div>
+                            <label class=" text-black w-full block my-2" for="">Mинимум</label>
+                            <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="age_from" placeholder="14" class=" px-2 w-full border border-black rounded-md text-black py-1 px-2">
+                        </div>
+                        <div>
+                            <label class="text-black w-full block my-2" for=""> Mаксимум</label>
+                            <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="age_to" placeholder="100" class=" px-2 w-full border border-black rounded-md text-black py-1 px-2">
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- <div x-show="selectedType == 1 " x-data="{open:false, active: 1}" @mousedown.outside="open = false" class="col-span-2 sm:col-span-1  relative h-fit">
+                    <p @click="open = ! open" :class="open ? 'bg-black text-white' : 'bg-white text-black' " class="py-2 px-6 border border-black hover:bg-black hover:text-white transition rounded-md cursor-pointer text-xs lg:text-base">Размер</p>
+                    <div x-show="open" class="z-20 absolute left-0 mt-1 text-black  pr-4 lg:min-w-[450px]  bg-white border rounded-md grid grid-cols-2 shadow">
+                        <div class="px-2 space-y-2  py-4 shadow">
+                            <p :class="active == 1 ? 'bg-black text-white' : 'text-black' " class="rounded-md px-2 py-1 text-black text-xs lg:text-base" @click="active = 1">Ръст</p>
+                            <p :class="active == 2 ? 'bg-black text-white' : 'text-black' " class="rounded-md px-2 py-1 text-black text-xs lg:text-base" @click="active = 2">Талия</p>
+                            <p :class="active == 3 ? 'bg-black text-white' : 'text-black' " class="rounded-md px-2 py-1 text-black text-xs lg:text-base" @click="active = 3">Ханш</p>
+                            <p :class="active == 4 ? 'bg-black text-white' : 'text-black' " class="rounded-md px-2 py-1 text-black text-xs lg:text-base" @click="active = 4">Гръдна обиколка</p>
+                            <p :class="active == 5 ? 'bg-black text-white' : 'text-black' " class="rounded-md px-2 py-1 text-black text-xs lg:text-base" @click="active = 5">Обувки</p>
+                            <p :class="active == 6 ? 'bg-black text-white' : 'text-black' " class="rounded-md px-2 py-1 text-black text-xs lg:text-base" @click="active = 6">Дрехи</p>
+                        </div>
+
+                        <div class="col-span-1 px-6 py-4">
+
+                            <div x-show="active == 1" x-cloak>
+
+                                <div>
+                                    <label class=" text-black w-full block my-2" for="">Mинимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="height_from" placeholder="50" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+                                <div>
+                                    <label class="text-black w-full block my-2" for=""> Mаксимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="height_to" placeholder="230" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+
+                            </div>
+
+                            <div x-show="active == 2" x-cloak>
+
+                                <div>
+                                    <label class=" text-black w-full block my-2" for="">Mинимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="waist_from" placeholder="30" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+                                <div>
+                                    <label class="text-black w-full block my-2" for=""> Mаксимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="waist_to" placeholder="250" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+
+                            </div>
+
+                            <div x-show="active == 3" x-cloak>
+
+                                <div>
+                                    <label class=" text-black w-full block my-2" for="">Mинимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="hans_from" placeholder="30" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+                                <div>
+                                    <label class="text-black w-full block my-2" for=""> Mаксимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="hans_to" placeholder="200" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+
+                            </div>
+
+                            <div x-show="active == 4" x-cloak>
+
+                                <div>
+                                    <label class=" text-black w-full block my-2" for="">Mинимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="chest_from" placeholder="30" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+                                <div>
+                                    <label class="text-black w-full block my-2" for=""> Mаксимум</label>
+                                    <input @input.debounce.500="alpineListeners('User.get_portfolios', $event)" type="number" name="chest_to" placeholder="180" class="w-full border border-black rounded-md text-black py-1 px-2">
+                                </div>
+
+                            </div>
+
+                            <div x-show="active == 5" x-cloak>
+
+                                <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[shoe_size]" class="p-2 w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none">
+                                    <option value="empty">Всички</option>
+                                    <template x-for="(option, index) in 20" :key="index">
+                                        <option x-text="30 + index" :value="30 + index"></option>
+                                    </template>
+                                </select>
+
+                            </div>
+
+                            <div x-show="active == 6" x-cloak>
+
+                                <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[clothing_size]" class="p-2 w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none">
+                                    <option value="empty">Всички</option>
+                                    <template x-for="option in data.portfolio_filters.clothing_size.options">
+                                        <option x-text="option.title" :value="option.id"></option>
+                                    </template>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div> -->
+
+                <div x-show="selectedType == 1 " class="relative col-span-1 lg:col-span-2 w-full bg-white">
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Цвят на косата</label>
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[hair_color]" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="option in data.portfolio_filters.hair_color.options">
+                            <option x-text="option.title" :value="option.id"></option>
+                        </template>
+                    </select>
+
+                </div>
+
+                <div x-show="selectedType == 1 " class="relative col-span-1 lg:col-span-2 w-full bg-white">
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Цвят на очите</label>
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[eye_color]" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="option in data.portfolio_filters.eye_color.options">
+                            <option x-text="option.title" :value="option.id"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div x-show="selectedType == 1 " class="relative col-span-1 lg:col-span-2 w-full bg-white">
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Етнос</label>
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[ethnicity]" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="option in data.portfolio_filters.ethnicity.options">
+                            <option x-text="option.title" :value="option.id"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div x-show="selectedType == 1 " class="relative col-span-1 lg:col-span-2">
+                    <label class="absolute text-xs md:text-xl  duration-300 transform -translate-y-3 scale-75 top-0 bg-white z-10 px-2 text-black origin-[0] left-2.5   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3" for="">Езикови умения</label>
+                    <select @change="alpineListeners('User.get_portfolios', $event)" name="properties[languages]" class="p-2 peer w-full bg-white text-black bg-white rounded-md border border-black outline-slate-600 transition-colors duration-200 focus:outline-none text-xs lg:text-base">
+                        <option value="empty">Всички</option>
+                        <template x-for="option in data.portfolio_filters.languages.options">
+                            <option x-text="option.title" :value="option.id"></option>
+                        </template>
+                    </select>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="!px-2 grid  grid-cols-2 sm:grid-cols-4  md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 px-4 md:px-0 gap-x-1  lg:gap-x-4 gap-y-8 py-10" apiData="User.get_portfolios">
+
+        <template x-for="portfolio in data.portfolios">
+            <template x-if=" portfolio.user_info.avatar.url_10x10 != '' ">
+
+                <div class="w-full   rounded-md cursor-pointer ">
+
+                    <div class="h-fit relative group" x-data="{hover:false}" @mouseover="hover = true" @mouseover.away="hover = false">
+                        <div class="z-10 bg-white rounded-md h-5 2xl:h-6 w-5 2xl:w-6 border border-black flex items-center justify-center absolute top-1.5 left-1.5">
+                            <template x-if="data.favoritesPortfolios.some(obj => obj.id === portfolio.id)">
+                                <i @click="alpineListeners('User.delete_favorites', $event)" :data-id="portfolio.id" class="fa-solid fa-check text-sm 2xl:text-[18px] text-black"></i>
+                            </template>
+                            <template x-if="!data.favoritesPortfolios.some(obj => obj.id === portfolio.id)">
+                                <div @click="alpineListeners('User.post_favorites', $event)" :data-portfolio_id="portfolio.id" class="absolute w-full h-full top-0 left-0"></div>
+                            </template>
+                        </div>
+
+                        <img class="w-full  object-cover " style="aspect-ratio: 5/7;" :src="portfolio.user_info.avatar.url_10x10 ? portfolio.user_info.avatar.url_10x10 : data.settings.logo" alt="">
+
+                        <div @click="if(data.screenWidth >= 1024){forceChange('/bg/artist?id='+portfolio.id)}" class="opacity-0 group-hover:!opacity-80  absolute top-0 h-full w-full bg-black   px-2.5 py-2.5   !text-sm flex flex-col justify-between">
+
+                            <div>
+
+                                <div class="text-white hidden group-hover:block 2xl:space-y-0.5 pt-[25px] 2xl:pt-[35px] !text-sm">
+                                    <div class=" flex flex-wrap gap-x-1.5">
+                                        <template x-for="subtype in portfolio.subtypes">
+                                            <p class="text-white text-xs 2xl:text-sm" x-text="subtype.title + ','"></p>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <template x-if="portfolio.type_id == 1">
+                                    <div class="text-white hidden group-hover:block  !text-sm">
+                                        <div class="flex gap-1 mt-2.5 2xl:mt-4">
+                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                <p class="text-white text-xs 2xl:text-sm" x-text="data.countries.find(obj=>obj.id == portfolio.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                            </template>
+                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                <p class="text-white text-xs 2xl:text-sm" x-text="', ' + portfolio.properties.find(obj=>obj.code == 'city1').value"></p>
+                                            </template>
+                                        </div>
+
+                                        <div class="mt-2.5 2xl:mt-4 text-xs 2xl:text-sm">
+                                            <span>Височина </span>
+                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'height').value + 'СМ' "></span>
+                                        </div>
+
+                                        <div class="mt-2.5 2xl:mt-4 text-xs 2xl:text-sm">
+                                            <span>Ниво на уменията - </span>
+                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'level').value "></span>
+                                        </div>
+
+                                        <div class="mt-2.5 2xl:mt-4 text-xs 2xl:text-sm">
+                                            <span>Работи </span>
+                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'freelance').value "></span>
+                                        </div>
+
+                                    </div>
+                                </template>
+
+                                <template x-if="portfolio.type_id == 2">
+                                    <div class="text-white hidden group-hover:block  ">
+                                        <div class="flex gap-1 mt-2.5">
+                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'country_id1').value != ''">
+                                                <p class="text-white text-xs 2xl:text-sm" x-text="data.countries.find(obj=>obj.id == portfolio.properties.find(obj=>obj.code == 'country_id1').value).title  "></p>
+                                            </template>
+                                            <template x-if="portfolio.properties.find(obj=>obj.code == 'city1').value != ''">
+                                                <p class="text-white text-xs 2xl:text-sm" x-text="', ' + portfolio.properties.find(obj=>obj.code == 'city1').value"></p>
+                                            </template>
+                                        </div>
+                                        <div class="mt-2.5 2xl:mt-4 text-xs 2xl:text-sm">
+                                            <span>Ниво на уменията - </span>
+                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'level').value "></span>
+                                        </div>
+                                        <div class="mt-2.5 2xl:mt-4 text-xs 2xl:text-sm">
+                                            <span>Работи </span>
+                                            <span x-text="portfolio.properties.find(obj=>obj.code == 'freelance').value "></span>
+                                        </div>
+
+                                        <!-- <p x-text="portfolio.properties.find(obj=>obj.code == 'experience').value" class="line-clamp-3  mt-3.5 text-white"></p> -->
+
+                                    </div>
+
+                                </template>
+
+                            </div>
+
+                            <div class="flex   gap-2 z-10">
+
+                                <div @click="forceChange('/bg/artist?id='+portfolio.id)" class="mt-3.5 flex gap-2 w-fit 2xl:w-full border bg-white text-black rounded flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black 2xl:!hidden group-hover:flex text-xs 2xl:text-sm">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    <p class="hidden 2xl:block">Преглед</p>
+                                </div>
+
+                                <div @click="data.messageArtist= portfolio" class="mt-1 mt-3.5 flex gap-2 w-fit  border bg-white text-black rounded flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black hidden group-hover:flex text-xs 2xl:text-sm">
+                                    <i class="fa-regular fa-message"></i>
+                                    <p class="hidden 2xl:block">Съобщение</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="2xl:mt-1 leading-none">
+                        <span x-text=" portfolio.user_info.first_name" class="leading-none  text-black font-semibold text-xs 2xl:text-lg"></span>
+                        <span x-text="portfolio.user_info.last_name" class="leading-none  text-black font-semibold text-xs 2xl:text-lg"></span>
+                    </div>
+
+                </div>
+
+            </template>
+        </template>
+
+    </div>
+</div>
