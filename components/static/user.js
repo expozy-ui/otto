@@ -410,6 +410,9 @@ export let User = {
 		if (!api.response) return response['internalError'] = 'No response from api for Users.post_user_files';
 
 		response = api.response;
+		if (response.status == 1) {
+			response = await User.get_my_portfolio([], []);
+		}
 
 		response['keyName'] = 'my_portfolio';
 		if ("keyName" in options && options['keyName'] != '' && options['keyName'] != null) response.keyName = options['keyName'];

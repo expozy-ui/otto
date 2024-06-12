@@ -12,7 +12,7 @@
             <p @click="data.user.logged_in ? forceChange('/bg/userpage?tab=portfolio') : data.openLogin = true;" class="py-2 px-6 border aspect-square flex items-center text-sm xl:text-2xl font-semibold justify-center w-[100px] xl:w-[180px] border-white hover:bg-white hover:text-black transition rounded cursor-pointer">Артист</p>
             <p @click="data.user.logged_in ? forceChange('/bg/userpage?tab=portfolio') : data.openLogin = true;" class="py-2 px-6 border aspect-square flex items-center text-sm xl:text-2xl font-semibold justify-center w-[100px] xl:w-[180px] border-white hover:bg-white hover:text-black transition rounded cursor-pointer">Модел</p>
             <p @click="data.user.logged_in ? forceChange('/bg/userpage?tab=bPortfolio') : data.openLogin = true;" class="py-2 px-6 border aspect-square flex items-center text-sm xl:text-2xl font-semibold justify-center w-[100px] xl:w-[180px] border-white hover:bg-white hover:text-black transition rounded cursor-pointer">Бизнес</p>
-            <p @click="data.user.logged_in ? forceChange('/bg/userpage?tab=myAds') : data.openLogin = true;" class="py-2 px-6 border aspect-square flex items-center text-sm xl:text-2xl font-semibold justify-center w-[100px] xl:w-[180px] border-white hover:bg-white hover:text-black transition rounded cursor-pointer">Обява за работа </p>
+            <p @click="data.user.logged_in ? forceChange('/bg/userpage?tab=myAds') : data.openLogin = true;" class="py-2 px-6 border aspect-square flex items-center text-sm xl:text-2xl font-semibold justify-center w-[100px] xl:w-[180px] border-white hover:bg-white hover:text-black transition rounded cursor-pointer">Обява </p>
         </div>
 
     </div>
@@ -65,80 +65,42 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-14 xl:gap-x-12">
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center  ">
-                <img src="/assets/img/homeImg/1_w.jpg" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" alt="">
-                <!-- <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
-                    <defs>
-                        <style>
-                            #comp-lpsy246e1 svg [data-color="1"] {
-                                fill: #FFFFFF;
-                            }
-                        </style>
-                    </defs>
-                    <g>
-                        <path d="M20 20v160c44.183 0 80-35.817 80-80S64.183 20 20 20z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                        <path d="M100 100c0 44.183 35.817 80 80 80V20c-44.183 0-80 35.817-80 80z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                    </g> -->
-                </svg>
+                <img src="/assets/img/homeImg/3.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
+
                 <p class="mt-2 text-xs xl:text-lg">Портфолио</p>
                 <p class="text-xs xl:text-base xl:mt-2">Създаване на професионално портфолио по стандарт като модел/артист.</p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/2.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="38.5 20 123 160" viewBox="38.5 20 123 160" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
-
-                    <g>
-                        <path d="M102.887 20v117.469c32.371 0 58.613-26.296 58.613-58.734C161.5 46.296 135.258 20 102.887 20z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                        <path d="M38.5 121.266C38.5 153.704 64.742 180 97.113 180V62.532c-32.371 0-58.613 26.296-58.613 58.734z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Оценки и коментари</p>
                 <p class=" text-xs xl:text-base xl:mt-2">Оценки и коментари от клиенти.</p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/1.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Видимост 24/7</p>
                 <p class="text-xs xl:text-base xl:mt-2">Достъпно до всички потребители.</p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/4.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Преглеждания</p>
                 <p class="text-xs xl:text-base xl:mt-2">Можете да видите колко и кои потребители са преглеждали портфолията. </p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
+                <img src="/assets/img/homeImg/6.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] " alt="">
                 <p class="mt-2 text-xs xl:text-lg">Фрийланс или с агенция </p>
                 <p class="text-xs xl:text-base xl:mt-2">Платформата е за всички. </p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
 
-                <div class=" fill-white">
-                    <svg preserveAspectRatio="none" data-bbox="20 38 160 124" viewBox="20 38 160 124" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                        <g>
-                            <path d="M53.654 162H25.989A5.989 5.989 0 0 1 20 156.011v-45.346a5.989 5.989 0 0 1 5.989-5.989h27.664a5.989 5.989 0 0 1 5.989 5.989v45.346A5.988 5.988 0 0 1 53.654 162z"></path>
-                            <path d="M113.832 162H86.168a5.989 5.989 0 0 1-5.989-5.989V78.267a5.989 5.989 0 0 1 5.989-5.989h27.664a5.989 5.989 0 0 1 5.989 5.989v77.744a5.989 5.989 0 0 1-5.989 5.989z"></path>
-                            <path d="M174.011 162h-27.664a5.989 5.989 0 0 1-5.989-5.989V43.989A5.989 5.989 0 0 1 146.347 38h27.664A5.989 5.989 0 0 1 180 43.989v112.022a5.989 5.989 0 0 1-5.989 5.989z"></path>
-                        </g>
-                    </svg>
-                </div>
+                <img src="/assets/img/homeImg/7.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] " alt="">
 
                 <p class="mt-2 text-xs xl:text-lg">Член на ОТТО. Общносттa</p>
                 <p class="text-xs xl:text-base xl:mt-2">Допълнителни привилегии в ОТТО. и партньори.</p>
@@ -157,13 +119,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4  gap-x-4 gap-y-14 xl:gap-x-12">
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
                 <img src="/assets/img/homeImg/4.jpg" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px]" alt="">
-                <!-- <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
 
-                    <g>
-                        <path d="M20 20v160c44.183 0 80-35.817 80-80S64.183 20 20 20z" fill="#000" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                        <path d="M100 100c0 44.183 35.817 80 80 80V20c-44.183 0-80 35.817-80 80z" fill="#000" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                    </g>
-                </svg> -->
                 <p class="mt-2 text-xs xl:text-lg">Кастинги и обяви за работа</p>
                 <p class="text-xs xl:text-base xl:mt-2">Достъп до ексклузивна информация за професионални ангажименти в цяла България. </p>
             </div>
@@ -172,13 +128,6 @@
 
                 <img src="/assets/img/homeImg/2.jpg" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px]" alt="">
 
-                <!-- <svg preserveAspectRatio="xMidYMid meet" data-bbox="38.5 20 123 160" viewBox="38.5 20 123 160" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
-
-                    <g>
-                        <path d="M102.887 20v117.469c32.371 0 58.613-26.296 58.613-58.734C161.5 46.296 135.258 20 102.887 20z" fill="#000" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                        <path d="M38.5 121.266C38.5 153.704 64.742 180 97.113 180V62.532c-32.371 0-58.613 26.296-58.613 58.734z" fill="#000" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                    </g>
-                </svg> -->
                 <p class="mt-2 text-xs xl:text-lg">Кандидатстване</p>
                 <p class=" text-xs xl:text-base xl:mt-2">Бързо и лесно кандидатстване през платформата.</p>
             </div>
@@ -186,22 +135,14 @@
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
 
                 <img src="/assets/img/homeImg/3.jpg" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px]" alt="">
-                <!-- <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#000" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg> -->
+
                 <p class="mt-2 text-xs xl:text-lg">Съобщения</p>
                 <p class="text-xs xl:text-base xl:mt-2">Достъп до контактна информация и съобщения през платформата с артисти и бизнеси. </p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
                 <img src="/assets/img/homeImg/1.jpg" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px]" alt="">
-                <!-- <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#000" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg> -->
+
                 <p class="mt-2 text-xs xl:text-lg">Пасове </p>
                 <p class="text-xs xl:text-base xl:mt-2">Пасове за всички премиум членовве на наши събития.</p>
             </div>
@@ -218,121 +159,43 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-x-4 gap-y-14 xl:gap-x-12">
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/6.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] " alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
-                    <defs>
-                        <style>
-                            #comp-lpsy246e1 svg [data-color="1"] {
-                                fill: #FFFFFF;
-                            }
-                        </style>
-                    </defs>
-                    <g>
-                        <path d="M20 20v160c44.183 0 80-35.817 80-80S64.183 20 20 20z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                        <path d="M100 100c0 44.183 35.817 80 80 80V20c-44.183 0-80 35.817-80 80z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Контактна информация</p>
                 <p class="text-xs xl:text-base xl:mt-2">Пълен достъп до контактна информация с артисти и бизнеси. </p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/7.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] " alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="38.5 20 123 160" viewBox="38.5 20 123 160" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="color" role="presentation" aria-hidden="true" aria-label="">
-
-                    <g>
-                        <path d="M102.887 20v117.469c32.371 0 58.613-26.296 58.613-58.734C161.5 46.296 135.258 20 102.887 20z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                        <path d="M38.5 121.266C38.5 153.704 64.742 180 97.113 180V62.532c-32.371 0-58.613 26.296-58.613 58.734z" fill="#fff" clip-rule="evenodd" fill-rule="evenodd" data-color="1"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Съобщения</p>
                 <p class=" text-xs xl:text-base xl:mt-2">Достъп до съобщения за всички артисти и бизнеси, и групови чатове.</p>
             </div>
 
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/2.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Портфолио</p>
                 <p class="text-xs xl:text-base xl:mt-2">Видимо 24/7 за всеки потребител. </p>
             </div>
 
-            <!-- <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
-
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
-                <p class="mt-2 text-xs xl:text-lg">Видимост 24/7</p>
-                <p class="text-xs xl:text-base xl:mt-2">Видимост на портфолиото на компанията за всички потребители</p>
-            </div> -->
-
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/3.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Обяви</p>
                 <p class="text-xs xl:text-base xl:mt-2">Неограничено публикува обяви за работа и кастинги. </p>
             </div>
 
-            <!-- <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
-
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
-                <p class="mt-2 text-xs xl:text-lg">Оценяване на артисти</p>
-                <p class="text-xs xl:text-base xl:mt-2">Възможност да оцените представянето на артисти</p>
-            </div> -->
-
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/1.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Заявления</p>
                 <p class="text-xs xl:text-base xl:mt-2">Систама за бързо и удобно събиране на заявления.</p>
             </div>
 
-            <!-- <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
-
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
-                <p class="mt-2 text-xs xl:text-lg">Групови чатове</p>
-                <p class="text-xs xl:text-base xl:mt-2">Създаване на групови чатове с кандидати за работа за всяка обява</p>
-            </div> -->
-
-            <!-- <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
-
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
-                <p class="mt-2 text-xs xl:text-lg">Споделяне на ОТТО. </p>
-                <p class="text-xs xl:text-base xl:mt-2">Споделяне на фирменото портфолио в медиите на ОТТО. </p>
-            </div> -->
-
             <div class="text-center px-0 xl:px-8 flex flex-col gap-4 items-center">
+                <img src="/assets/img/homeImg/4.png" class="h-[40px] w-[40px] md:h-[100px] md:w-[100px] invert" alt="">
 
-                <svg preserveAspectRatio="xMidYMid meet" data-bbox="20 20 160 160" viewBox="20 20 160 160" fill="#fff" class="h-[40px] w-[40px] md:h-[60px] md:w-[60px]" height="60" width="60" xmlns="http://www.w3.org/2000/svg" data-type="shape" role="presentation" aria-hidden="true" aria-label="">
-                    <g>
-                        <path d="M100 20c-44.118 0-80 35.882-80 80s35.882 80 80 80 80-35.882 80-80h-80V20z"></path>
-                    </g>
-                </svg>
                 <p class="mt-2 text-xs xl:text-lg">Любими </p>
                 <p class="text-xs xl:text-base xl:mt-2">Добавяне на артисти в любими. </p>
             </div>

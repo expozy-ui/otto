@@ -478,23 +478,9 @@
 
                                 <img @click="forceChange('/bg/partner?id='+user.bussiness_portfolio.id)" class="w-full  object-cover " style="aspect-ratio: 5/7;" :src="user.bussiness_portfolio.avatar.url" src="" alt="">
 
-                                <div class="absolute bottom-0 w-full bg-black opacity-90 h-fit px-1 py-1 lg:px-2.5 lg:py-2 rounded-b-md  ">
-                                    <div @click="forceChange('/bg/partner?id='+user.bussiness_portfolio.id)">
-                                        <span x-text="user.bussiness_portfolio.companyName" class="text-[6px] lg:text-lg mt-1 lg:mt-2 text-white font-bold"></span>
-                                    </div>
+                                <div class="absolute bottom-0 w-full bg-black opacity-90 h-fit p-1 lg:p-2 rounded-b-md  ">
 
-                                    <div class="hidden group2-hover:block">
-                                        <div class="mt-1 flex flex-wrap gap-1.5">
-                                            <p class="leading-3  text-xs lg:text-base  lg:mt-2 text-white" x-text="user.bussiness_portfolio.business_activity"></p>
-                                        </div>
-
-                                        <p x-text="user.bussiness_portfolio.companyDescription" class="line-clamp-3  lg:mt-3.5 text-white text-xs lg:text-base"></p>
-
-                                        <!-- <div class="mt-3.5 flex gap-2 w-fit border bg-black text-white rounded-md flex items-center px-2 py-1.5 mt-2 hover:bg-white hover:text-black hidden group-hover:flex text-xs lg:text-base">
-                                        <i class="fa-regular fa-message"></i>
-                                        <p>Съобщение</p>
-                                    </div> -->
-                                    </div>
+                                    <p @click="forceChange('/bg/partner?id='+user.bussiness_portfolio.id)" x-text="user.bussiness_portfolio.companyName" class="text-[6px] lg:text-lg text-white font-bold"></span>
 
                                 </div>
 

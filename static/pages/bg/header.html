@@ -107,6 +107,11 @@
                     </div>
                 </template>
 
+                <div @click="data.openMobileMenu = false; data.openRegistration = true" class="flex gap-3 mx-auto   !w-fit px-6   items-center justify-center cursor-pointer   transition rounded w-fit  py-2 text-center w-full border">
+                    <!-- <i class="fa-solid fa-circle-user text-[22px]" aria-hidden="true"></i> -->
+                    <p class="text-sm lg:text-lg tracking-widestst">Регистрация</p>
+                </div>
+
             </div>
 
             <div x-data="{openCategory : 0}" apiData="Menu.get_menu" data-droplist="true" class="px-12  ">
@@ -220,7 +225,7 @@
 
                         <div class="col-span-2">
                             <button @click="alpineListeners('User.post_users', $event)" class="py-2 px-6 border border-white hover:bg-white hover:text-black transition rounded cursor-pointer w-full text-sm lg:text-base">Регистрация</button>
-                            <p class="text-xs lg:text-sm  text-white ">Имате акаунт ? <a @click="data.openRegistration = false; data.openLogin = true;" class="font-medium hover:border-b border-gray-400">Вход </a></p>
+                            <p class="text-xs lg:text-sm  text-white mt-2">Имате акаунт ? <a @click="data.openRegistration = false; data.openLogin = true;" class="font-medium hover:border-b border-gray-400">Вход </a></p>
 
                         </div>
                     </form>

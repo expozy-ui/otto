@@ -1,4 +1,4 @@
-<div class="bg-black  w-full " x-data="{ tab: data.pageUrl.tab,
+<div class="bg-black  w-full px-4 lg:px-0" x-data="{ tab: data.pageUrl.tab,
   
      open(tabChange) { 
         if(tabChange == 'bPortfolio' || tabChange == 'myAds' || tabChange == 'postAd' || tabChange == 'chats'){
@@ -12,8 +12,8 @@
        },
      }">
     <div class="container bg-black rounded-[15px] mt-3 mx-auto m-3 p-3">
-        <p class="w-full  font-semibold text-center text-base lg:text-2xl pt-2">Здравейте и добре дошли в ОТТО, </p>
-        <p class="w-full  italic font-semibold w-full lg:!w-1/2 mx-auto text-center py-4 text-base lg:text-lg">Вече сте член на нашата общност от ,,Амитаманти" и като такъв Вие официално получавате почетното звание ,,амитамант”. </p>
+        <p class="w-full  font-semibold text-center text-base lg:text-2xl pt-2">Здравейте и добре дошли в ОТТО. </p>
+        <p class="w-full   font-semibold w-full lg:!w-1/2 mx-auto text-center py-4 text-base lg:text-lg text-justify">Вече сте член на нашата общност от ,,Амитаманти" и като такъв Вие официално получавате почетното звание ,,амитамант”. </p>
     </div>
 
     <div class="container mx-auto md:flex pb-4">
@@ -97,7 +97,7 @@
                     </template>
 
                     <template x-if="data.user.userlevel == 2">
-                        <p :class=" tab === 'postAd' ? ' bg-black text-white': 'text-black' " @click="open('postAd'); " class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-solid fa-file-circle-plus mr-2"></i> Добави обява</p>
+                        <p :class=" tab === 'postAd' ? ' bg-black text-white': 'text-black' " @click="open('postAd'); " class="text-start py-3 px-4 text-[15px] w-full  cursor-pointer text-xs lg:text-base"><i class="fa-solid fa-file-circle-plus mr-2"></i> Добавете обява</p>
                     </template>
 
                     <template x-if="data.user.userlevel == 2">
@@ -162,7 +162,7 @@
                                         <p @click="show =! show" class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-full bg-black ">Социални мрежи</p>
                                     </div> -->
                                     <template x-if="data.user.userlevel == 2">
-                                        <p class="italic font-semibold mt-6  text-xs lg:text-base lg:w-1/2 text-black">Социални мрежи са видими само при активен абонамент на потребителя.</p>
+                                        <p class=" font-semibold mt-6  text-xs lg:text-base lg:w-1/2 text-black">Социални мрежи са видими само при активен абонамент на потребителя.</p>
                                     </template>
 
                                     <div class="w-full   relative  grid grid-cols-2  mt-6">
@@ -194,10 +194,10 @@
 
                                 </div>
 
-                                <p class="col-span-2 w-full md:w-1/2 py-4 md:py-10 italic font-semibold text-black text-xs md:text-base ">Споделените данни за контакт ще бъдат изложени във вашето портфолио в раздел ,,контакти”, те ще бъдат видими само за платените абонати на ОТТО.</p>
+                                <p class="col-span-2 w-full md:w-1/2 py-4 md:py-10  font-semibold text-black text-xs md:text-base text-justify ">Споделените данни за контакт ще бъдат изложени във Вашето портфолио в раздел ,,Контакти”, в случай, че създадете такова и тази информация ще бъде видима само за платени абонати на ОТТО</p>
 
                                 <div class="relative m-2 lg:m-3 col-span-2 flex justify-center">
-                                    <a @click="alpineListeners('User.put_accounts', $event)" keyname="user" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                                    <a @click="alpineListeners('User.put_accounts', $event)" keyname="user" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запишете</a>
                                 </div>
 
                             </div>
@@ -210,20 +210,20 @@
 
                 <!-- ============== PORTFOLIO =============== -->
                 <div x-show="tab == 'portfolio'" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full" apiData="User.get_portfolios_properties" data-bycode="1">
-                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Важно !</h2>
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Важно</h2>
                     <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
 
                     <div apiData="User.get_portfolio_types"></div>
 
-                    <p class="col-span-2 py-4 md:py-6 italic font-semibold text-black text-xs md:text-base"> При въвеждането на данни, моля бъдете сигурни, че информацията е точна и актуална. Неправилни или неточни данни могат да доведат до неблагоприятни последствия за вашия професионален имидж, кариера и репутация. Вярно и изчерпателно попълнени профили, портфолиа и обяви не само подобряват вашите шансове за успех, но и укрепват доверието на клиентите и потребителите. Благодарим ви за вниманието и сътрудничеството!</p>
+                    <p class="col-span-2 py-4 md:py-6  font-semibold text-black text-xs md:text-base"> При въвеждането на данни, моля бъдете сигурни, че информацията е точна и актуална. Неправилни или неточни данни могат да доведат до неблагоприятни последствия за вашия професионален имидж, кариера и репутация. Вярно и изчерпателно попълнени профили, портфолиа и обяви не само подобряват вашите шансове за успех, но и укрепват доверието на клиентите и потребителите. Благодарим ви за вниманието и сътрудничеството!</p>
 
-                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Документ за самоличност</h2>
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-4">Документ за самоличност</h2>
                     <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
 
                     <template x-if="true">
                         <div class="py-6 pt-3">
-                            <p class="text-sm lg:text-lg font-semibold">Моля, качете нужните документ за самоличност.</p>
-                            <p class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit  bg-black text-white mt-2 mb-6" @click="data.passportModal = true">Качи документ</p>
+                            <p class="text-sm lg:text-lg font-semibold">Документите за самоличност са задължителни преди да продължите с попълването на портфолиото.</p>
+                            <p class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit  bg-black text-white mt-2 mb-6" @click="data.passportModal = true">Качете документи</p>
                         </div>
                     </template>
 
@@ -265,11 +265,11 @@
                                         <template x-if="data.my_portfolio">
                                             <div id="activediv" class="border border-black relative rounded-lg col-span-2">
                                                 <label for="portfolio_subtypes" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Роля </label>
-                                                <div class="p-3 grid grid-cols-1">
+                                                <div class="p-5 grid grid-cols-1">
                                                     <template x-for="option in data.portfolio_subtypes.filter(element => element.type_id === 1)">
-                                                        <div class="flex gap-2 space-y-2 items-center">
-                                                            <input type="checkbox" class="md:scale-125  accent-black " name="subtype_ids[]" @change="if($el.checked && countSelected == 3 ){ data.needPlan = true; $el.checked = false; countSelected++}; if(!$el.checked ){countSelected-- }; if($el.checked && countSelected < 4){ countSelected++ } " :checked="data.my_portfolio.subtype_ids.includes(option.id.toString())" :value="option.id">
-                                                            <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                        <div class="flex gap-2  items-center">
+                                                            <input type="checkbox" class="md:scale-125  mt-2 accent-black " name="subtype_ids[]" @change="if($el.checked && countSelected == 3 ){ data.needPlan = true; $el.checked = false; countSelected++}; if(!$el.checked ){countSelected-- }; if($el.checked && countSelected < 4){ countSelected++ } " :checked="data.my_portfolio.subtype_ids.includes(option.id.toString())" :value="option.id">
+                                                            <label class="text-xs md:text-base mt-2" x-text="option.title" for=""></label>
                                                         </div>
                                                     </template>
 
@@ -407,7 +407,7 @@
 
                                         <p x-show="showLocation < 3" @click="showLocation++" class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit col-span-2 md:col-span-1  bg-black text-white mt-2 mb-6">
                                             <i class="fa-solid fa-plus"></i>
-                                            Добави локация
+                                            Добавете локация
                                         </p>
 
                                     </div>
@@ -423,7 +423,7 @@
                                             <label for="clothing_size" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Размери на дрехите </label>
                                             <div class="p-3 flex flex-wrap gap-5">
                                                 <template x-for="option in data.my_portfolio.properties.clothing_size.options">
-                                                    <div class="flex gap-2 space-y-2 items-center">
+                                                    <div class="flex gap-2  items-center">
                                                         <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[clothing_size][]" :value="option.id">
                                                         <label class="text-xs md:text-base" x-text="option.title" for=""></label>
                                                     </div>
@@ -589,9 +589,9 @@
                                             <label for="languages" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">Езикови умения над средното ниво на владеене</label>
                                             <div class="p-3 grid grid-cols-2 ">
                                                 <template x-for="option in data.my_portfolio.properties.languages.options">
-                                                    <div class="flex gap-2 space-y-2 items-center">
-                                                        <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[languages][]" :value="option.id">
-                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                    <div class="flex gap-2  items-center">
+                                                        <input type="checkbox" class="md:scale-125  mt-2 accent-black" :checked="option.selected == 1" name="properties[languages][]" :value="option.id">
+                                                        <label class="text-xs md:text-base mt-2" x-text="option.title" for=""></label>
                                                     </div>
                                                 </template>
                                             </div>
@@ -601,9 +601,9 @@
                                             <label for="not_want" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">В какви ангажименти НЕ бихте искали да участвате?</label>
                                             <div class="p-3 ">
                                                 <template x-for="option in data.my_portfolio.properties.not_want.options">
-                                                    <div class="flex gap-2 space-y-2 items-center ">
-                                                        <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[not_want][]" :value="option.id">
-                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                    <div class="flex gap-2  items-center ">
+                                                        <input type="checkbox" class="md:scale-125  mt-2 accent-black" :checked="option.selected == 1" name="properties[not_want][]" :value="option.id">
+                                                        <label class="text-xs md:text-base mt-2" x-text="option.title" for=""></label>
                                                     </div>
                                                 </template>
                                             </div>
@@ -653,9 +653,9 @@
                                             <label for="portfolio_subtypes" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1"> Роля </label>
                                             <div class="p-5 grid sm:grid-cols-2 grid-cols-1 md:grid-cols-3">
                                                 <template x-for="option in data.portfolio_subtypes.filter(element => element.type_id === 2)">
-                                                    <div class="flex gap-2 space-y-2 items-center">
-                                                        <input type="checkbox" class="md:scale-125  accent-black" name="subtype_ids[]" @change="if($el.checked && countSelected == 3){ data.needPlan = true; $el.checked = false; countSelected++}; if(!$el.checked ){countSelected-- }; if($el.checked && countSelected < 4){ countSelected++ } " :checked="data.my_portfolio.subtype_ids.includes(option.id.toString())" :value="option.id">
-                                                        <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                    <div class="flex gap-2  items-center">
+                                                        <input type="checkbox" class="md:scale-125  mt-2 accent-black" name="subtype_ids[]" @change="if($el.checked && countSelected == 3){ data.needPlan = true; $el.checked = false; countSelected++}; if(!$el.checked ){countSelected-- }; if($el.checked && countSelected < 4){ countSelected++ } " :checked="data.my_portfolio.subtype_ids.includes(option.id.toString())" :value="option.id">
+                                                        <label class="text-xs md:text-base mt-2" x-text="option.title" for=""></label>
                                                     </div>
                                                 </template>
                                             </div>
@@ -695,9 +695,9 @@
                                         <label for="not_want" class="absolute text-[10px] leading-none lg:text-sm  text-black duration-300 transform -translate-y-4  top-2 z-10 origin-[0]  bg-white px-4  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-4  start-1">В какви ангажименти НЕ бихте искали да участвате?</label>
                                         <div class="p-3">
                                             <template x-for="option in data.my_portfolio.properties.not_want.options">
-                                                <div class="flex gap-2 space-y-2 items-center">
-                                                    <input type="checkbox" class="md:scale-125  accent-black" :checked="option.selected == 1" name="properties[not_want][]" :value="option.id">
-                                                    <label class="text-xs md:text-base" x-text="option.title" for=""></label>
+                                                <div class="flex gap-2  items-center">
+                                                    <input type="checkbox" class="md:scale-125  mt-2 accent-black" :checked="option.selected == 1" name="properties[not_want][]" :value="option.id">
+                                                    <label class="text-xs md:text-base mt-2" x-text="option.title" for=""></label>
                                                 </div>
                                             </template>
                                         </div>
@@ -707,13 +707,13 @@
                             </template>
 
                             <div class="relative mt-16 flex justify-center">
-                                <a @click="alpineListeners('User.post_portfolios', $event)" keyname="portfolio" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                                <a @click="alpineListeners('User.post_portfolios', $event)" keyname="portfolio" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запишете</a>
                             </div>
                         </form>
 
                         <div>
                             <p class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-10">Галерия </p>
-                            <div class=" border border-gray-950 w-[150px]" apidata="User.get_portfolio_subtypes"></div>
+                            <div class=" border-b border-black w-[150px]" apidata="User.get_portfolio_subtypes"></div>
                             <div class="grid grid-cols-2 lg:grid-cols-4 py-5 gap-2">
                                 <template x-for="image in data.my_portfolio.images">
                                     <div class="relative">
@@ -730,7 +730,7 @@
                                     </div>
                                 </template>
                                 <template x-if="!data.my_portfolio.images[0]">
-                                    <p>Нямате качени снимки. </p>
+                                    <p class="text-sm">Качете снимки и видеа във Вашето портфолио </p>
                                 </template>
                             </div>
 
@@ -765,8 +765,8 @@
                         </div>
 
                         <div>
-                            <p class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-5 lg:mt-20">Файлове </p>
-                            <div class=" border border-gray-950 w-[150px]" apidata="User.get_portfolio_subtypes"></div>
+                            <p class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-5 lg:mt-20">Тежки файлове и документи </p>
+                            <div class=" border-b border-gray-950 w-[150px]" apidata="User.get_portfolio_subtypes"></div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
 
@@ -784,7 +784,7 @@
                                         </template>
 
                                         <template x-if="!loading">
-                                            <label for="dropzone-files2" class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
+                                            <label for="dropzone-files2" class="flex flex-col items-center justify-center w-full h-34 lg:h-44 border border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 !bg-white">
                                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
@@ -798,11 +798,32 @@
                                     </div>
                                 </form>
 
-                                <div class="md:py-5">
-                                    <p class="font-semibold">Качени документи : </p>
-                                    <template x-if="data.my_portfolio.files[0]">
+                                <div class="">
+                                    <p class="font-semibold">Качени файлове : </p>
+                                    <div class="space-y-2">
 
-                                        <ul class="list-disc pl-5">
+                                        <template x-if="data.my_portfolio.files[0]">
+                                            <template x-for="file in data.my_portfolio.files">
+
+                                                <a :href="file.url" target="_blank">
+                                                    <div class="shadow rounded-md  border border-gray-300 overflow-hidden w-[250px] mt-4 relative">
+                                                        <div class="flex items-center lg:p-4 px-2 py-1 lg:py-2.5 ">
+                                                            <div class="h-8 w-8 lg:w-12 lg:h-12 bg-black text-white flex items-center justify-center rounded-full">
+                                                                <i class="fa-solid fa-file-arrow-down text-sm lg:text-2xl "></i>
+                                                            </div>
+                                                            <div class="ml-1 lg:ml-4">
+                                                                <div x-text="file.filename" class="text-sm pr-2 overflow-hidden line-clamp-1 font-semibold text-gray-800">example.txt</div>
+                                                                <div x-text="file.filename.split('.').pop()" class="text-xs text-gray-500">.txt</div>
+                                                                <div x-text="file.date_created.split(' ')[0]" class="text-xs text-gray-400">20 май 2024</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <p @click="alpineListeners('User.delete_portfolio_files', $event)" :data-id="file.id" class=" font-bold text-red-400 text-[22px] absolute top-1 right-2">x</p>
+                                                    </div>
+                                                </a>
+                                            </template>
+
+                                            <!-- <ul class="list-disc pl-5">
 
                                             <template x-for="file in data.my_portfolio.files">
                                                 <li class="flex">
@@ -810,8 +831,10 @@
                                                     <p @click="alpineListeners('User.delete_portfolio_files', $event)" :data-id="file.id">x</p>
                                                 </li>
                                             </template>
-                                        </ul>
-                                    </template>
+                                        </ul> -->
+                                        </template>
+
+                                    </div>
 
                                     <template x-if="!data.my_portfolio.files[0]">
                                         <p>Нямате качени Файлове. </p>
@@ -824,7 +847,7 @@
 
                     </div>
 
-                    <p class="col-span-2  py-10 italic font-semibold text-black text-xs md:text-base ">Внимание! При всяка невярна или неточна информация, може да рефлектира на вашият имидж, кариера, портфолио, заетост и отзиви на клиенти.</p>
+                    <p class="col-span-2  py-10  font-semibold text-black text-xs md:text-base ">Внимание! При всяка невярна или неточна информация, може да рефлектира на вашият имидж, кариера, портфолио, заетост и отзиви на клиенти.</p>
 
                 </div>
                 <!-- END ============== END PORTFOLIO =============== -->
@@ -832,18 +855,18 @@
                 <!-- ==============Start BUISNESS PORTFOLIO =============== -->
                 <div x-show="tab == 'bPortfolio'" apiData="User.get_my_bussiness_portfolio" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
 
-                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Важно !</h2>
+                    <h2 apidata="User.get_my_portfolio" keyname="my_portfolio" data-bycode="1" class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Важно</h2>
                     <div class=" border border-gray-950 w-[50px]" apiData="User.get_portfolio_subtypes"></div>
 
-                    <p class="col-span-2  py-6 italic font-semibold text-black text-xs md:text-base"> При въвеждането на данни, моля бъдете сигурни, че информацията е точна и актуална. Неправилни или неточни данни могат да доведат до неблагоприятни последствия за вашия професионален имидж, кариера и репутация. Вярно и изчерпателно попълнени профили, портфолиа и обяви не само подобряват вашите шансове за успех, но и укрепват доверието на клиентите и потребителите. Благодарим ви за вниманието и сътрудничеството!</p>
+                    <p class="col-span-2  py-6  font-semibold text-black text-xs md:text-base"> При въвеждането на данни, моля бъдете сигурни, че информацията е точна и актуална. Неправилни или неточни данни могат да доведат до неблагоприятни последствия за вашия професионален имидж, кариера и репутация. Вярно и изчерпателно попълнени профили, портфолиа и обяви не само подобряват вашите шансове за успех, но и укрепват доверието на клиентите и потребителите. Благодарим ви за вниманието и сътрудничеството!</p>
 
-                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Документ за самоличност</h2>
+                    <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black mt-4">Документ за самоличност</h2>
                     <div class=" border border-gray-950 w-[50px]" apiData="User.get_my_passport"></div>
 
                     <template x-if="true">
                         <div class="py-6 pt-3">
-                            <p class="text-base lg:text-lg font-semibold">Моля, качете нужните документ за самоличност.</p>
-                            <p class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit  bg-black text-white mt-2 mb-6" @click="data.passportModal = true">Качи документ</p>
+                            <p class="text-base lg:text-lg font-semibold">Документите за самоличност са задължителни преди да продължите с попълването на портфолиото.</p>
+                            <p class="py-2 px-6 border border-black hover:bg-white hover:text-black transition rounded-lg cursor-pointer w-fit  bg-black text-white mt-2 mb-6" @click="data.passportModal = true">Качете документи</p>
                         </div>
                     </template>
 
@@ -890,7 +913,7 @@
                                 </div>
 
                                 <div class="relative m-2 lg:m-3 flex justify-center my-16">
-                                    <a @click="alpineListeners('User.post_portfolios_bussiness', $event)" keyname="portfolio" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                                    <a @click="alpineListeners('User.post_portfolios_bussiness', $event)" keyname="portfolio" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запишете</a>
                                 </div>
 
                             </div>
@@ -914,7 +937,7 @@
                                     </div>
                                 </template>
                                 <template x-if="!data.my_bussiness_portfolio.images[0]">
-                                    <p>Нямате качени снимки. </p>
+                                    <p class="text-sm">Качете снимки и видеа във Вашето портфолио </p>
                                 </template>
                             </div>
 
@@ -949,7 +972,7 @@
 
                     </div>
 
-                    <p class="col-span-2 w-full lg:w-1/2 py-10 italic font-semibold text-black text-xs md:text-base">Внимание! При всяка невярна или неточна информация, може да рефлектира на вашият имидж, кариера, портфолио, заетост и отзиви на клиенти.</p>
+                    <p class="col-span-2 w-full lg:w-1/2 py-10  font-semibold text-black text-xs md:text-base">Внимание! При всяка невярна или неточна информация, може да рефлектира на вашият имидж, кариера, портфолио, заетост и отзиви на клиенти.</p>
 
                 </div>
                 <!-- END ============== END BUISNESS PORTFOLIO =============== -->
@@ -958,7 +981,7 @@
                 <div x-show="tab == 'postAd'" apiData="Ads.get_ads_types" x-cloak class="bg-white rounded-[15px] p-3 sm:p-8 w-full h-full">
 
                     <form>
-                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Добави Обява</h2>
+                        <h2 class="text-gray-900 text-black text-base lg:text-2xl mb-1 font-medium title-font sm:col-span-2 text-black">Добавете Обява</h2>
 
                         <div class="  border border-gray-950 w-[80px] mt-2"></div>
                         <div x-data="{selectedAdIndex: 0  }" class="relative   grid grid-cols-1 md:grid-cols-2 gap-1.5 mt-6">
@@ -1065,7 +1088,7 @@
                         </div>
 
                         <div class="relative m-2 lg:m-3 flex justify-center my-16">
-                            <a @click="res = await alpineListeners('Ads.post_ads', $event); res == 1 ? tab = 'myAds' : '' " class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                            <a @click="res = await alpineListeners('Ads.post_ads', $event); res == 1 ? tab = 'myAds' : '' " class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запишете</a>
                         </div>
                     </form>
                 </div>
@@ -1194,7 +1217,7 @@
                         </div>
 
                         <div class="relative m-2 lg:m-3 flex justify-center my-16">
-                            <a @click="res = await alpineListeners('Ads.post_ads', $event); res == 1 ? tab = 'myAds' : '' " class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</a>
+                            <a @click="res = await alpineListeners('Ads.post_ads', $event); res == 1 ? tab = 'myAds' : '' " class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запишете</a>
                         </div>
                     </form>
                 </div>
@@ -1284,7 +1307,7 @@
 
                                         <div class="leading-none">
                                             <template x-for="subtype in user.portfolio.subtypes">
-                                                <span x-text="subtype.title + ', '" class=" text-xs text-center italic ">Photographer</span>
+                                                <span x-text="subtype.title + ', '" class=" text-xs text-center  ">Photographer</span>
                                             </template>
                                         </div>
 
@@ -1542,7 +1565,7 @@
                                 </div>
 
                                 <div class="relative m-2 lg:m-3">
-                                    <a @click="alpineListeners('User.post_subusers', $event)" keyname="user" class="py-2 px-6 border border-black text-center w-full lg:w-1/2 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block text-sm lg:text-base">Добави потребител</a>
+                                    <a @click="alpineListeners('User.post_subusers', $event)" keyname="user" class="py-2 px-6 border border-black text-center w-full lg:w-1/2 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block text-sm lg:text-base">Добавете потребител</a>
                                 </div>
 
                             </div>
@@ -1570,7 +1593,7 @@
                             </div>
 
                             <div class=" lg:mt-5 w-full ">
-                                <p @click="alpineListeners('User.put_accounts', $event)" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запиши</p>
+                                <p @click="alpineListeners('User.put_accounts', $event)" class="py-2.5 px-6 border border-black w-full font-semibold  text-center lg:w-1/3 hover:bg-white hover:text-black transition rounded-lg cursor-pointer  bg-black text-white !block">Запишете</p>
                             </div>
 
                         </div>

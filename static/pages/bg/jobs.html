@@ -1,26 +1,26 @@
-<div class="container px-2 max-w-[900px] mt-5" apiData="Ads.get_ads" keyname="ads" :data-type="data.pageUrl.type">
+<div class="container px-2 max-w-[900px] " apiData="Ads.get_ads" keyname="ads" :data-type="data.pageUrl.type">
     <!-- <div x-init="data.pageUrl.type == undefined ? data.pageUrl.type = 'all' : '' "></div> -->
     <div>
         <template x-if="!data.pageUrl.type ">
-            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+            <h2 class="   text-center mt-8 pb-4 lg:mt-12  text-[1.4em] lg:text-5xl  ">
                 <span class="font-bold">OTTO.</span>
                 <span>Обяви</span>
             </h2>
         </template>
         <template x-if="data.pageUrl.type == 1">
-            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+            <h2 class="   text-center mt-8 pb-4 lg:mt-12  text-[1.4em] lg:text-5xl ">
                 <span class="font-bold">OTTO.</span>
                 <span>Кастинги</span>
             </h2>
         </template>
         <template x-if="data.pageUrl.type == 2">
-            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+            <h2 class="   text-center mt-8 pb-4 lg:mt-12  text-[1.4em] lg:text-5xl  ">
                 <span class="font-bold">OTTO.</span>
                 <span>Бързи обяви</span>
             </h2>
         </template>
         <template x-if="data.pageUrl.type == 3">
-            <h2 class="text-base   text-center mt-12 md:text-5xl ">
+            <h2 class="   text-center mt-8 pb-4 lg:mt-12  text-[1.4em] lg:text-5xl  ">
                 <span class="font-bold">OTTO.</span>
                 <span>Събития</span>
             </h2>
