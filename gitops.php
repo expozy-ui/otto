@@ -60,9 +60,9 @@ $github_token = isset($_SESSION['github_token']) && !empty($_SESSION['github_tok
 $default_project = $core->site_name === 'frontend' ? true : false;
 
 if(post('upload_repo')){
-	GitOps::upload_repo($github_token);
+	$upload_repo_result = GitOps::upload_repo($github_token);
 	//header('Location: /gitops.php');
-	die(); 	
+	//die(); 	
 }
 
 $hide_table = $default_project === true || $github_token === false ? true : false;
@@ -164,7 +164,9 @@ if(empty($repo_name)){
 									<input type="text" placeholder="GitHub username" value="<?php echo $core->site_name; ?>" disabled/>	
 									<button>Upload</button>
 								</form>
+							    <?php if(isset($upload_repo_result)) echo "<br/><br/>". $upload_repo_result; ?>
 						   </td>
+						  
 						</tr>
 					   <tr>
 						   <td>Change repo:<br/><i>*fetch from GitHub</i></td>

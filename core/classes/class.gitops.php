@@ -59,7 +59,7 @@ class GitOps
 				file_put_contents($file, $newContent);
 		}
 		
-		public static function upload_repo(string $github_token):void {
+		public static function upload_repo(string $github_token):string {
 				global $core;
 				
 				$owner =  self::get_current_repo_owner();
@@ -73,10 +73,9 @@ class GitOps
 				
 				//var_dump("git remote set-url origin https://{$github_token}@github.com/{$owner}/{$core->site_name}.git");
 				
-				d($r1);
-				d($r2);
-				d($r3);
-				d($r4);
+				
+				return "{$r1}</br>{$r2}</br>{$r3}</br>{$r4}</br>";
+				
 				
 		}
 		
