@@ -164,7 +164,7 @@ if(empty($repo_name)){
 									<input type="text" placeholder="GitHub username" value="<?php echo $core->site_name; ?>" disabled/>	
 									<button>Upload</button>
 								</form>
-							    <?php if(isset($upload_repo_result)) echo "Result: <br/><br/>". $upload_repo_result; ?>
+								<?php if(isset($upload_repo_result)) echo "<p style=\"color='red'\"><br/><br/>Result:<br/>{$upload_repo_result}</p>"; ?>
 						   </td>
 						  
 						</tr>
