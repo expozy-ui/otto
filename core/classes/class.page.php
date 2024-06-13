@@ -2,7 +2,7 @@
 if (!defined("_VALID_PHP")) { die('Direct access to this location is not allowed.'); }
 
 /** =========================================================
- * Class Page1
+ * Class Page12
  * ========================================================== */
 class Page
 {
