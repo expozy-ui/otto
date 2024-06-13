@@ -71,12 +71,12 @@ class GitOps
 				$r3 = shell_exec("git remote set-url origin https://{$github_token}@github.com/{$owner}/{$core->site_name}.git");
 				$r4 = shell_exec('git push -u origin main');
 				
-				var_dump("git remote set-url origin https://{$github_token}@github.com/{$owner}/{$core->site_name}.git");
+				//var_dump("git remote set-url origin https://{$github_token}@github.com/{$owner}/{$core->site_name}.git");
 				
-				var_dump($r1);
-				var_dump($r2);
-				var_dump($r3);
-				var_dump($r4);
+				d($r1);
+				d($r2);
+				d($r3);
+				d($r4);
 				
 		}
 		
