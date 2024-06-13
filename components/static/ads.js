@@ -16,8 +16,8 @@ export let Ads = {
 
 
 		response['obj'] = api.response;
-
-		if (!data['type_id']) {
+		debugger;
+		if (!data['type_id'] && !data['id']) {
 			response['obj']['result'] = response['obj']['result'].filter(item => item.type_id !== 3);
 		}
 

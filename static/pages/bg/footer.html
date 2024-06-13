@@ -1,57 +1,52 @@
-<div class="is-section is-box is-section-auto copySection !pt-10 lg:!pt-14 pb-2 bg-base-200 text-base-content !bg-black !text-white px-8">
+<div class="is-section is-box is-section-auto copySection !pt-10 lg:!pt-14 pb-2 bg-base-200 text-base-content !bg-black !text-white px-8 last-box">
+    <div class="is-overlay"></div>
+    <div class="is-container container v2 px-0">
 
-    <div class="flex justify-start ">
-        <!-- <video class="w-[180px] lg:w-[230px]" autoplay muted loop>
-            <source src="/editor/cb/assets/templates-simple/videos/file.mp4" type="video/mp4">
-            </video> -->
-        <!-- <img @click="forceChange('/bg/')" src="/editor/cb/assets/templates-simple/videos/file2.gif" alt="" class="w-[180px] lg:w-[230px]"> -->
-        <video @click="forceChange('/bg/')" class="w-[180px] lg:w-[230px]" autoplay muted loop playsInline preload='auto' controlslist="nodownload">
-            <source src="/editor/cb/assets/templates-simple/videos/file.mp4" type="video/mp4">
-        </video>
-    </div>
-    <ul class="flex flex-col md:flex-row items-start md:items-center justify-start  md:justify-center container pb-4 lg:pb-10 ">
-        <li>
-            <a href="/bg/contacts" class="hover:underline text-sm lg:text-lg  me-4 md:me-6">Контакти </a>
-        </li>
-        <li>
-            <a href="/bg/about" class="hover:underline text-sm lg:text-lg  me-4 md:me-6">За ОТТО.</a>
-        </li>
-        <li>
-            <a href="/bg/terms-conditions" class="hover:underline text-sm lg:text-lg  me-4 md:me-6">Условия на позване </a>
-        </li>
-        <li>
-            <a href="/bg/gdpr" class="hover:underline text-sm lg:text-lg ">Политика за поверителност</a>
-        </li>
-    </ul>
+        <div class="flex md:justify-center justify-start">
 
-    <div class="w-full">
-        <div class="flex flex-row items-start gap-4 justify-start md:justify-center mb-2 flex ">
-            <div class="flex gap-2 items-center">
-                <p class="text-xs lg:text-base">Създател </p>
-                <p class="text-xs lg:text-base">Итън Стоилов</p>
-                <a href=""><i class="fa-brands fa-linkedin text-[18px] lg:text-[28px]"></i></a>
-                <a href=""><i class="fa-brands fa-instagram text-[18px] lg:text-[28px]"></i></a>
+            <video @click="forceChange('/bg/')" class="w-[180px] lg:w-[230px]" autoplay="" muted="" loop="" playsinline="" preload="auto" controlslist="nodownload">
+                <source src="/editor/cb/assets/templates-simple/videos/file.mp4" type="video/mp4">
+            </video>
+        </div>
+        <ul class="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center container pb-4 lg:pb-10">
+            <li>
+                <a href="/bg/contacts" class="hover:underline text-sm lg:text-lg  me-4 md:me-6">Контакти </a>
+            </li>
+            <li>
+                <a href="/bg/about" class="hover:underline text-sm lg:text-lg  me-4 md:me-6">За ОТТО.</a>
+            </li>
+            <li>
+                <a href="/bg/terms-conditions" class="hover:underline text-sm lg:text-lg  me-4 md:me-6">Условия на позване </a>
+            </li>
+            <li>
+                <a href="/bg/gdpr" class="hover:underline text-sm lg:text-lg">Политика за поверителност</a>
+            </li>
+        </ul>
+        <div class="w-full">
+            <div class="flex flex-row items-start gap-4 justify-start md:justify-center mb-2">
+                <div class="flex gap-2 items-center">
+                    <p class="text-xs lg:text-base">Създател </p>
+                    <p class="text-xs lg:text-base">Итън Стоилов</p>
+                    <a href=""><i class="fa-brands fa-linkedin text-[18px] lg:text-[28px]" aria-hidden="true"></i></a>
+                    <a href=""><i class="fa-brands fa-instagram text-[18px] lg:text-[28px]" aria-hidden="true"></i></a>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <p class="text-xs lg:text-base">OTTO.</p>
+                    <a href=""><i class="fa-brands fa-linkedin text-[18px] lg:text-[28px]" aria-hidden="true"></i></a>
+                    <a href=""><i class="fa-brands fa-instagram text-[18px] lg:text-[28px]" aria-hidden="true"></i></a>
+                </div>
             </div>
-            <div class="flex gap-2 items-center">
-                <p class="text-xs lg:text-base">OTTO.</p>
-                <a href=""><i class="fa-brands fa-linkedin text-[18px] lg:text-[28px]"></i></a>
-                <a href=""><i class="fa-brands fa-instagram text-[18px] lg:text-[28px]"></i></a>
+        </div>
+        <div class="mb-4 w-full">
+            <div class="flex flex-row items-start gap-4 md:justify-center mb-2">
+
+                <p class="mb-0 text-white text-xs lg:text-base"> Изработил <a href="https://studioweb.bg/" target="_blank" class="text-xs lg:text-base">StudioWeb</a> </p>
+                <p class="mb-0 text-white text-xs lg:text-base"> Софтуер <a href="https://expozy.com/" target="_blank" class="text-xs lg:text-base">Expozy</a> </p>
             </div>
-
+            <div class="flex gap-4 justify-center mt-4">
+                <p class="mb-0 text-white text-xs lg:text-base"> © 2024 <i class="mdi mdi-heart text-red-600"></i> Всички права запазени </p>
+            </div>
         </div>
 
     </div>
-
-    <div class="mb-4 w-full">
-        <div class="flex flex-row items-start gap-4 md:justify-center mb-2 ">
-            <!-- <p class="mb-0 text-white"> Development<i class="mdi mdi-heart text-red-600"></i> <a href="https://studioweb.bg/" target="_blank" class="text-base">Studioweb</a> </p> -->
-            <p class="mb-0 text-white text-xs lg:text-base"> Изработил <a href="https://studioweb.bg/" target="_blank" class="text-xs lg:text-base">StudioWeb</a> </p>
-            <p class="mb-0 text-white text-xs lg:text-base"> Софтуер <a href="https://expozy.com/" target="_blank" class="text-xs lg:text-base">Expozy</a> </p>
-        </div>
-
-        <div class="flex gap-4 justify-center mt-4">
-            <p class="mb-0 text-white text-xs lg:text-base"> © 2024 <i class="mdi mdi-heart text-red-600"></i> Всички права запазени </p>
-        </div>
-    </div>
-
 </div>

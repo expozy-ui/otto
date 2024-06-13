@@ -16,7 +16,7 @@ export let Gallery = {
         }
         // debugger
         var imgHTML = '';
-        for (const image of images) {
+        for (const image of images.reverse()) {
             imgHTML += `<img src="${image.url}"  class="item  p-2 grid-item">`;
 
         }
