@@ -71,12 +71,7 @@ class GitOps
 				$r3 = shell_exec("git remote set-url origin https://{$github_token}@github.com/{$owner}/{$core->site_name}.git");
 				$r4 = shell_exec('git push -u origin main');
 				
-				//var_dump("git remote set-url origin https://{$github_token}@github.com/{$owner}/{$core->site_name}.git");
-				
-				
 				return "{$r1}</br>{$r2}</br>{$r3}</br>{$r4}</br>";
-				
-				
 		}
 		
 		private static function deleteFiles($target) {
@@ -101,7 +96,11 @@ class GitOps
 				
 		}
 		
-			
+		public static function pull_repo():string {
+				$r1 = shell_exec("git pull");
+				
+				return "{$r1}";
+		}	
 
 } 
 ?>

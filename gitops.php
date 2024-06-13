@@ -60,9 +60,7 @@ $github_token = isset($_SESSION['github_token']) && !empty($_SESSION['github_tok
 $default_project = $core->site_name === 'frontend' ? true : false;
 
 if(post('upload_repo')){
-	$upload_repo_result = GitOps::upload_repo($github_token);
-	//header('Location: /gitops.php');
-	//die(); 	
+	$result_string = GitOps::upload_repo($github_token);	
 }
 
 $hide_table = $default_project === true || $github_token === false ? true : false;
@@ -79,7 +77,7 @@ if(post('download') && !empty(post('repo'))){
 
 
 if(post('git_pull')){
-	shell_exec("git pull");
+	$result_string = GitOps::pull_repo();
 }
 
 if(post('visibility')){
@@ -155,7 +153,8 @@ if(empty($repo_name)){
 						</tr>
 					   <tr>
 							<td>Download from Repo:<br/><i>*fetch from GitHub - fast</i></td>
-							<td><form method="post"><?php  echo $repo_name; ?> <input type="hidden" name="git_pull" value='1'><button>Download</button></form></td>
+							<td><form method="post"><?php  echo $repo_name; ?> <input type="hidden" name="git_pull" value='1'><button>Download</button></form>
+							</td>
 						</tr>
 						<tr>
 						   <td>Push to repo: <br/><i>*you can push only in project repo</i></td>
@@ -164,7 +163,6 @@ if(empty($repo_name)){
 									<input type="text" placeholder="GitHub username" value="<?php echo $core->site_name; ?>" disabled/>	
 									<button>Upload</button>
 								</form>
-								<?php if(isset($upload_repo_result)) echo "<p style='color: red;'><br/><br/>Result:<br/>{$upload_repo_result}</p>"; ?>
 						   </td>
 						  
 						</tr>
@@ -185,9 +183,10 @@ if(empty($repo_name)){
 					</table>
 				 </br>
 					
-				   
-				   <br/>
-				   <br/>
+				 <?php if(isset($result_string)) echo "<p style='color: red;'><br/><br/>Result:<br/>{$result_string}</p>"; ?>
+
+				<br/>
+				<br/>
 				   
 				    
 			 </div>
