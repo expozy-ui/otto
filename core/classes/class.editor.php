@@ -72,7 +72,7 @@ class Editor{
 
 
 
-		$page->load_page(false);
+		$page->load_page(false, false);
 
 
 		$this->html = $page->html;

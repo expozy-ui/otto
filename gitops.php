@@ -61,7 +61,7 @@ $default_project = $core->site_name === 'frontend' ? true : false;
 
 if(post('upload_repo')){
 	GitOps::upload_repo($github_token);
-	header('Location: /gitops.php');
+	//header('Location: /gitops.php');
 	die(); 	
 }
 
@@ -89,7 +89,10 @@ if(post('visibility')){
 
 $repo_name = GitOps::get_current_repo_name();
 
-
+if(empty($repo_name)){
+	echo "Folder \".git\" don't exist in this project.";
+	die();
+}
 ?>
 
 
@@ -113,11 +116,9 @@ $repo_name = GitOps::get_current_repo_name();
 						<td><?php  echo $core->site_name ?></td>
 					</tr>
 					<tr>
-						<td>Current Repo: </td>
-						<td><form method="post"><?php  echo $repo_name; ?> <input type="hidden" name="git_pull" value='1'><button>Download</button></form>
-						</td>
+							<td>Current Repo: </td>
+							<td><?php  echo $repo_name; ?></td>
 					</tr>
-					
 					<tr>
 						<td>Saas Key: </td>
 						<td><form method="post"><input type="text" name="saas_key" value="<?php  echo SAAS_KEY ?>" ><button>SAVE</button></form></td>
@@ -152,18 +153,21 @@ $repo_name = GitOps::get_current_repo_name();
 								</form>
 						   </td>
 						</tr>
-					   
+					   <tr>
+							<td>Download from Repo:<br/><i>*fetch from GitHub - fast</i></td>
+							<td><form method="post"><?php  echo $repo_name; ?> <input type="hidden" name="git_pull" value='1'><button>Download</button></form></td>
+						</tr>
 						<tr>
 						   <td>Push to repo: <br/><i>*you can push only in project repo</i></td>
 						   <td><form method="post">
 									<input type="hidden" name="upload_repo"  value="1" />
 									<input type="text" placeholder="GitHub username" value="<?php echo $core->site_name; ?>" disabled/>	
-									<button>PUSH</button>
+									<button>Upload</button>
 								</form>
 						   </td>
 						</tr>
 					   <tr>
-						   <td>Fetch other repo from GitHub:</td>
+						   <td>Change repo:<br/><i>*fetch from GitHub</i></td>
 						   <td><form method="post">
 									<input type="hidden" name='download' value='1' />
 									<select name='repo'>
@@ -183,7 +187,7 @@ $repo_name = GitOps::get_current_repo_name();
 				   <br/>
 				   <br/>
 				   
-				   
+				    
 			 </div>
 		</div>
 	</body>
